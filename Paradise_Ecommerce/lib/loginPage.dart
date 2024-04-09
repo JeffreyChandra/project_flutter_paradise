@@ -1,6 +1,9 @@
+import 'dart:js';
+
 import 'package:e_commerce/home.dart';
 import 'package:e_commerce/register.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -10,165 +13,181 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  TextEditingController t1 = TextEditingController();
-  TextEditingController t2 = TextEditingController();
-  String errorMessage = '';
-  String errorMessage2 = '';
-  bool isObscure = true; 
-  
-  @override
-  void dispose() {
-    t1.dispose();
-    t2.dispose();
-    super.dispose();
-  }
-
+  bool isObscure = true;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Column(
-          children: [
-            Container(
-              alignment: Alignment.center,
-              padding: const EdgeInsets.all(30),
-              child: const Image(
-                image: AssetImage("../assets/ParadiseLogo.png"),
-                fit: BoxFit.fill,
-                width: 250,
-                height: 50,
-                
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.all(8),
-              child: TextFormField(
-                onChanged: (_) {
-                  setState(() {
-                    errorMessage2 = '';
-                  });
-                },
-                controller: t2,
-                decoration: InputDecoration(
-                  labelText: "Username",
-                  labelStyle:
-                      TextStyle(color: Color.fromARGB(255, 129, 141, 248)),
-                  hintText: "Masukkan Username Disinii",
-                  hintStyle: TextStyle(color: Color.fromARGB(255, 129, 141, 248)),
-                  errorText: errorMessage2.isNotEmpty ? errorMessage2 : null,
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(30)),
-                    borderSide: BorderSide(color: Color.fromARGB(255, 99, 101, 241),
-                    width: 2),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(30)),
-                    borderSide: BorderSide(color: Color.fromARGB(255, 99, 101, 241),width: 2),
-                  ),
-                
-                ),
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.all(8),
-              child: TextFormField(
-                onChanged: (_) {
-                  setState(() {
-                    errorMessage = '';
-                  });
-                },
-                controller: t1,
-                decoration: InputDecoration(
-                  
-                  labelText: "Password",
-                  labelStyle:
-                      TextStyle(color: Color.fromARGB(255, 129, 141, 248)),
-                  hintText: "Masukkan Password Disini",
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      isObscure ? Icons.visibility : Icons.visibility_off,
-                      color: Colors.grey,
-                    ), onPressed: () {  
-                      setState(() {
-                        isObscure = !isObscure;
-                      });
-                    },
-                  ),
-                  
-                  hintStyle: TextStyle(color: Color.fromARGB(255, 129, 141, 248)),
-                  errorText: errorMessage.isNotEmpty ? errorMessage : null,
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(30)),
-                    borderSide: BorderSide(color: Color.fromARGB(255, 99, 101, 241),
-                    width: 2),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(30)),
-                    borderSide: BorderSide(color: Color.fromARGB(255, 99, 101, 241),width: 2),
-                  ),
-                ),
-                obscureText: isObscure,
-              ),
-            ),
-            Container(
-              height: 60,
-              width: 400,
-              padding: const EdgeInsets.all(8),
-              child: ElevatedButton(
-                onPressed: () {
-                  if (t2.text != "Jeffrey") {
-                    setState(() {
-                      errorMessage2 = "Username Salah";
-                      t2.clear();
-                    });
-                  } else if (t1.text != "test") {
-                    setState(() {
-                      errorMessage = "Password Salah";
-                      t1.clear();
-                    });
-                  } else {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => const HomePage()),
-                    );
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromARGB(255, 129, 141, 248),
-                  foregroundColor: Color.fromARGB(230, 49, 46, 129),
-                ),
-                child: const Text("LOGIN",style: TextStyle(
-                  fontWeight: FontWeight.w700
-                ),),
-              ),
-            ),
+    Size size = MediaQuery.of(context).size;
+    const PrimaryColor = Color.fromARGB(255, 129, 141, 248);
+    const PrimaryColor2 = Color.fromARGB(50, 129, 141, 248);
 
-            Container(
-              padding: const EdgeInsets.only(top: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("Don't have an account?", style: TextStyle(
-                    fontWeight: FontWeight.w600
-                  ),),
-                  SizedBox(width: 8),
-                  InkWell(
-                    onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => const RegisterPage()),
-                    ),
-                    child: const Text(
-                      "Sign Up",
+
+    // double viewInset = MediaQuery.of(context).viewInsets.bottom;
+    double defaultLoginSize = size.height - (size.height * 0.2);
+
+    return Scaffold(
+      body: Stack(
+        children: [
+          Positioned(
+            top: -70,
+            left: -25,
+            child: Container(
+              width: 170,
+              height: 170,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(100),
+                color: PrimaryColor,
+              ),
+          )),
+          Positioned(
+            top: 50,
+            right: -30,
+            child: Container(
+              width: 120,
+              height: 120,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(100),
+                color: PrimaryColor,
+              ),
+          )),
+          Align(
+            alignment: Alignment.center,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Container(
+                width: size.width,
+                height: defaultLoginSize,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Welcome back",
                       style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        color: Color.fromARGB(255, 129, 141, 248)),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24,
+                        color: Colors.black
+                      ),
                     ),
-                  ),
-                ],
+                    // SizedBox(
+                    //   height: 20,
+                    // ),
+                    Image.asset(
+                        "../assets/images/burung.jpeg",scale: 1.3,fit: BoxFit.contain,),
+
+                    //Username
+                    Container(
+                      alignment: Alignment.center,
+                      margin: EdgeInsets.symmetric(vertical: 10),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                      width: size.width * 0.8,
+                      height: 55,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          color: PrimaryColor2),
+                      child: TextField(
+                        cursorColor: PrimaryColor,
+                        decoration: InputDecoration(
+                            focusColor: Colors.blue,
+                            icon: Icon(
+                              Icons.account_box,
+                              color: PrimaryColor,
+                            ),
+                            hintText: "Username",
+                            border: InputBorder.none),
+                      ),
+                    ),
+
+                    //Password
+                    Container(
+                      alignment: Alignment.center,
+                      margin: EdgeInsets.symmetric(vertical: 10),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                      width: size.width * 0.8,
+                      height: 55,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          color: PrimaryColor2),
+                      child: TextField(
+                        
+                        cursorColor: PrimaryColor,
+                        decoration: InputDecoration(
+                            icon: Icon(
+                              Icons.lock,
+                              color: PrimaryColor,
+                            ),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                isObscure
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  isObscure = !isObscure;
+                                });
+                              },
+                            ),
+                            hintText: "Password",
+                            border: InputBorder.none),
+                        obscureText: isObscure,
+                      ),
+                    ),
+
+                    //LOGIN BUTTON
+                    Container(
+                      margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage()));
+                        },
+                        borderRadius: BorderRadius.circular(30),
+                        child: Container(
+                          width: size.width * 0.8,
+                          height: size.width * 0.14,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            color: PrimaryColor,
+                          ),
+                          padding: EdgeInsets.symmetric(vertical: 14),
+                          alignment: Alignment.center,
+                          child: Text(
+                            "LOGIN",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ],
-        ),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              width: double.infinity,
+              height: size.height * 0.1,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(100),
+                    topRight: Radius.circular(100)),
+                color: PrimaryColor,
+              ),
+              alignment: Alignment.center,
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => RegisterPage()));
+                },
+                child: Text("Don't have an account? Sing up"),
+              ),
+            ),
+          )
+        ],
       ),
     );
   }
