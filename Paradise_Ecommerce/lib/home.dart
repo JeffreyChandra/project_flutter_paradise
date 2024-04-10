@@ -1,3 +1,4 @@
+import 'package:e_commerce/profile.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,6 +15,18 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text("HOME"),
       ),
+      body: Container(
+        child: Column(
+          children: [
+            InkWell(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => Profile()));
+              },
+              child: Text('ke profile'),
+            )
+          ],
+        )
+      )
     );
 }
 }

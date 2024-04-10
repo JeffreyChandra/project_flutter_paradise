@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        textTheme: GoogleFonts.robotoTextTheme(Theme.of(context).textTheme)
+        textTheme: GoogleFonts.interTextTheme(Theme.of(context).textTheme),
       ),
       home: LoginPage(),
     );

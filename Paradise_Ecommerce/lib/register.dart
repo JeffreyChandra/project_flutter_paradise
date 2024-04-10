@@ -64,7 +64,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                     Image.asset(
-                        "../assets/images/burung.jpeg",scale: 1.3,fit: BoxFit.contain,),
+                        "assets/images/burung.jpeg",scale: 1.3,fit: BoxFit.contain,),
 
                     //Username
                     Container(

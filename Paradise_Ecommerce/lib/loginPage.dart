@@ -1,9 +1,6 @@
-import 'dart:js';
-
 import 'package:e_commerce/home.dart';
 import 'package:e_commerce/register.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
