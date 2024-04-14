@@ -15,7 +15,7 @@ class _ProfileState extends State<Profile> {
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(1.0),
           child: Container(
-            color: Colors.grey,
+            color: Color(0xFFDBDBDB),
             height: 1.0,
           ),
         ),
@@ -28,26 +28,152 @@ class _ProfileState extends State<Profile> {
         titleSpacing: 12,
       ),
       body: Container(
-        child: Row(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              child: Row(
-                children: [
-                  CircleAvatar(
-                    backgroundImage: AssetImage("assets/pp-placeholder.png"),
-                    radius: 30,
-                  ),
-                  SizedBox(width: 24),
-                  Column(
-                    children: [
-
-                    ],
+            InkWell(
+              onTap: () {},
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      width: 1,
+                      color: Color(0xFFDBDBDB),
+                    )
                   )
-                ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CircleAvatar(
+                            backgroundImage: AssetImage("assets/pp-placeholder.png"),
+                            radius: 30,
+                          ),
+                          SizedBox(width: 24),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Jane Doe',
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF31323d),
+                                ),),
+                              SizedBox(height: 4),
+                              Text('Edit profile',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF31323d),
+                                ),)
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(right: 12),
+                      child: Icon(Icons.navigate_next, color: Color(0xFFB1B1B1))
+                    )
+                  ],
+                ),
               ),
+            ),
+            InkWell(
+                onTap: () {},
+                child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(
+                            width: 1,
+                            color: Color(0xFFDBDBDB),
+                          )
+                      )
+                  ),
+                  padding: EdgeInsets.all(12),
+                  child: Text("Change Password",
+                    style: TextStyle(
+                      color: Color(0xFF31323d),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 12,
+                    ),),
+                )
+            ),
+            InkWell(
+              onTap: () {},
+              child: Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    border: Border(
+                        bottom: BorderSide(
+                          width: 1,
+                          color: Color(0xFFDBDBDB),
+                        )
+                    )
+                ),
+                padding: EdgeInsets.all(12),
+                child: Text("Orders",
+                style: TextStyle(
+                  color: Color(0xFF31323d),
+                  fontWeight: FontWeight.w600,
+                  fontSize: 12,
+                ),),
+              )
+            ),
+            InkWell(
+                onTap: () {},
+                child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(
+                            width: 1,
+                            color: Color(0xFFDBDBDB),
+                          )
+                      )
+                  ),
+                  padding: EdgeInsets.all(12),
+                  child: Text("Wishlist",
+                    style: TextStyle(
+                      color: Color(0xFF31323d),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 12,
+                    ),),
+                )
+            ),
+            InkWell(
+                onTap: () {},
+                child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(
+                            width: 1,
+                            color: Color(0xFFDBDBDB),
+                          )
+                      )
+                  ),
+                  padding: EdgeInsets.all(12),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Log Out",
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 12,
+                      ),),
+                      Icon(Icons.logout, color: Colors.red, size: 16)
+                    ]
+                  ),
+                )
             )
-          ],
+          ]
         ),
       )
     );
