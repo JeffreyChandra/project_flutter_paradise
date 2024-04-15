@@ -1,3 +1,6 @@
+import 'package:e_commerce/edit_password.dart';
+import 'package:e_commerce/edit_profile.dart';
+import 'package:e_commerce/home.dart';
 import 'package:flutter/material.dart';
 
 class Profile extends StatefulWidget {
@@ -42,49 +45,56 @@ class _ProfileState extends State<Profile> {
                     )
                   )
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CircleAvatar(
-                            backgroundImage: AssetImage("assets/pp-placeholder.png"),
-                            radius: 30,
-                          ),
-                          SizedBox(width: 24),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('Jane Doe',
-                                style: TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF31323d),
-                                ),),
-                              SizedBox(height: 4),
-                              Text('Edit profile',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Color(0xFF31323d),
-                                ),)
-                            ],
-                          )
-                        ],
+                child: InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditProfile()));
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CircleAvatar(
+                              backgroundImage: AssetImage("assets/images/pp-placeholder.webp"),
+                              radius: 30,
+                            ),
+                            SizedBox(width: 24),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Jane Doe',
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xFF31323d),
+                                  ),),
+                                SizedBox(height: 4),
+                                Text('Edit profile',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFF31323d),
+                                  ),)
+                              ],
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(right: 12),
-                      child: Icon(Icons.navigate_next, color: Color(0xFFB1B1B1))
-                    )
-                  ],
+                      Container(
+                        margin: EdgeInsets.only(right: 12),
+                        child: Icon(Icons.navigate_next, color: Color(0xFFB1B1B1))
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
             InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditPassword()));
+                },
                 child: Container(
                   width: double.infinity,
                   decoration: BoxDecoration(

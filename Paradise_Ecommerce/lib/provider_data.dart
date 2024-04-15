@@ -35,11 +35,11 @@ class ProfileProvider extends ChangeNotifier{
     notifyListeners();
   }
 
-  void changePassword(int id, String old_pass, String new_pass){
+  void changePassword(int id, String oldPass, String newPass){
     for (var a in account) {
       if (a.id == id) {
-        if (a.password == old_pass) {
-          a.password = new_pass;
+        if (a.password == oldPass) {
+          a.password = newPass;
           break;
         }
       }
