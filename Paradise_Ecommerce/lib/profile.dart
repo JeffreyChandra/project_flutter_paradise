@@ -1,7 +1,9 @@
 import 'package:e_commerce/edit_password.dart';
 import 'package:e_commerce/edit_profile.dart';
 import 'package:e_commerce/home.dart';
+import 'package:e_commerce/provider_data.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -13,6 +15,9 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
+    final profileProvider = Provider.of<ProfileProvider>(context);
+    String username = profileProvider.account.isNotEmpty ? profileProvider.account[0].name : '';
+
     return Scaffold(
       appBar: AppBar(
         bottom: PreferredSize(
@@ -65,18 +70,21 @@ class _ProfileState extends State<Profile> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('Jane Doe',
+                                Text(
+                                  username,
                                   style: TextStyle(
                                     fontSize: 24,
                                     fontWeight: FontWeight.bold,
                                     color: Color(0xFF31323d),
-                                  ),),
+                                  ),
+                                ),
                                 SizedBox(height: 4),
                                 Text('Edit profile',
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Color(0xFF31323d),
-                                  ),)
+                                  ),
+                                )
                               ],
                             )
                           ],
@@ -111,7 +119,8 @@ class _ProfileState extends State<Profile> {
                       color: Color(0xFF31323d),
                       fontWeight: FontWeight.w600,
                       fontSize: 12,
-                    ),),
+                    ),
+                  ),
                 )
             ),
             InkWell(
@@ -132,7 +141,8 @@ class _ProfileState extends State<Profile> {
                   color: Color(0xFF31323d),
                   fontWeight: FontWeight.w600,
                   fontSize: 12,
-                ),),
+                ),
+                ),
               )
             ),
             InkWell(
@@ -153,7 +163,8 @@ class _ProfileState extends State<Profile> {
                       color: Color(0xFF31323d),
                       fontWeight: FontWeight.w600,
                       fontSize: 12,
-                    ),),
+                    ),
+                  ),
                 )
             ),
             InkWell(
@@ -177,7 +188,8 @@ class _ProfileState extends State<Profile> {
                         color: Colors.red,
                         fontWeight: FontWeight.w600,
                         fontSize: 12,
-                      ),),
+                      ),
+                      ),
                       Icon(Icons.logout, color: Colors.red, size: 16)
                     ]
                   ),

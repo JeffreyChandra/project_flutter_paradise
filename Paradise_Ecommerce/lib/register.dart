@@ -1,6 +1,9 @@
 import 'package:e_commerce/home.dart';
 import 'package:e_commerce/loginPage.dart';
+import 'package:e_commerce/provider_data.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -10,6 +13,9 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  TextEditingController _username = TextEditingController();
+  TextEditingController _email = TextEditingController();
+  TextEditingController _password = TextEditingController();
   bool isObscure = true;
   @override
   Widget build(BuildContext context) {
@@ -23,28 +29,28 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       body: Stack(
         children: [
-                    Positioned(
-            top: -70,
-            left: -25,
-            child: Container(
-              width: 170,
-              height: 170,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100),
-                color: PrimaryColor,
-              ),
-          )),
           Positioned(
-            top: 50,
-            right: -30,
-            child: Container(
-              width: 120,
-              height: 120,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100),
-                color: PrimaryColor,
-              ),
-          )),
+              top: -70,
+              left: -25,
+              child: Container(
+                width: 170,
+                height: 170,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(100),
+                  color: PrimaryColor,
+                ),
+              )),
+          Positioned(
+              top: 50,
+              right: -40,
+              child: Container(
+                width: 120,
+                height: 120,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(100),
+                  color: PrimaryColor,
+                ),
+              )),
           Align(
             alignment: Alignment.center,
             child: SingleChildScrollView(
@@ -64,7 +70,10 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                     Image.asset(
-                        "assets/images/burung.jpeg",scale: 1.3,fit: BoxFit.contain,),
+                      "../assets/images/burung.jpeg",
+                      scale: 1.3,
+                      fit: BoxFit.contain,
+                    ),
 
                     //Username
                     Container(
@@ -77,6 +86,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           borderRadius: BorderRadius.circular(30),
                           color: PrimaryColor2),
                       child: TextField(
+                        controller: _username,
                         cursorColor: PrimaryColor,
                         decoration: InputDecoration(
                             focusColor: Colors.blue,
@@ -100,6 +110,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           borderRadius: BorderRadius.circular(30),
                           color: PrimaryColor2),
                       child: TextField(
+                        controller: _email,
                         cursorColor: PrimaryColor,
                         decoration: InputDecoration(
                             focusColor: Colors.blue,
@@ -123,6 +134,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           borderRadius: BorderRadius.circular(30),
                           color: PrimaryColor2),
                       child: TextField(
+                        controller: _password,
                         cursorColor: PrimaryColor,
                         decoration: InputDecoration(
                             icon: Icon(
@@ -147,16 +159,36 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
 
-                    //LOGIN BUTTON
+                    //REGISTER BUTTON
                     Container(
+                      
                       margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => HomePage()));
+                      child: ElevatedButton(
+                        onPressed: () {
+                          final profileProvider = Provider.of<ProfileProvider>(context, listen: false);
+                          final newAccount = Account(
+                            name: _username.text,
+                            email: _email.text,
+                            password: _password.text,
+                          );
+                          profileProvider.addAccount(newAccount);
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage()));
                         },
-                        borderRadius: BorderRadius.circular(30),
+
+                          style: ButtonStyle(
+                            padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                              EdgeInsets.symmetric(vertical: 5),
+                            ),
+                            backgroundColor: MaterialStateProperty.all<Color>(PrimaryColor),
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                            ),
+                            
+                          ),
                         child: Container(
+                          
                           width: size.width * 0.8,
                           height: size.width * 0.14,
                           decoration: BoxDecoration(

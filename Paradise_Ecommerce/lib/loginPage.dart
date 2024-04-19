@@ -1,6 +1,13 @@
+import 'dart:js';
+
 import 'package:e_commerce/home.dart';
+import 'package:e_commerce/profile.dart';
+import 'package:e_commerce/provider_data.dart';
 import 'package:e_commerce/register.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -10,15 +17,17 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+
   bool isObscure = true;
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final profileProvider = Provider.of<ProfileProvider>(context).account;
     Size size = MediaQuery.of(context).size;
     const PrimaryColor = Color.fromARGB(255, 129, 141, 248);
     const PrimaryColor2 = Color.fromARGB(50, 129, 141, 248);
 
-
-    // double viewInset = MediaQuery.of(context).viewInsets.bottom;
     double defaultLoginSize = size.height - (size.height * 0.2);
 
     return Scaffold(
@@ -34,7 +43,8 @@ class _LoginPageState extends State<LoginPage> {
                 borderRadius: BorderRadius.circular(100),
                 color: PrimaryColor,
               ),
-          )),
+            ),
+          ),
           Positioned(
             top: 50,
             right: -30,
@@ -45,7 +55,8 @@ class _LoginPageState extends State<LoginPage> {
                 borderRadius: BorderRadius.circular(100),
                 color: PrimaryColor,
               ),
-          )),
+            ),
+          ),
           Align(
             alignment: Alignment.center,
             child: SingleChildScrollView(
@@ -62,36 +73,38 @@ class _LoginPageState extends State<LoginPage> {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 24,
-                        color: Colors.black
+                        color: Colors.black,
                       ),
                     ),
-                    // SizedBox(
-                    //   height: 20,
-                    // ),
                     Image.asset(
-                        "../assets/images/burung.jpeg",scale: 1.3,fit: BoxFit.contain,),
+                      "../assets/images/burung.jpeg",
+                      scale: 1.3,
+                      fit: BoxFit.contain,
+                    ),
 
                     //Username
                     Container(
                       alignment: Alignment.center,
                       margin: EdgeInsets.symmetric(vertical: 10),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                       width: size.width * 0.8,
                       height: 55,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color: PrimaryColor2),
+                        borderRadius: BorderRadius.circular(30),
+                        color: PrimaryColor2,
+                      ),
                       child: TextField(
+                        controller: usernameController,
                         cursorColor: PrimaryColor,
                         decoration: InputDecoration(
-                            focusColor: Colors.blue,
-                            icon: Icon(
-                              Icons.account_box,
-                              color: PrimaryColor,
-                            ),
-                            hintText: "Username",
-                            border: InputBorder.none),
+                          focusColor: Colors.blue,
+                          icon: Icon(
+                            Icons.account_box,
+                            color: PrimaryColor,
+                          ),
+                          hintText: "Username",
+                          border: InputBorder.none,
+                        ),
                       ),
                     ),
 
@@ -99,35 +112,34 @@ class _LoginPageState extends State<LoginPage> {
                     Container(
                       alignment: Alignment.center,
                       margin: EdgeInsets.symmetric(vertical: 10),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                       width: size.width * 0.8,
                       height: 55,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color: PrimaryColor2),
+                        borderRadius: BorderRadius.circular(30),
+                        color: PrimaryColor2,
+                      ),
                       child: TextField(
-                        
+                        controller: passwordController,
                         cursorColor: PrimaryColor,
                         decoration: InputDecoration(
+                          icon: Icon(
+                            Icons.lock,
+                            color: PrimaryColor,
+                          ),
+                          suffixIcon: IconButton(
                             icon: Icon(
-                              Icons.lock,
-                              color: PrimaryColor,
+                              isObscure ? Icons.visibility : Icons.visibility_off,
                             ),
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                isObscure
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  isObscure = !isObscure;
-                                });
-                              },
-                            ),
-                            hintText: "Password",
-                            border: InputBorder.none),
+                            onPressed: () {
+                              setState(() {
+                                isObscure = !isObscure;
+                              });
+                            },
+                          ),
+                          hintText: "Password",
+                          border: InputBorder.none,
+                        ),
                         obscureText: isObscure,
                       ),
                     ),
@@ -135,18 +147,70 @@ class _LoginPageState extends State<LoginPage> {
                     //LOGIN BUTTON
                     Container(
                       margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage()));
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                            EdgeInsets.symmetric(vertical: 5),
+                          ),
+                          backgroundColor: MaterialStateProperty.all<Color>(PrimaryColor),
+                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                          ),
+                        ),
+                        onPressed: () {
+                          // Periksa login
+                          String username = usernameController.text;
+                          String password = passwordController.text;
+
+                          if (profileProvider[0] == (username)) {
+                            if (profileProvider[2] == password) {
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage()));
+                            } else {
+                              // Jika password tidak cocok
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text("Login Failed"),
+                                    content: Text("Incorrect password. Please try again."),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text("OK"),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            }
+                          } else {
+                            // Jika username tidak terdaftar
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text("Login Failed"),
+                                  content: Text("Username not registered. Please sign up."),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text("OK"),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }
                         },
-                        borderRadius: BorderRadius.circular(30),
                         child: Container(
                           width: size.width * 0.8,
                           height: size.width * 0.14,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            color: PrimaryColor,
-                          ),
                           padding: EdgeInsets.symmetric(vertical: 14),
                           alignment: Alignment.center,
                           child: Text(
@@ -171,8 +235,9 @@ class _LoginPageState extends State<LoginPage> {
               height: size.height * 0.1,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(100),
-                    topRight: Radius.circular(100)),
+                  topLeft: Radius.circular(100),
+                  topRight: Radius.circular(100),
+                ),
                 color: PrimaryColor,
               ),
               alignment: Alignment.center,
@@ -180,7 +245,7 @@ class _LoginPageState extends State<LoginPage> {
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(builder: (context) => RegisterPage()));
                 },
-                child: Text("Don't have an account? Sing up"),
+                child: Text("Don't have an account? Sign up"),
               ),
             ),
           )
