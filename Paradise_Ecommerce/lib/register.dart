@@ -70,7 +70,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                     Image.asset(
-                      "../assets/images/burung.jpeg",
+                      "assets/images/burung.jpeg",
                       scale: 1.3,
                       fit: BoxFit.contain,
                     ),
@@ -229,7 +229,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) => LoginPage()));
                 },
-                child: Text("Already have an account?"),
+                child: Text("Already have an account? Sign in"),
               ),
             ),
           )

@@ -1,6 +1,7 @@
 import 'package:e_commerce/edit_password.dart';
 import 'package:e_commerce/edit_profile.dart';
 import 'package:e_commerce/home.dart';
+import 'package:e_commerce/product_details.dart';
 import 'package:e_commerce/provider_data.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -159,6 +160,30 @@ class _ProfileState extends State<Profile> {
                   ),
                   padding: EdgeInsets.all(12),
                   child: Text("Wishlist",
+                    style: TextStyle(
+                      color: Color(0xFF31323d),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 12,
+                    ),
+                  ),
+                )
+            ),
+            InkWell(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProductDetails()));
+                },
+                child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(
+                            width: 1,
+                            color: Color(0xFFDBDBDB),
+                          )
+                      )
+                  ),
+                  padding: EdgeInsets.all(12),
+                  child: Text("Product details (temp)",
                     style: TextStyle(
                       color: Color(0xFF31323d),
                       fontWeight: FontWeight.w600,

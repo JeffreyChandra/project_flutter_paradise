@@ -1,4 +1,4 @@
-import 'dart:js';
+// import 'dart:js';
 
 import 'package:e_commerce/home.dart';
 import 'package:e_commerce/profile.dart';
@@ -77,7 +77,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     Image.asset(
-                      "../assets/images/burung.jpeg",
+                      "assets/images/burung.jpeg",
                       scale: 1.3,
                       fit: BoxFit.contain,
                     ),

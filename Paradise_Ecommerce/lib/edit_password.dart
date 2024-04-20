@@ -13,6 +13,9 @@ class EditPassword extends StatefulWidget {
 class _EditPasswordState extends State<EditPassword> {
   @override
   Widget build(BuildContext context) {
+    final profileProvider = Provider.of<ProfileProvider>(context);
+    TextEditingController old_password = TextEditingController(text: "${profileProvider.account.isNotEmpty ? profileProvider.account[0].password : ''}");
+
     return Scaffold(
         appBar: AppBar(
           bottom: PreferredSize(
@@ -41,6 +44,7 @@ class _EditPasswordState extends State<EditPassword> {
                 Column(
                   children: [
                     TextField(
+                      controller: old_password,
                       style: TextStyle(
                         color: Colors.black,
                       ),
@@ -56,6 +60,7 @@ class _EditPasswordState extends State<EditPassword> {
                         hintStyle: TextStyle(color: Colors.grey),
                         floatingLabelStyle: TextStyle(color: Colors.black),
                       ),
+                      obscureText: true,
                     ),
                     SizedBox(height: 24),
                     TextField(
@@ -74,6 +79,7 @@ class _EditPasswordState extends State<EditPassword> {
                         hintStyle: TextStyle(color: Colors.grey),
                         floatingLabelStyle: TextStyle(color: Colors.black),
                       ),
+                      obscureText: true,
                     ),
                     SizedBox(height: 24),
                     TextField(
@@ -92,6 +98,7 @@ class _EditPasswordState extends State<EditPassword> {
                         hintStyle: TextStyle(color: Colors.grey),
                         floatingLabelStyle: TextStyle(color: Colors.black),
                       ),
+                      obscureText: true,
                     ),
                   ],
                 ),

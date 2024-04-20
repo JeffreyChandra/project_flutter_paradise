@@ -11,10 +11,11 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
-  TextEditingController name = TextEditingController(text: "Jane Doe"); // Provider.of<ProfileProvider>(context).account.name
-
   @override
   Widget build(BuildContext context) {
+    final profileProvider = Provider.of<ProfileProvider>(context);
+    TextEditingController name = TextEditingController(text: "${profileProvider.account.isNotEmpty ? profileProvider.account[0].name : ''}");
+
     return Scaffold(
       appBar: AppBar(
         bottom: PreferredSize(
