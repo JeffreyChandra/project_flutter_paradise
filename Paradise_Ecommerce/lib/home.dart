@@ -57,8 +57,11 @@ class HomePage extends StatelessWidget {
             children: [
               Column(
                 children: [
+                  SizedBox(
+                    height: 10,
+                  ),
                   Container(
-                    height: MediaQuery.of(context).size.height * 0.17,
+                    height: 100,
                     child: ListView(
                       physics: BouncingScrollPhysics(),
                       children: [
@@ -82,6 +85,9 @@ class HomePage extends StatelessWidget {
                         ),
                       ],
                     ),
+                  ),
+                  SizedBox(
+                    height: 10,
                   ),
                   Container(
                     height: 80,
