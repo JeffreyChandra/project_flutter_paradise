@@ -1,7 +1,6 @@
 // import 'dart:js';
 
 import 'package:e_commerce/home.dart';
-import 'package:e_commerce/profile.dart';
 import 'package:e_commerce/provider_data.dart';
 import 'package:e_commerce/register.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,7 +22,9 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    final profileProvider = Provider.of<ProfileProvider>(context).account;
+    final profileProvider = Provider.of<ProfileProvider>(context);
+    String username = profileProvider.account.isNotEmpty ? profileProvider.account[0].name : '';
+    String password = profileProvider.account.isNotEmpty ? profileProvider.account[0].password : '';
     Size size = MediaQuery.of(context).size;
     const PrimaryColor = Color.fromARGB(255, 129, 141, 248);
     const PrimaryColor2 = Color.fromARGB(50, 129, 141, 248);
@@ -160,41 +161,15 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         onPressed: () {
-                          // Periksa login
-                          String username = usernameController.text;
-                          String password = passwordController.text;
-
-                          if (profileProvider[0] == (username)) {
-                            if (profileProvider[2] == password) {
-                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage()));
-                            } else {
-                              // Jika password tidak cocok
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: Text("Login Failed"),
-                                    content: Text("Incorrect password. Please try again."),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: Text("OK"),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            }
+                            if (usernameController.text == username && passwordController.text == password) {
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage()));
                           } else {
-                            // Jika username tidak terdaftar
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
                                   title: Text("Login Failed"),
-                                  content: Text("Username not registered. Please sign up."),
+                                  content: Text("Incorrect username or password. Please try again."),
                                   actions: <Widget>[
                                     TextButton(
                                       onPressed: () {

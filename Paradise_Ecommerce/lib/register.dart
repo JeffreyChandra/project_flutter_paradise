@@ -161,34 +161,80 @@ class _RegisterPageState extends State<RegisterPage> {
 
                     //REGISTER BUTTON
                     Container(
-                      
                       margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
                       child: ElevatedButton(
                         onPressed: () {
-                          final profileProvider = Provider.of<ProfileProvider>(context, listen: false);
-                          final newAccount = Account(
-                            name: _username.text,
-                            email: _email.text,
-                            password: _password.text,
-                          );
-                          profileProvider.addAccount(newAccount);
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage()));
-                        },
+                          if (_username.text.isEmpty ||
+                              _email.text.isEmpty ||
+                              _password.text.isEmpty) {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text("Register Failed"),
+                                  content: Text(
+                                      "Username, email, or password can't be empty. Please try again."),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text("OK"),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          } else {
+                            final profileProvider =
+                                Provider.of<ProfileProvider>(context,
+                                    listen: false);
+                            final newAccount = Account(
+                              name: _username.text,
+                              email: _email.text,
+                              password: _password.text,
+                            );
+                            profileProvider.addAccount(newAccount);
 
-                          style: ButtonStyle(
-                            padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                              EdgeInsets.symmetric(vertical: 5),
-                            ),
-                            backgroundColor: MaterialStateProperty.all<Color>(PrimaryColor),
-                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                            ),
-                            
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text("Registration Successful"),
+                                  content: Text(
+                                      "Your account has been successfully registered."),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    LoginPage()));
+                                      },
+                                      child: Text("OK"),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }
+                        },
+                        style: ButtonStyle(
+                          padding:
+                              MaterialStateProperty.all<EdgeInsetsGeometry>(
+                            EdgeInsets.symmetric(vertical: 5),
                           ),
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(PrimaryColor),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                          ),
+                        ),
                         child: Container(
-                          
                           width: size.width * 0.8,
                           height: size.width * 0.14,
                           decoration: BoxDecoration(
