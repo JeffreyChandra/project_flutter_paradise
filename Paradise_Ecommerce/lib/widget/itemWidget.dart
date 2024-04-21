@@ -1,8 +1,63 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+class Product {
+  final String imagePath;
+  final String title;
+  final String price;
+
+  Product({
+    required this.imagePath,
+    required this.title,
+    required this.price,
+  });
+}
+
 class ItemWidget extends StatelessWidget {
-  const ItemWidget({super.key});
+  ItemWidget({Key? key}) : super(key: key);
+
+  final List<Product> products = [
+    Product(
+      imagePath: 'assets/produk/1.jpg',
+      title: 'Poke Ball',
+      price: 'Rp. 72.000',
+    ),
+    Product(
+      imagePath: 'assets/produk/2.jpg',
+      title: 'Lenovo Thinkpad',
+      price: 'Rp. 3.700.000',
+    ),
+    Product(
+      imagePath: 'assets/produk/3.jpg',
+      title: 'Piakchu Figure',
+      price: 'Rp. 30.000',
+    ),
+    Product(
+      imagePath: 'assets/produk/4.jpg',
+      title: 'Vacuum Cleaner Zetzt',
+      price: 'Rp. 690.000',
+    ),
+    Product(
+      imagePath: 'assets/produk/5.jpg',
+      title: 'Sling Alpaka',
+      price: 'Rp. 1.349.000',
+    ),
+    Product(
+      imagePath: 'assets/produk/6.jpg',
+      title: 'Remote AC Daikon',
+      price: 'Rp. 60.000',
+    ),
+    Product(
+      imagePath: 'assets/produk/7.jpg',
+      title: 'Robot Vacuum Cleaner',
+      price: 'Rp. 3.990.000',
+    ),
+    Product(
+      imagePath: 'assets/produk/8.jpg',
+      title: 'Tissue See You',
+      price: 'Rp. 6.990',
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +69,7 @@ class ItemWidget extends StatelessWidget {
           crossAxisCount: 2,
           shrinkWrap: true,
           children: [
-            for (int i = 1; i < 9; i++)
+            for (int i = 0; i < 8; i++)
               Container(
                 padding: EdgeInsets.only(left: 15, right: 15, top: 10),
                 margin: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
@@ -53,7 +108,7 @@ class ItemWidget extends StatelessWidget {
                       child: Container(
                         margin: EdgeInsets.all(10),
                         child: Image.asset(
-                          'assets/images/burung.jpeg',
+                          'assets/produk/${i + 1}.jpg',
                           height: 120,
                           width: 120,
                         ),
@@ -63,7 +118,7 @@ class ItemWidget extends StatelessWidget {
                       padding: EdgeInsets.only(bottom: 8),
                       alignment: Alignment.center,
                       child: Text(
-                        "Product Title",
+                        products[i].title,
                         style: TextStyle(
                             fontSize: 18,
                             color: Color(0xFF312E81),
@@ -81,7 +136,7 @@ class ItemWidget extends StatelessWidget {
                     Container(
                       padding: EdgeInsets.symmetric(vertical: 10),
                       child: Text(
-                        "Rp. 500.000",
+                        products[i].price,
                         style: TextStyle(
                             fontSize: 15,
                             color: Color(0xFF312E81),
