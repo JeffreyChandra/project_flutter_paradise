@@ -16,15 +16,18 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   bool isObscure = true;
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final profileProvider = Provider.of<ProfileProvider>(context);
-    String username = profileProvider.account.isNotEmpty ? profileProvider.account[0].name : '';
-    String password = profileProvider.account.isNotEmpty ? profileProvider.account[0].password : '';
+    // String username = profileProvider.account.isNotEmpty
+    //     ? profileProvider.account[0].name
+    //     : '';
+    // String password = profileProvider.account.isNotEmpty
+    //     ? profileProvider.account[0].password
+    //     : '';
     Size size = MediaQuery.of(context).size;
     const PrimaryColor = Color.fromARGB(255, 129, 141, 248);
     const PrimaryColor2 = Color.fromARGB(50, 129, 141, 248);
@@ -87,7 +90,8 @@ class _LoginPageState extends State<LoginPage> {
                     Container(
                       alignment: Alignment.center,
                       margin: EdgeInsets.symmetric(vertical: 10),
-                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                       width: size.width * 0.8,
                       height: 55,
                       decoration: BoxDecoration(
@@ -113,7 +117,8 @@ class _LoginPageState extends State<LoginPage> {
                     Container(
                       alignment: Alignment.center,
                       margin: EdgeInsets.symmetric(vertical: 10),
-                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                       width: size.width * 0.8,
                       height: 55,
                       decoration: BoxDecoration(
@@ -130,7 +135,9 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           suffixIcon: IconButton(
                             icon: Icon(
-                              isObscure ? Icons.visibility : Icons.visibility_off,
+                              isObscure
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
                             ),
                             onPressed: () {
                               setState(() {
@@ -150,26 +157,32 @@ class _LoginPageState extends State<LoginPage> {
                       margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
                       child: ElevatedButton(
                         style: ButtonStyle(
-                          padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                          padding:
+                              MaterialStateProperty.all<EdgeInsetsGeometry>(
                             EdgeInsets.symmetric(vertical: 5),
                           ),
-                          backgroundColor: MaterialStateProperty.all<Color>(PrimaryColor),
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(PrimaryColor),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
                             ),
                           ),
                         ),
                         onPressed: () {
-                            if (usernameController.text == username && passwordController.text == password) {
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage()));
-                          } else {
+                          String enteredUsername = usernameController.text;
+                          String enteredPassword = passwordController.text;
+
+                          if (enteredUsername.isEmpty ||
+                              enteredPassword.isEmpty) {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
                                   title: Text("Login Failed"),
-                                  content: Text("Incorrect username or password. Please try again."),
+                                  content: Text(
+                                      "Username or password cannot be empty. Please try again."),
                                   actions: <Widget>[
                                     TextButton(
                                       onPressed: () {
@@ -181,6 +194,34 @@ class _LoginPageState extends State<LoginPage> {
                                 );
                               },
                             );
+                          } else {
+                            bool isValidUser = profileProvider.account.any(
+                                (account) =>
+                                    account.name == enteredUsername &&
+                                    account.password == enteredPassword);
+                            if (isValidUser) {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => HomePage()));
+                            } else {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text("Login Failed"),
+                                    content: Text(
+                                        "Incorrect username or password. Please try again."),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text("OK"),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            }
                           }
                         },
                         child: Container(
@@ -218,7 +259,8 @@ class _LoginPageState extends State<LoginPage> {
               alignment: Alignment.center,
               child: InkWell(
                 onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => RegisterPage()));
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => RegisterPage()));
                 },
                 child: Text("Don't have an account? Sign up"),
               ),
