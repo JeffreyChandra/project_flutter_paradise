@@ -40,7 +40,8 @@ class HomePage extends StatelessWidget {
               Icon(Icons.shopping_cart),
               InkWell(
                 onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => Profile()));
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) => Profile()));
                 },
                 child: Icon(Icons.person),
               )
@@ -49,96 +50,100 @@ class HomePage extends StatelessWidget {
         ),
       ),
       body: SafeArea(
-        child: Stack(
-          children: [
-            Column(
-              children: [
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.17,
-                  child: ListView(
-                    physics: BouncingScrollPhysics(),
-                    children: [
-
-                      CarouselSlider(
-                        options: CarouselOptions(height: 100.0),
-                        items: [
-                          "../assets/images/banner-1.webp",
-                          "../assets/images/banner-2.webp"
-                        ].map((i) {
-                          return Builder(
-                            builder: (BuildContext context) {
-                              return Container(
-                                width: MediaQuery.of(context).size.width,
-                                child: Image.asset(i,),
-                              );
-                            },
-                          );
-                        }).toList(),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  height: 80,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      MenuButton(
-                        label: "Official store",
-                        icon: Icon(Icons.abc),
-                      ),
-                      MenuButton(
-                        label: "Elektronik",
-                        icon: Icon(Icons.ac_unit),
-                      ),
-                      MenuButton(
-                        label: "Pakaian",
-                        icon: Icon(Icons.access_alarm_rounded),
-                      ),
-                      MenuButton(
-                        label: "Official store",
-                        icon: Icon(Icons.abc),
-                      ),
-                      MenuButton(
-                        label: "Elektronik",
-                        icon: Icon(Icons.ac_unit),
-                      ),
-                      MenuButton(
-                        label: "Pakaian",
-                        icon: Icon(Icons.access_alarm_rounded),
-                      ),
-                      MenuButton(
-                        label: "Official store",
-                        icon: Icon(Icons.abc),
-                      ),
-                      MenuButton(
-                        label: "Elektronik",
-                        icon: Icon(Icons.ac_unit),
-                      ),
-                      MenuButton(
-                        label: "Pakaian",
-                        icon: Icon(Icons.access_alarm_rounded),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.only(top: 10, left: 10),
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Best Selling",
-                    style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Column(
+                children: [
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.17,
+                    child: ListView(
+                      physics: BouncingScrollPhysics(),
+                      children: [
+                        CarouselSlider(
+                          options: CarouselOptions(height: 100.0),
+                          items: [
+                            "assets/images/banner-1.webp",
+                            "assets/images/banner-2.webp"
+                          ].map((i) {
+                            return Builder(
+                              builder: (BuildContext context) {
+                                return Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  child: Image.asset(
+                                    i,
+                                  ),
+                                );
+                              },
+                            );
+                          }).toList(),
+                        ),
+                      ],
                     ),
                   ),
-                ),
-                Container(
-                  child: ItemWidget(),
-                ),
-              ],
-            ),
-          ],
+                  Container(
+                    height: 80,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        MenuButton(
+                          label: "Official store",
+                          icon: Icon(Icons.abc),
+                        ),
+                        MenuButton(
+                          label: "Elektronik",
+                          icon: Icon(Icons.ac_unit),
+                        ),
+                        MenuButton(
+                          label: "Pakaian",
+                          icon: Icon(Icons.access_alarm_rounded),
+                        ),
+                        MenuButton(
+                          label: "Official store",
+                          icon: Icon(Icons.abc),
+                        ),
+                        MenuButton(
+                          label: "Elektronik",
+                          icon: Icon(Icons.ac_unit),
+                        ),
+                        MenuButton(
+                          label: "Pakaian",
+                          icon: Icon(Icons.access_alarm_rounded),
+                        ),
+                        MenuButton(
+                          label: "Official store",
+                          icon: Icon(Icons.abc),
+                        ),
+                        MenuButton(
+                          label: "Elektronik",
+                          icon: Icon(Icons.ac_unit),
+                        ),
+                        MenuButton(
+                          label: "Pakaian",
+                          icon: Icon(Icons.access_alarm_rounded),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(top: 10, left: 10),
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Best Selling",
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    child: ItemWidget(),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
