@@ -12,32 +12,38 @@ class NavBar extends StatefulWidget {
 }
 
 class _NavBarState extends State<NavBar> {
-    var PrimaryColor = Color.fromARGB(255, 129, 141, 248);
-    int current = 0;
+  var PrimaryColor = Color.fromARGB(255, 129, 141, 248);
+  int current = 0;
 
-  Widget bodyPage(int index){
-    if(index == 0){
+  Widget bodyPage(int index) {
+    if (index == 0) {
       return HomePage();
+<<<<<<< HEAD
     }
     else if(index == 1){
       return CategoryList();
     }
     else{
+=======
+    } else if (index == 1) {
+      return CategoryList();
+    } else {
+>>>>>>> 104c1049186c631b9f225a379ced69030a30ee68
       return Profile();
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: bodyPage(current),
-      
       bottomNavigationBar: BottomNavigationBar(
         items: [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home'
-          ),
+              icon: Icon(Icons.category_rounded), label: 'Category'),
           BottomNavigationBarItem(
+<<<<<<< HEAD
             icon: Icon(Icons.category_rounded),
             label: 'Category'
           ),
@@ -45,12 +51,15 @@ class _NavBarState extends State<NavBar> {
             icon: Icon(Icons.account_circle),
             label: 'Profile'
           ),
+=======
+              icon: Icon(Icons.account_circle), label: 'Profile'),
+>>>>>>> 104c1049186c631b9f225a379ced69030a30ee68
         ],
         backgroundColor: PrimaryColor,
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.white70,
         currentIndex: current,
-        onTap: (int index){
+        onTap: (int index) {
           setState(() {
             current = index;
           });

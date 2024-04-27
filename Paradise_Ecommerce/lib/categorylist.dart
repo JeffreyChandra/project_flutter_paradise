@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+=======
+// import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+>>>>>>> 104c1049186c631b9f225a379ced69030a30ee68
 
 class CategoryList extends StatefulWidget {
   const CategoryList({Key? key}) : super(key: key);
@@ -22,6 +26,7 @@ class Category {
 class _CategoryListState extends State<CategoryList> {
   var PrimaryColor = Color.fromARGB(255, 129, 141, 248);
   List<Category> categories = [
+<<<<<<< HEAD
     Category(name: 'Handphone', picFile: '../assets/images/category/handphone.png'),
     Category(name: 'Pria', picFile: '../assets/images/category/pakaianpria.png'),
     Category(name: 'Wanita', picFile: '../assets/images/category/pakaianwanita.jpg'),
@@ -31,6 +36,23 @@ class _CategoryListState extends State<CategoryList> {
     Category(name: 'Game', picFile: '../assets/images/category/game.jpg'),
     Category(name: 'Sepatu', picFile: '../assets/images/category/motor.jpg'),
     Category(name: 'Aksesoris', picFile: '../assets/images/category/pakaianpria.png'),
+=======
+    Category(
+        name: 'Handphone', picFile: '../assets/images/category/handphone.png'),
+    Category(
+        name: 'Pria', picFile: '../assets/images/category/pakaianpria.png'),
+    Category(
+        name: 'Wanita', picFile: '../assets/images/category/pakaianwanita.jpg'),
+    Category(name: 'Laptop', picFile: '../assets/images/category/laptop.jpg'),
+    Category(
+        name: 'Komputer', picFile: '../assets/images/category/komputer.jpg'),
+    Category(name: 'Anak-anak', picFile: '../assets/images/category/kids.jpg'),
+    Category(name: 'Game', picFile: '../assets/images/category/game.jpg'),
+    Category(name: 'Sepatu', picFile: '../assets/images/category/motor.jpg'),
+    Category(
+        name: 'Aksesoris',
+        picFile: '../assets/images/category/pakaianpria.png'),
+>>>>>>> 104c1049186c631b9f225a379ced69030a30ee68
   ];
 
   @override
@@ -108,7 +130,14 @@ class _CategoryListState extends State<CategoryList> {
     // );
     return Scaffold(
       appBar: AppBar(
+<<<<<<< HEAD
         title: Text("Category",style: TextStyle(fontWeight: FontWeight.bold),),
+=======
+        title: Text(
+          "Category",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+>>>>>>> 104c1049186c631b9f225a379ced69030a30ee68
       ),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
@@ -125,8 +154,12 @@ class _CategoryListState extends State<CategoryList> {
                 children: List.generate(
                   categories.length,
                   (index) => InkWell(
+<<<<<<< HEAD
                     onTap: () {
                     },
+=======
+                    onTap: () {},
+>>>>>>> 104c1049186c631b9f225a379ced69030a30ee68
                     child: Card(
                       elevation: 4,
                       shape: RoundedRectangleBorder(
@@ -167,4 +200,8 @@ class _CategoryListState extends State<CategoryList> {
       ),
     );
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 104c1049186c631b9f225a379ced69030a30ee68
