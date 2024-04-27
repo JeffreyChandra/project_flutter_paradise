@@ -1,3 +1,4 @@
+import 'package:e_commerce/keranjang.dart';
 import 'package:e_commerce/profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -5,13 +6,20 @@ import 'package:flutter/material.dart';
 import 'package:e_commerce/widget/menuButton.dart';
 import 'package:e_commerce/widget/itemWidget.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  var PrimaryColor = Color.fromARGB(255, 129, 141, 248);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Container(
           child: Row(
             children: [
@@ -37,7 +45,7 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
               ),
-              Icon(Icons.shopping_cart),
+              // Icon(Icons.shopping_cart),
               InkWell(
                 onTap: () {
                   Navigator.of(context)
@@ -48,6 +56,18 @@ class HomePage extends StatelessWidget {
             ],
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Keranjang()));
+        },
+        backgroundColor: PrimaryColor,
+        child: Icon(
+          Icons.shopping_cart_rounded,
+          color: Colors.white,
+        ),
+        heroTag: 'uniqueTag',
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -68,8 +88,8 @@ class HomePage extends StatelessWidget {
                         CarouselSlider(
                           options: CarouselOptions(height: 100.0),
                           items: [
-                            "assets/images/banner-1.webp",
-                            "assets/images/banner-2.webp"
+                            "../assets/images/banner-1.webp",
+                            "../assets/images/banner-2.webp"
                           ].map((i) {
                             return Builder(
                               builder: (BuildContext context) {

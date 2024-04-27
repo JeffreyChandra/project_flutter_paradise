@@ -1,6 +1,6 @@
 // import 'dart:js';
 
-import 'package:e_commerce/home.dart';
+import 'package:e_commerce/navigationbar.dart';
 import 'package:e_commerce/provider_data.dart';
 import 'package:e_commerce/register.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,12 +22,6 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final profileProvider = Provider.of<ProfileProvider>(context);
-    // String username = profileProvider.account.isNotEmpty
-    //     ? profileProvider.account[0].name
-    //     : '';
-    // String password = profileProvider.account.isNotEmpty
-    //     ? profileProvider.account[0].password
-    //     : '';
     Size size = MediaQuery.of(context).size;
     const PrimaryColor = Color.fromARGB(255, 129, 141, 248);
     const PrimaryColor2 = Color.fromARGB(50, 129, 141, 248);
@@ -200,8 +194,8 @@ class _LoginPageState extends State<LoginPage> {
                                     account.name == enteredUsername &&
                                     account.password == enteredPassword);
                             if (isValidUser) {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => HomePage()));
+                              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                                  builder: (context) => NavBar()));
                             } else {
                               showDialog(
                                 context: context,
@@ -239,6 +233,10 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                     ),
+                    SizedBox(height: 20,),
+                    ElevatedButton(onPressed: (){
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>NavBar()));
+                    }, child: Text("Shortcut login, capek jir regis mulu"),)
                   ],
                 ),
               ),
