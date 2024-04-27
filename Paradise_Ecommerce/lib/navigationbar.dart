@@ -18,17 +18,9 @@ class _NavBarState extends State<NavBar> {
   Widget bodyPage(int index) {
     if (index == 0) {
       return HomePage();
-<<<<<<< HEAD
-    }
-    else if(index == 1){
-      return CategoryList();
-    }
-    else{
-=======
     } else if (index == 1) {
       return CategoryList();
     } else {
->>>>>>> 104c1049186c631b9f225a379ced69030a30ee68
       return Profile();
     }
   }
@@ -43,17 +35,7 @@ class _NavBarState extends State<NavBar> {
           BottomNavigationBarItem(
               icon: Icon(Icons.category_rounded), label: 'Category'),
           BottomNavigationBarItem(
-<<<<<<< HEAD
-            icon: Icon(Icons.category_rounded),
-            label: 'Category'
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle),
-            label: 'Profile'
-          ),
-=======
               icon: Icon(Icons.account_circle), label: 'Profile'),
->>>>>>> 104c1049186c631b9f225a379ced69030a30ee68
         ],
         backgroundColor: PrimaryColor,
         selectedItemColor: Colors.white,
