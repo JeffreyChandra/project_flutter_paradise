@@ -94,7 +94,7 @@ class _HomePageState extends State<HomePage> {
                             return Builder(
                               builder: (BuildContext context) {
                                 return Container(
-                                  width: MediaQuery.of(context).size.width,
+                                  width: MediaQuery.of(context).size.width * 1,
                                   child: Image.asset(
                                     i,
                                   ),

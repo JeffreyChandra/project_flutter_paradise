@@ -1,3 +1,4 @@
+import 'package:e_commerce/categorylist.dart';
 import 'package:e_commerce/home.dart';
 import 'package:e_commerce/profile.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,7 +20,7 @@ class _NavBarState extends State<NavBar> {
       return HomePage();
     }
     else if(index == 1){
-      return Profile();
+      return CategoryList();
     }
     else{
       return Profile();
@@ -37,8 +38,8 @@ class _NavBarState extends State<NavBar> {
             label: 'Home'
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.add),
-            label: 'Add'
+            icon: Icon(Icons.category_rounded),
+            label: 'Category'
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.account_circle),
