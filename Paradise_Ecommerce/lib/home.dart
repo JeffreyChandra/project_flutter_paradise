@@ -3,7 +3,6 @@ import 'package:e_commerce/profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:e_commerce/widget/menuButton.dart';
 import 'package:e_commerce/widget/itemWidget.dart';
 
 class HomePage extends StatefulWidget {

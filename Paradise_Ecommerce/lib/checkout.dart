@@ -1,3 +1,4 @@
+import 'package:e_commerce/payment.dart';
 import 'package:e_commerce/provider_data.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -277,7 +278,9 @@ class _CheckoutState extends State<Checkout> {
                   Expanded(
                     child: ButtonTheme(
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => Payment()));
+                        },
                         child: Text('Continue to Payment',
                             style: GoogleFonts.inter(
                               fontSize: 12,
