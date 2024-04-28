@@ -109,50 +109,50 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(
                     height: 10,
                   ),
-                  Container(
-                    height: 80,
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      children: [
-                        MenuButton(
-                          label: "Official store",
-                          icon: Icon(Icons.abc),
-                        ),
-                        MenuButton(
-                          label: "Elektronik",
-                          icon: Icon(Icons.ac_unit),
-                        ),
-                        MenuButton(
-                          label: "Pakaian",
-                          icon: Icon(Icons.access_alarm_rounded),
-                        ),
-                        MenuButton(
-                          label: "Official store",
-                          icon: Icon(Icons.abc),
-                        ),
-                        MenuButton(
-                          label: "Elektronik",
-                          icon: Icon(Icons.ac_unit),
-                        ),
-                        MenuButton(
-                          label: "Pakaian",
-                          icon: Icon(Icons.access_alarm_rounded),
-                        ),
-                        MenuButton(
-                          label: "Official store",
-                          icon: Icon(Icons.abc),
-                        ),
-                        MenuButton(
-                          label: "Elektronik",
-                          icon: Icon(Icons.ac_unit),
-                        ),
-                        MenuButton(
-                          label: "Pakaian",
-                          icon: Icon(Icons.access_alarm_rounded),
-                        ),
-                      ],
-                    ),
-                  ),
+                  // Container(
+                  //   height: 80,
+                  //   child: ListView(
+                  //     scrollDirection: Axis.horizontal,
+                  //     children: [
+                  //       MenuButton(
+                  //         label: "Official store",
+                  //         icon: Icon(Icons.abc),
+                  //       ),
+                  //       MenuButton(
+                  //         label: "Elektronik",
+                  //         icon: Icon(Icons.ac_unit),
+                  //       ),
+                  //       MenuButton(
+                  //         label: "Pakaian",
+                  //         icon: Icon(Icons.access_alarm_rounded),
+                  //       ),
+                  //       MenuButton(
+                  //         label: "Official store",
+                  //         icon: Icon(Icons.abc),
+                  //       ),
+                  //       MenuButton(
+                  //         label: "Elektronik",
+                  //         icon: Icon(Icons.ac_unit),
+                  //       ),
+                  //       MenuButton(
+                  //         label: "Pakaian",
+                  //         icon: Icon(Icons.access_alarm_rounded),
+                  //       ),
+                  //       MenuButton(
+                  //         label: "Official store",
+                  //         icon: Icon(Icons.abc),
+                  //       ),
+                  //       MenuButton(
+                  //         label: "Elektronik",
+                  //         icon: Icon(Icons.ac_unit),
+                  //       ),
+                  //       MenuButton(
+                  //         label: "Pakaian",
+                  //         icon: Icon(Icons.access_alarm_rounded),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                   Container(
                     padding: EdgeInsets.only(top: 10, left: 10),
                     alignment: Alignment.centerLeft,
