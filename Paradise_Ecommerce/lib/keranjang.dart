@@ -1,3 +1,4 @@
+import 'package:e_commerce/widget/keranjangItem.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -14,6 +15,11 @@ class _KeranjangState extends State<Keranjang> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Keranjang'),
+      ),
+      body: ListView(
+        children: [
+          KeranjangItem(),
+        ],
       ),
     );
   }
