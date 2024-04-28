@@ -46,6 +46,103 @@ class ProfileProvider extends ChangeNotifier{
     }
     notifyListeners();
   }
+}
 
 
+// Product
+class Product {
+  final String imagePath;
+  final String title;
+  final int price;
+  final String category;
+  Map<String, int> varianStock;
+  String description;
+  int sold;
+
+  Product({
+    required this.imagePath,
+    required this.title,
+    required this.price,
+    required this.category,
+    this.description = '',
+    this.sold = 0,
+    Map<String, int>? varianStock,
+  }) : this.varianStock = varianStock ?? {};
+}
+
+class ProductProvider extends ChangeNotifier {
+  List<Product> products = [
+    Product(
+      imagePath: 'assets/produk/1.jpg',
+      title: 'Poke Ball',
+      price: 72000,
+      category: "Mainan",
+      description: 'Lorem ipsum dolor sit amet consectetur. Sit a aliquam sagittis vel. Proin netus faucibus ullamcorper sit tristique. Odio non lorem sed massa auctor senectus. Proin condimentum fermentum mauris sagittis etiam molestie id. Semper sit facilisis orci scelerisque. Massa lacinia ut cursus ultrices etiam faucibus eu. Nibh ut aliquam volutpat amet praesent justo scelerisque ac. Nisl et donec amet non. Ultrices dignissim rutrum egestas curabitur ullamcorper elit. Dolor ut ullamcorper odio in id eu.',
+      varianStock: {'S': 2, 'M': 3, 'L': 4, 'XL': 5, 'XXL': 0},
+    ),
+    Product(
+      imagePath: 'assets/produk/2.jpg',
+      title: 'Lenovo Thinkpad',
+      price: 3700000,
+      category: "Elektronik",
+      description: 'Lorem ipsum dolor sit amet consectetur. Sit a aliquam sagittis vel. Proin netus faucibus ullamcorper sit tristique. Odio non lorem sed massa auctor senectus. Proin condimentum fermentum mauris sagittis etiam molestie id. Semper sit facilisis orci scelerisque. Massa lacinia ut cursus ultrices etiam faucibus eu. Nibh ut aliquam volutpat amet praesent justo scelerisque ac. Nisl et donec amet non. Ultrices dignissim rutrum egestas curabitur ullamcorper elit. Dolor ut ullamcorper odio in id eu.',
+      varianStock: {'RAM 16GB': 5, 'RAM 32GB': 3},
+    ),
+    Product(
+      imagePath: 'assets/produk/3.jpg',
+      title: 'Piakchu Figure',
+      price: 410500,
+      category: "Mainan",
+      description: 'Lorem ipsum dolor sit amet consectetur. Sit a aliquam sagittis vel. Proin netus faucibus ullamcorper sit tristique. Odio non lorem sed massa auctor senectus. Proin condimentum fermentum mauris sagittis etiam molestie id. Semper sit facilisis orci scelerisque. Massa lacinia ut cursus ultrices etiam faucibus eu. Nibh ut aliquam volutpat amet praesent justo scelerisque ac. Nisl et donec amet non. Ultrices dignissim rutrum egestas curabitur ullamcorper elit. Dolor ut ullamcorper odio in id eu.',
+      varianStock: {'Basic': 20, 'Premium': 2},
+    ),
+    Product(
+      imagePath: 'assets/produk/4.jpg',
+      title: 'Vacuum Cleaner Zetzt',
+      price: 4307500,
+      category: "Elektronik",
+      description: 'Lorem ipsum dolor sit amet consectetur. Sit a aliquam sagittis vel. Proin netus faucibus ullamcorper sit tristique. Odio non lorem sed massa auctor senectus. Proin condimentum fermentum mauris sagittis etiam molestie id. Semper sit facilisis orci scelerisque. Massa lacinia ut cursus ultrices etiam faucibus eu. Nibh ut aliquam volutpat amet praesent justo scelerisque ac. Nisl et donec amet non. Ultrices dignissim rutrum egestas curabitur ullamcorper elit. Dolor ut ullamcorper odio in id eu.',
+      varianStock: {'Blue': 5, 'Red': 7},
+    ),
+    Product(
+      imagePath: 'assets/produk/5.jpg',
+      title: 'Sling Alpaka',
+      price: 1349000,
+      category: "Tas",
+      description: 'Lorem ipsum dolor sit amet consectetur. Sit a aliquam sagittis vel. Proin netus faucibus ullamcorper sit tristique. Odio non lorem sed massa auctor senectus. Proin condimentum fermentum mauris sagittis etiam molestie id. Semper sit facilisis orci scelerisque. Massa lacinia ut cursus ultrices etiam faucibus eu. Nibh ut aliquam volutpat amet praesent justo scelerisque ac. Nisl et donec amet non. Ultrices dignissim rutrum egestas curabitur ullamcorper elit. Dolor ut ullamcorper odio in id eu.',
+      varianStock: {'Basic': 50, 'Premium': 4},
+    ),
+    Product(
+      imagePath: 'assets/produk/6.jpg',
+      title: 'Remote AC Daikon',
+      price: 60000,
+      category: "Elektronik",
+      description: 'Lorem ipsum dolor sit amet consectetur. Sit a aliquam sagittis vel. Proin netus faucibus ullamcorper sit tristique. Odio non lorem sed massa auctor senectus. Proin condimentum fermentum mauris sagittis etiam molestie id. Semper sit facilisis orci scelerisque. Massa lacinia ut cursus ultrices etiam faucibus eu. Nibh ut aliquam volutpat amet praesent justo scelerisque ac. Nisl et donec amet non. Ultrices dignissim rutrum egestas curabitur ullamcorper elit. Dolor ut ullamcorper odio in id eu.',
+      varianStock: {'Basic': 12},
+    ),
+    Product(
+      imagePath: 'assets/produk/7.jpg',
+      title: 'Robot Vacuum Cleaner',
+      price: 3990000,
+      category: "Elektronik",
+      description: 'Lorem ipsum dolor sit amet consectetur. Sit a aliquam sagittis vel. Proin netus faucibus ullamcorper sit tristique. Odio non lorem sed massa auctor senectus. Proin condimentum fermentum mauris sagittis etiam molestie id. Semper sit facilisis orci scelerisque. Massa lacinia ut cursus ultrices etiam faucibus eu. Nibh ut aliquam volutpat amet praesent justo scelerisque ac. Nisl et donec amet non. Ultrices dignissim rutrum egestas curabitur ullamcorper elit. Dolor ut ullamcorper odio in id eu.',
+      varianStock: {'Silver': 6, 'Gold': 15},
+    ),
+    Product(
+      imagePath: 'assets/produk/8.jpg',
+      title: 'Tissue See You',
+      price: 6990,
+      category: "Kebutuhan Umum",
+      description: 'Lorem ipsum dolor sit amet consectetur. Sit a aliquam sagittis vel. Proin netus faucibus ullamcorper sit tristique. Odio non lorem sed massa auctor senectus. Proin condimentum fermentum mauris sagittis etiam molestie id. Semper sit facilisis orci scelerisque. Massa lacinia ut cursus ultrices etiam faucibus eu. Nibh ut aliquam volutpat amet praesent justo scelerisque ac. Nisl et donec amet non. Ultrices dignissim rutrum egestas curabitur ullamcorper elit. Dolor ut ullamcorper odio in id eu.',
+      varianStock: {'Basic': 100},
+    ),
+  ];
+
+  int getTotalStock(Product product) {
+    int totalStock = 0;
+    product.varianStock.values.forEach((stock) {
+      totalStock += stock;
+    });
+    return totalStock;
+  }
 }
