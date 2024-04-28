@@ -88,8 +88,8 @@ class _HomePageState extends State<HomePage> {
                         CarouselSlider(
                           options: CarouselOptions(height: 100.0),
                           items: [
-                            "../assets/images/banner-1.webp",
-                            "../assets/images/banner-2.webp"
+                            "assets/images/banner-1.webp",
+                            "assets/images/banner-2.webp"
                           ].map((i) {
                             return Builder(
                               builder: (BuildContext context) {
