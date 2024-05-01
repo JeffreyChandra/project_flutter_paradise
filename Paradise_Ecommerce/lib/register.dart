@@ -1,8 +1,10 @@
 import 'package:e_commerce/home.dart';
 import 'package:e_commerce/loginPage.dart';
 import 'package:e_commerce/provider_data.dart';
+import 'package:e_commerce/register_ktp.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -17,6 +19,16 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController _email = TextEditingController();
   TextEditingController _password = TextEditingController();
   bool isObscure = true;
+
+  // Data KTP
+  var nik = "";
+  var tglLahir = "";
+  var gender = "";
+  var provinsi = "";
+  var kota = "";
+  var kecamatan = "";
+  var kode_pos = "";
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -159,6 +171,48 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
 
+                    InkWell(
+                      onTap: () async {
+                        var result = null;
+                        if (nik == "") {
+                          result = await Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => RegisterKTP()),
+                          );
+                        }
+
+                        if (result != null) {
+                          Map<String, dynamic> ktpData = result;
+
+                          setState(() {
+                            nik = ktpData['nik'];
+                            tglLahir = ktpData['tglLahir'];
+                            gender = ktpData['gender'];
+                            provinsi = ktpData['provinsi'];
+                            kota = ktpData['kota'];
+                            kecamatan = ktpData['kecamatan'];
+                            kode_pos = ktpData['kode_pos'];
+                          });
+                        }
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        child: Container(
+                          width: double.infinity,
+                          padding: EdgeInsets.symmetric(vertical: 16, horizontal: 32),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              nik == "" ? Text('Verifikasi data KTP disini', style: TextStyle(decoration: TextDecoration.underline),) : Text('Data KTP sudah divalidasi', style: GoogleFonts.inter(fontWeight: FontWeight.bold, color: Color(0xFF6366F1))),
+                              nik == "" ? Icon(Icons.arrow_circle_right_rounded) : Icon(Icons.verified_user_rounded, color: Colors.green,)
+                            ],
+                          )
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(height: 10),
+
                     //REGISTER BUTTON
                     Container(
                       margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
@@ -166,14 +220,15 @@ class _RegisterPageState extends State<RegisterPage> {
                         onPressed: () {
                           if (_username.text.isEmpty ||
                               _email.text.isEmpty ||
-                              _password.text.isEmpty) {
+                              _password.text.isEmpty ||
+                              nik == "") {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
                                   title: Text("Register Failed"),
                                   content: Text(
-                                      "Username, email, or password can't be empty. Please try again."),
+                                      "Username, email, password, or KTP data can't be empty. Please try again."),
                                   actions: <Widget>[
                                     TextButton(
                                       onPressed: () {
@@ -193,6 +248,13 @@ class _RegisterPageState extends State<RegisterPage> {
                               name: _username.text,
                               email: _email.text,
                               password: _password.text,
+                              nik : nik,
+                              tglLahir : tglLahir,
+                              gender : gender,
+                              provinsi : provinsi,
+                              kota : kota,
+                              kecamatan : kecamatan,
+                              kode_pos : kode_pos,
                             );
                             profileProvider.addAccount(newAccount);
 

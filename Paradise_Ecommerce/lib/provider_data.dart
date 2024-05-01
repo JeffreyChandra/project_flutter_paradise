@@ -6,6 +6,13 @@ class Account {
   String profilePictureUrl;
   String email;
   String password;
+  String nik;
+  String tglLahir;
+  String gender;
+  String provinsi;
+  String kota;
+  String kecamatan;
+  String kode_pos;
 
   Account({
     this.id = 0,
@@ -13,6 +20,13 @@ class Account {
     this.profilePictureUrl = '',
     this.email = '',
     this.password = '',
+    this.nik = '',
+    this.tglLahir = '',
+    this.gender = '',
+    this.provinsi = '',
+    this.kota = '',
+    this.kecamatan = '',
+    this.kode_pos = '',
   });
 }
 
@@ -47,7 +61,6 @@ class ProfileProvider extends ChangeNotifier{
     notifyListeners();
   }
 }
-
 
 // Product
 class Product {
