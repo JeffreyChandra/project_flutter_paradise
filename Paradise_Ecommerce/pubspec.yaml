@@ -75,6 +75,7 @@ flutter:
     - assets/images/ktp-placeholder.png
     - assets/images/burung.jpeg
     - assets/icon/sold.png
+<<<<<<< HEAD
     - assets/images/banner-1.webp
     - assets/images/banner-2.webp
     - assets/produk/1.jpg
@@ -90,6 +91,8 @@ flutter:
     
     - assets/images/vivo.webp
     - assets/images/pria.jpg
+=======
+>>>>>>> b390c48e4be4d45da223278e123b0355c8b6eecd
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

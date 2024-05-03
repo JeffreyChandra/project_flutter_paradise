@@ -1,11 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-=======
 import 'package:e_commerce/categoryhp.dart';
 // import 'package:font_awesome_flutter/font_awesome_flutter.dart';
->>>>>>> 403a6826d78c3d5390056165ad590186f416dc95
 
 class CategoryList extends StatefulWidget {
   const CategoryList ({Key? key}) : super(key: key);
