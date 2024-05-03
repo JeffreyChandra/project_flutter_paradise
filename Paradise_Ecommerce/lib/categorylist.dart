@@ -1,9 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+=======
+import 'package:e_commerce/categoryhp.dart';
+// import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+>>>>>>> 403a6826d78c3d5390056165ad590186f416dc95
 
 class CategoryList extends StatefulWidget {
-  const CategoryList({Key? key}) : super(key: key);
+  const CategoryList ({Key? key}) : super(key: key);
 
   @override
   State<CategoryList> createState() => _CategoryListState();
@@ -128,7 +133,23 @@ class _CategoryListState extends State<CategoryList> {
                 children: List.generate(
                   categories.length,
                   (index) => InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      if (categories[index].name == 'Handphone') {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => handphone(
+                              category: categories[index],
+                            ),
+                          ),
+                        );
+                      } else if (categories[index].name == 'Pria') {
+                        // Navigasi ke halaman yang sesuai untuk kategori 'Pria'
+                      } else if (categories[index].name == 'Wanita') {
+                        // Navigasi ke halaman yang sesuai untuk kategori 'Wanita'
+                      }
+                      // Lanjutkan dengan logika untuk kategori lainnya...
+                    },
                     child: Card(
                       elevation: 4,
                       shape: RoundedRectangleBorder(
@@ -166,6 +187,24 @@ class _CategoryListState extends State<CategoryList> {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class CategoryDetailScreen extends StatelessWidget {
+  final Category category;
+
+  CategoryDetailScreen({required this.category});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(category.name),
+      ),
+      body: Center(
+        child: Text('Details of ${category.name}'),
       ),
     );
   }
