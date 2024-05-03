@@ -24,7 +24,7 @@ class _handphoneState extends State<handphone>{
 
   List<Handphone>handphone=[
       Handphone(
-        title: "hp",filehp: '../assets/images/vivo.webp'
+        title: "hp",filehp: '../assets/images/category/vivo.jpg'
       )
   ];
   
@@ -45,36 +45,36 @@ class _handphoneState extends State<handphone>{
             subtitle: Text('Deskripsi produk'),
             trailing: Text('Rp 1.000.000'),
             onTap: () {
-              // Tambahkan logika untuk menavigasi ke detail produk
+
             },
           );
         },
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Beranda',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Cari',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart),
-            label: 'Keranjang',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profil',
-          ),
-        ],
-        selectedItemColor: Colors.blue, // Sesuaikan dengan tema Anda
-        currentIndex: 0, // Ubah sesuai halaman yang aktif
-        onTap: (index) {
-          // Tambahkan logika untuk menavigasi antar halaman
-        },
-      ),
+      // bottomNavigationBar: BottomNavigationBar(
+      //   items: const <BottomNavigationBarItem>[
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.home),
+      //       label: 'Beranda',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.search),
+      //       label: 'Cari',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.shopping_cart),
+      //       label: 'Keranjang',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.person),
+      //       label: 'Profil',
+      //     ),
+      //   ],
+      //   selectedItemColor: Colors.blue, // Sesuaikan dengan tema Anda
+      //   currentIndex: 0, // Ubah sesuai halaman yang aktif
+      //   onTap: (index) {
+      //     // Tambahkan logika untuk menavigasi antar halaman
+      //   },
+      // ),
     );
   }
   }
