@@ -1,3 +1,4 @@
+import 'package:e_commerce/checkout.dart';
 import 'package:e_commerce/edit_password.dart';
 import 'package:e_commerce/edit_profile.dart';
 import 'package:e_commerce/home.dart';
@@ -170,7 +171,7 @@ class _ProfileState extends State<Profile> {
             ),
             InkWell(
                 onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProductDetails()));
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => Checkout()));
                 },
                 child: Container(
                   width: double.infinity,
@@ -183,7 +184,7 @@ class _ProfileState extends State<Profile> {
                       )
                   ),
                   padding: EdgeInsets.all(12),
-                  child: Text("Product details (temp)",
+                  child: Text("Checkout (temp)",
                     style: TextStyle(
                       color: Color(0xFF31323d),
                       fontWeight: FontWeight.w600,

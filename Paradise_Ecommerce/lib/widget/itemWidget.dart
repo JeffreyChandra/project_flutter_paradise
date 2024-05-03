@@ -1,66 +1,22 @@
+import 'package:e_commerce/provider_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-class Product {
-  final String imagePath;
-  final String title;
-  final String price;
-
-  Product({
-    required this.imagePath,
-    required this.title,
-    required this.price,
-  });
-}
+import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
+import '../product_details.dart';
+import 'package:intl/intl.dart';
 
 class ItemWidget extends StatelessWidget {
   ItemWidget({Key? key}) : super(key: key);
 
-  final List<Product> products = [
-    Product(
-      imagePath: 'assets/produk/1.jpg',
-      title: 'Poke Ball',
-      price: 'Rp. 72.000',
-    ),
-    Product(
-      imagePath: 'assets/produk/2.jpg',
-      title: 'Lenovo Thinkpad',
-      price: 'Rp. 3.700.000',
-    ),
-    Product(
-      imagePath: 'assets/produk/3.jpg',
-      title: 'Piakchu Figure',
-      price: 'Rp. 30.000',
-    ),
-    Product(
-      imagePath: 'assets/produk/4.jpg',
-      title: 'Vacuum Cleaner Zetzt',
-      price: 'Rp. 690.000',
-    ),
-    Product(
-      imagePath: 'assets/produk/5.jpg',
-      title: 'Sling Alpaka',
-      price: 'Rp. 1.349.000',
-    ),
-    Product(
-      imagePath: 'assets/produk/6.jpg',
-      title: 'Remote AC Daikon',
-      price: 'Rp. 60.000',
-    ),
-    Product(
-      imagePath: 'assets/produk/7.jpg',
-      title: 'Robot Vacuum Cleaner',
-      price: 'Rp. 3.990.000',
-    ),
-    Product(
-      imagePath: 'assets/produk/8.jpg',
-      title: 'Tissue See You',
-      price: 'Rp. 6.990',
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
+
+    String formatNumber(int number) {
+      var format = NumberFormat('#,###', 'en_US');
+      return format.format(number).replaceAll(',', '.');
+    }
+
     return Column(
       children: [
         GridView.count(
@@ -69,94 +25,109 @@ class ItemWidget extends StatelessWidget {
           crossAxisCount: 2,
           shrinkWrap: true,
           children: [
-            for (int i = 0; i < 8; i++)
-              Container(
-                padding: EdgeInsets.only(left: 15, right: 15, top: 10),
-                margin: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-                decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 198, 206, 235),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                            color: Color(0xFF312E81),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Text(
-                            "-50%",
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Color.fromARGB(255, 255, 255, 255),
-                              fontWeight: FontWeight.bold,
+            for (int i = 0; i < Provider.of<ProductProvider>(context).products.length; i++)
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Builder(
+                        builder: (innerContext) => ProductDetails(obj: Provider.of<ProductProvider>(innerContext).products[i])
+                      ),
+                    ),
+                  );
+                },
+                child: Container(
+                  padding: EdgeInsets.only(left: 15, right: 15, top: 10),
+                  margin: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(255, 198, 206, 235),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                              color: Color(0xFF312E81),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Text(
+                              "-50%",
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Color.fromARGB(255, 255, 255, 255),
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
+                          Icon(
+                            Icons.favorite_border,
+                            color: Colors.red,
+                          )
+                        ],
+                      ),
+                      InkWell(
+                        onTap: () {},
+                        child: Container(
+                          margin: EdgeInsets.all(10),
+                          child: Image.asset(
+                            'assets/produk/${i + 1}.jpg',
+                            height: 120,
+                            width: 120,
+                          ),
                         ),
-                        Icon(
-                          Icons.favorite_border,
-                          color: Colors.red,
-                        )
-                      ],
-                    ),
-                    InkWell(
-                      onTap: () {},
-                      child: Container(
-                        margin: EdgeInsets.all(10),
-                        child: Image.asset(
-                          'assets/produk/${i + 1}.jpg',
-                          height: 120,
-                          width: 120,
+                      ),
+                      Expanded(
+                        child: Container(
+                          padding: EdgeInsets.only(bottom: 8),
+                          alignment: Alignment.center,
+                          child: Text(
+                            Provider.of<ProductProvider>(context).products[i].title,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                fontSize: 18,
+                                color: Color(0xFF312E81),
+                                fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(bottom: 8),
-                      alignment: Alignment.center,
-                      child: Text(
-                        products[i].title,
-                        style: TextStyle(
-                            fontSize: 18,
-                            color: Color(0xFF312E81),
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    // Container(
-                    //   alignment: Alignment.centerLeft,
-                    //   child: Text("Write Description",
-                    //       style: TextStyle(
-                    //         fontSize: 15,
-                    //         color: Color.fromARGB(255, 228, 147, 243),
-                    //       )),
-                    // ),
-                    Container(
-                      padding: EdgeInsets.symmetric(vertical: 10),
-                      child: Text(
-                        products[i].price,
-                        style: TextStyle(
-                            fontSize: 15,
-                            color: Color(0xFF312E81),
-                            fontWeight: FontWeight.bold),
-                      ),
-                      // child: Row(
-                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //   children: [
-                      //     Text(
-                      //       "\Rp. 550.000",
+                      // Container(
+                      //   alignment: Alignment.centerLeft,
+                      //   child: Text("Write Description",
                       //       style: TextStyle(
-                      //         fontSize: 16,
-                      //         fontWeight: FontWeight.bold,
+                      //         fontSize: 15,
                       //         color: Color.fromARGB(255, 228, 147, 243),
-                      //       ),
-                      //     ),
-                      //   ],
+                      //       )),
                       // ),
-                    )
-                  ],
+                      Container(
+                        padding: EdgeInsets.symmetric(vertical: 10),
+                        child: Text(
+                          "Rp ${formatNumber(Provider.of<ProductProvider>(context).products[i].price)}",
+                          style: TextStyle(
+                              fontSize: 15,
+                              color: Color(0xFF312E81),
+                              fontWeight: FontWeight.bold),
+                        ),
+                        // child: Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //   children: [
+                        //     Text(
+                        //       "\Rp. 550.000",
+                        //       style: TextStyle(
+                        //         fontSize: 16,
+                        //         fontWeight: FontWeight.bold,
+                        //         color: Color.fromARGB(255, 228, 147, 243),
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
+                      )
+                    ],
+                  ),
                 ),
               ),
           ],

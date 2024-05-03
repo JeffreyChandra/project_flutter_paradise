@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "868502988810",
+    "project_id": "ktp-ocr-scanner",
+    "storage_bucket": "ktp-ocr-scanner.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:868502988810:android:f1dbd428eb98e1700757f3",
+        "android_client_info": {
+          "package_name": "com.example.e_commerce"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZdf22Yk2zqkRFnaqqpolcibxRC1XAiBk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

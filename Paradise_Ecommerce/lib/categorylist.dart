@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:e_commerce/categoryhp.dart';
 // import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class CategoryList extends StatefulWidget {
@@ -23,21 +22,15 @@ class Category {
 class _CategoryListState extends State<CategoryList> {
   var PrimaryColor = Color.fromARGB(255, 129, 141, 248);
   List<Category> categories = [
-    Category(
-        name: 'Handphone', picFile: '../assets/images/category/handphone.png'),
-    Category(
-        name: 'Pria', picFile: '../assets/images/category/pakaianpria.png'),
-    Category(
-        name: 'Wanita', picFile: '../assets/images/category/pakaianwanita.jpg'),
+    Category(name: 'Handphone', picFile: '../assets/images/category/handphone.png'),
+    Category(name: 'Pria', picFile: '../assets/images/category/pakaianpria.png'),
+    Category(name: 'Wanita', picFile: '../assets/images/category/pakaianwanita.jpg'),
     Category(name: 'Laptop', picFile: '../assets/images/category/laptop.jpg'),
-    Category(
-        name: 'Komputer', picFile: '../assets/images/category/komputer.jpg'),
+    Category(name: 'Komputer', picFile: '../assets/images/category/komputer.jpg'),
     Category(name: 'Anak-anak', picFile: '../assets/images/category/kids.jpg'),
     Category(name: 'Game', picFile: '../assets/images/category/game.jpg'),
     Category(name: 'Sepatu', picFile: '../assets/images/category/motor.jpg'),
-    Category(
-        name: 'Aksesoris',
-        picFile: '../assets/images/category/pakaianpria.png'),
+    Category(name: 'Aksesoris',picFile: '../assets/images/category/pakaianpria.png'),
   ];
 
   @override

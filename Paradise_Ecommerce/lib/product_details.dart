@@ -1,20 +1,40 @@
 import 'package:e_commerce/profile.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:e_commerce/provider_data.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class ProductDetails extends StatefulWidget {
-  const ProductDetails({super.key});
+  final Product obj;
+  const ProductDetails({super.key, required this.obj});
 
   @override
   State<ProductDetails> createState() => _ProductDetailsState();
 }
 
 class _ProductDetailsState extends State<ProductDetails> {
-  int ukuran = 0;
+  String _varian = '';
 
   @override
   Widget build(BuildContext context) {
+    Product product = widget.obj;
+
+    String formatNumber(int number) {
+      var format = NumberFormat('#,###', 'en_US');
+      return format.format(number).replaceAll(',', '.');
+    }
+
+    String formatShort(int number) {
+      if (number >= 1000000) {
+        return (number / 1000000).toStringAsFixed(1) + 'Jt';
+      } else if (number >= 1000) {
+        return (number / 1000).toStringAsFixed(1) + 'Rb';
+      } else {
+        return number.toString();
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -123,7 +143,7 @@ class _ProductDetailsState extends State<ProductDetails> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    Image(image: NetworkImage('https://images.unsplash.com/photo-1560343090-f0409e92791a?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
+                    Image(image: AssetImage(product.imagePath),
                       height: MediaQuery.of(context).size.width,
                       width: double.infinity,
                       fit: BoxFit.cover,
@@ -136,28 +156,30 @@ class _ProductDetailsState extends State<ProductDetails> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  InkWell(
-                                    onTap: () {},
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(4)
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    InkWell(
+                                      onTap: () {},
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(4)
+                                          ),
+                                          color: Color(0xFF6366F1),
                                         ),
-                                        color: Color(0xFF6366F1),
+                                        padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                                        child: Text(product.category, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Colors.white)),
                                       ),
-                                      padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-                                      child: Text("Sepatu", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Colors.white)),
                                     ),
-                                  ),
-                                  SizedBox(height: 8,),
-                                  Text('Sepatu hijo', style: GoogleFonts.inter(
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.bold,
-                                  ),)
-                                ],
+                                    SizedBox(height: 8,),
+                                    Text(product.title, style: GoogleFonts.inter(
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.bold,
+                                    ),)
+                                  ],
+                                ),
                               ),
                               SizedBox(width: 8,),
                               Column(
@@ -171,7 +193,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                         fontSize: 16,
                                       )),
                                       SizedBox(width: 4,),
-                                      Text('241.1k', style: GoogleFonts.inter(
+                                      Text(formatShort(product.price), style: GoogleFonts.inter(
                                         fontSize: 30,
                                         fontWeight: FontWeight.bold,
                                         color: Color(0xFF6366F1),
@@ -186,7 +208,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                         fontSize: 12,
                                       )),
                                       SizedBox(width: 4,),
-                                      Text('241.150', style: GoogleFonts.inter(
+                                      Text(formatNumber(product.price), style: GoogleFonts.inter(
                                         fontSize: 12,
                                         fontWeight: FontWeight.bold,
                                         color: Color(0xFF818CF8),
@@ -219,7 +241,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                     ))
                                   ],
                                 ),
-                                Text('12 pcs', style: GoogleFonts.inter(
+                                Text('${Provider.of<ProductProvider>(context).getTotalStock(product)} pcs', style: GoogleFonts.inter(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 12,
                                   color: Color(0xFF31323D),
@@ -247,13 +269,13 @@ class _ProductDetailsState extends State<ProductDetails> {
                                       height: 20,
                                     ),
                                     SizedBox(width: 8,),
-                                    Text("Stok tersisa", style: TextStyle(
+                                    Text("Produk terjual", style: TextStyle(
                                       color: Color(0xFF31323D),
                                       fontSize: 12,
                                     ))
                                   ],
                                 ),
-                                Text('2 pcs', style: GoogleFonts.inter(
+                                Text('${product.sold} pcs', style: GoogleFonts.inter(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 12,
                                   color: Color(0xFF31323D),
@@ -270,272 +292,61 @@ class _ProductDetailsState extends State<ProductDetails> {
                               child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('Ukuran', style: TextStyle(
+                                    Text('Varian', style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 14,
                                       color: Color(0xFF31323D),
                                     ),),
-                                    SizedBox(height: 12,),
-                                    Row(
-                                        children: [
-                                          Expanded(
-                                            child: Container(
-                                                height: 40,
-                                                padding: EdgeInsets.symmetric(horizontal: 12),
-                                                alignment: Alignment.center,
-                                                decoration: BoxDecoration(
-                                                    color: Color(0xFFE4E4E4),
-                                                    borderRadius: BorderRadius.all(
-                                                        Radius.circular(4)
-                                                    ),
-                                                    border: Border.all(
-                                                      color: Color(0xFFDBDBDB),
-                                                      width: 1.0,
-                                                    )
-                                                ),
-                                                child : Text('37', style: TextStyle(
+                                    SizedBox(height: 12),
+                                    Container(
+                                      height: product.varianStock.keys.length > 4 ? ((product.varianStock.keys.length / 4).ceil() * 45.0) : 40,
+                                      child: GridView.count(
+                                        childAspectRatio: (2 / 1),
+                                        mainAxisSpacing: 8,
+                                        crossAxisSpacing: 12,
+                                        crossAxisCount: 4,
+                                        children: product.varianStock.keys.map((varian) {
+                                          return ChoiceChip(
+                                            showCheckmark: false,
+                                            padding: EdgeInsets.all(0),
+                                            label: Container(
+                                              height: 40,
+                                              padding: EdgeInsets.symmetric(horizontal: 12),
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                varian,
+                                                style: TextStyle(
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.w600,
-                                                  color: Color(0xFFB1B1B1),
-                                                ))
-                                            ),
-                                          ),
-                                          SizedBox(width: 12),
-                                          Expanded(
-                                            child: ChoiceChip(
-                                              showCheckmark: false,
-                                              padding: EdgeInsets.all(0),
-                                              label: Container(
-                                                  height: 40,
-                                                  padding: EdgeInsets.symmetric(horizontal: 12),
-                                                  alignment: Alignment.center,
-                                                  child : Text('38', style: TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: ukuran == 38 ? Colors.white : Color(0xFF31323D),
-                                                  ))
-                                              ),
-                                              selected: ukuran == 38,
-                                              onSelected: (bool selected) {
-                                                setState(() {
-                                                  if (ukuran == 38) {
-                                                    ukuran = 0; // deselect the chip
-                                                  } else {
-                                                    ukuran = 38; // select the chip
-                                                  }
-                                                });
-                                              },
-                                              backgroundColor: Colors.white, // this is the background color
-                                              selectedColor: Color(0xFF6366F1),
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                  Radius.circular(4),
-                                                ),
-                                                side: BorderSide(
-                                                  color: Color(0xFFDBDBDB),
-                                                  width: 1.0,
+                                                  color: _varian == varian ? Colors.white : Color(0xFF31323D),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                          SizedBox(width: 12),
-                                          Expanded(
-                                            child: ChoiceChip(
-                                              showCheckmark: false,
-                                              padding: EdgeInsets.all(0),
-                                              label: Container(
-                                                  height: 40,
-                                                  padding: EdgeInsets.symmetric(horizontal: 12),
-                                                  alignment: Alignment.center,
-                                                  child : Text('39', style: TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: ukuran == 39 ? Colors.white : Color(0xFF31323D),
-                                                  ))
+                                            selected: _varian == varian,
+                                            onSelected: (bool selected) {
+                                              setState(() {
+                                                if (_varian == varian) {
+                                                  _varian = ''; // deselect the chip
+                                                } else {
+                                                  _varian = varian; // select the chip
+                                                }
+                                              });
+                                            },
+                                            backgroundColor: Colors.white, // this is the background color
+                                            selectedColor: Color(0xFF6366F1),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(4),
                                               ),
-                                              selected: ukuran == 39,
-                                              onSelected: (bool selected) {
-                                                setState(() {
-                                                  if (ukuran == 39) {
-                                                    ukuran = 0; // deselect the chip
-                                                  } else {
-                                                    ukuran = 39; // select the chip
-                                                  }
-                                                });
-                                              },
-                                              backgroundColor: Colors.white, // this is the background color
-                                              selectedColor: Color(0xFF6366F1),
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                  Radius.circular(4),
-                                                ),
-                                                side: BorderSide(
-                                                  color: Color(0xFFDBDBDB),
-                                                  width: 1.0,
-                                                ),
+                                              side: BorderSide(
+                                                color: Color(0xFFDBDBDB),
+                                                width: 1.0,
                                               ),
                                             ),
-                                          ),
-                                          SizedBox(width: 12),
-                                          Expanded(
-                                            child: ChoiceChip(
-                                              showCheckmark: false,
-                                              padding: EdgeInsets.all(0),
-                                              label: Container(
-                                                  height: 40,
-                                                  padding: EdgeInsets.symmetric(horizontal: 12),
-                                                  alignment: Alignment.center,
-                                                  child : Text('40', style: TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: ukuran == 40 ? Colors.white : Color(0xFF31323D),
-                                                  ))
-                                              ),
-                                              selected: ukuran == 40,
-                                              onSelected: (bool selected) {
-                                                setState(() {
-                                                  if (ukuran == 40) {
-                                                    ukuran = 0; // deselect the chip
-                                                  } else {
-                                                    ukuran = 40; // select the chip
-                                                  }
-                                                });
-                                              },
-                                              backgroundColor: Colors.white, // this is the background color
-                                              selectedColor: Color(0xFF6366F1),
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                  Radius.circular(4),
-                                                ),
-                                                side: BorderSide(
-                                                  color: Color(0xFFDBDBDB),
-                                                  width: 1.0,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ]
-                                    ),
-                                    SizedBox(height: 8),
-                                    Row(
-                                        children: [
-                                          Expanded(
-                                            child: ChoiceChip(
-                                              showCheckmark: false,
-                                              padding: EdgeInsets.all(0),
-                                              label: Container(
-                                                  height: 40,
-                                                  padding: EdgeInsets.symmetric(horizontal: 12),
-                                                  alignment: Alignment.center,
-                                                  child : Text('41', style: TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: ukuran == 41 ? Colors.white : Color(0xFF31323D),
-                                                  ))
-                                              ),
-                                              selected: ukuran == 41,
-                                              onSelected: (bool selected) {
-                                                setState(() {
-                                                  if (ukuran == 41) {
-                                                    ukuran = 0; // deselect the chip
-                                                  } else {
-                                                    ukuran = 41; // select the chip
-                                                  }
-                                                });
-                                              },
-                                              backgroundColor: Colors.white, // this is the background color
-                                              selectedColor: Color(0xFF6366F1),
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                  Radius.circular(4),
-                                                ),
-                                                side: BorderSide(
-                                                  color: Color(0xFFDBDBDB),
-                                                  width: 1.0,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(width: 12),
-                                          Expanded(
-                                            child: ChoiceChip(
-                                              showCheckmark: false,
-                                              padding: EdgeInsets.all(0),
-                                              label: Container(
-                                                  height: 40,
-                                                  padding: EdgeInsets.symmetric(horizontal: 12),
-                                                  alignment: Alignment.center,
-                                                  child : Text('42', style: TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: ukuran == 42 ? Colors.white : Color(0xFF31323D),
-                                                  ))
-                                              ),
-                                              selected: ukuran == 42,
-                                              onSelected: (bool selected) {
-                                                setState(() {
-                                                  if (ukuran == 42) {
-                                                    ukuran = 0; // deselect the chip
-                                                  } else {
-                                                    ukuran = 42; // select the chip
-                                                  }
-                                                });
-                                              },
-                                              backgroundColor: Colors.white, // this is the background color
-                                              selectedColor: Color(0xFF6366F1),
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                  Radius.circular(4),
-                                                ),
-                                                side: BorderSide(
-                                                  color: Color(0xFFDBDBDB),
-                                                  width: 1.0,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(width: 12),
-                                          Expanded(
-                                            child: ChoiceChip(
-                                              showCheckmark: false,
-                                              padding: EdgeInsets.all(0),
-                                              label: Container(
-                                                  height: 40,
-                                                  padding: EdgeInsets.symmetric(horizontal: 12),
-                                                  alignment: Alignment.center,
-                                                  child : Text('43', style: TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: ukuran == 43 ? Colors.white : Color(0xFF31323D),
-                                                  ))
-                                              ),
-                                              selected: ukuran == 43,
-                                              onSelected: (bool selected) {
-                                                setState(() {
-                                                  if (ukuran == 43) {
-                                                    ukuran = 0; // deselect the chip
-                                                  } else {
-                                                    ukuran = 43; // select the chip
-                                                  }
-                                                });
-                                              },
-                                              backgroundColor: Colors.white, // this is the background color
-                                              selectedColor: Color(0xFF6366F1),
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                  Radius.circular(4),
-                                                ),
-                                                side: BorderSide(
-                                                  color: Color(0xFFDBDBDB),
-                                                  width: 1.0,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(width: 12),
-                                          Expanded(child: Text('')),
-                                        ]
-                                    ),
+                                          );
+                                        }).toList(),
+                                      ),
+                                    )
                                   ]
                               )
                           ),
@@ -554,7 +365,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                   color: Color(0xFF31323D),
                                 ),),
                                 SizedBox(height: 12,),
-                                Text('Lorem ipsum dolor sit amet consectetur. Sit a aliquam sagittis vel. Proin netus faucibus ullamcorper sit tristique. Odio non lorem sed massa auctor senectus. Proin condimentum fermentum mauris sagittis etiam molestie id. Semper sit facilisis orci scelerisque. Massa lacinia ut cursus ultrices etiam faucibus eu. Nibh ut aliquam volutpat amet praesent justo scelerisque ac. Nisl et donec amet non. Ultrices dignissim rutrum egestas curabitur ullamcorper elit. Dolor ut ullamcorper odio in id eu. Posuere eget phasellus mauris condimentum quisque tincidunt consectetur enim vitae. Mattis sit facilisis habitant sodales. Lobortis consequat sit vitae netus felis augue imperdiet hendrerit aliquet. Felis eleifend justo aenean tortor libero id proin in. Urna vulputate tortor purus dui aenean ornare cras habitasse. Nisi vitae nunc nibh risus vitae. Viverra eget facilisis aliquam egestas augue fermentum. Et venenatis sed velit vitae massa gravida lacus eget enim. Parturient pretium est cursus convallis posuere turpis laoreet luctus. Nisl tempor blandit velit pulvinar massa. Placerat pretium lectus cras donec purus gravida neque tristique in. Rhoncus ultrices nibh cum aliquam nullam sit pellentesque faucibus.',
+                                Text(product.description,
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Color(0xFF31323D),

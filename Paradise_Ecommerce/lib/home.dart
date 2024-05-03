@@ -3,7 +3,6 @@ import 'package:e_commerce/profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:e_commerce/widget/menuButton.dart';
 import 'package:e_commerce/widget/itemWidget.dart';
 
 class HomePage extends StatefulWidget {
@@ -88,13 +87,13 @@ class _HomePageState extends State<HomePage> {
                         CarouselSlider(
                           options: CarouselOptions(height: 100.0),
                           items: [
-                            "../assets/images/banner-1.webp",
-                            "../assets/images/banner-2.webp"
+                            "assets/images/banner-1.webp",
+                            "assets/images/banner-2.webp"
                           ].map((i) {
                             return Builder(
                               builder: (BuildContext context) {
                                 return Container(
-                                  width: MediaQuery.of(context).size.width,
+                                  width: MediaQuery.of(context).size.width * 1,
                                   child: Image.asset(
                                     i,
                                   ),
@@ -109,50 +108,50 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(
                     height: 10,
                   ),
-                  Container(
-                    height: 80,
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      children: [
-                        MenuButton(
-                          label: "Official store",
-                          icon: Icon(Icons.abc),
-                        ),
-                        MenuButton(
-                          label: "Elektronik",
-                          icon: Icon(Icons.ac_unit),
-                        ),
-                        MenuButton(
-                          label: "Pakaian",
-                          icon: Icon(Icons.access_alarm_rounded),
-                        ),
-                        MenuButton(
-                          label: "Official store",
-                          icon: Icon(Icons.abc),
-                        ),
-                        MenuButton(
-                          label: "Elektronik",
-                          icon: Icon(Icons.ac_unit),
-                        ),
-                        MenuButton(
-                          label: "Pakaian",
-                          icon: Icon(Icons.access_alarm_rounded),
-                        ),
-                        MenuButton(
-                          label: "Official store",
-                          icon: Icon(Icons.abc),
-                        ),
-                        MenuButton(
-                          label: "Elektronik",
-                          icon: Icon(Icons.ac_unit),
-                        ),
-                        MenuButton(
-                          label: "Pakaian",
-                          icon: Icon(Icons.access_alarm_rounded),
-                        ),
-                      ],
-                    ),
-                  ),
+                  // Container(
+                  //   height: 80,
+                  //   child: ListView(
+                  //     scrollDirection: Axis.horizontal,
+                  //     children: [
+                  //       MenuButton(
+                  //         label: "Official store",
+                  //         icon: Icon(Icons.abc),
+                  //       ),
+                  //       MenuButton(
+                  //         label: "Elektronik",
+                  //         icon: Icon(Icons.ac_unit),
+                  //       ),
+                  //       MenuButton(
+                  //         label: "Pakaian",
+                  //         icon: Icon(Icons.access_alarm_rounded),
+                  //       ),
+                  //       MenuButton(
+                  //         label: "Official store",
+                  //         icon: Icon(Icons.abc),
+                  //       ),
+                  //       MenuButton(
+                  //         label: "Elektronik",
+                  //         icon: Icon(Icons.ac_unit),
+                  //       ),
+                  //       MenuButton(
+                  //         label: "Pakaian",
+                  //         icon: Icon(Icons.access_alarm_rounded),
+                  //       ),
+                  //       MenuButton(
+                  //         label: "Official store",
+                  //         icon: Icon(Icons.abc),
+                  //       ),
+                  //       MenuButton(
+                  //         label: "Elektronik",
+                  //         icon: Icon(Icons.ac_unit),
+                  //       ),
+                  //       MenuButton(
+                  //         label: "Pakaian",
+                  //         icon: Icon(Icons.access_alarm_rounded),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                   Container(
                     padding: EdgeInsets.only(top: 10, left: 10),
                     alignment: Alignment.centerLeft,
