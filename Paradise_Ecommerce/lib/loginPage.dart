@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -74,11 +75,27 @@ class _LoginPageState extends State<LoginPage> {
                         color: Colors.black,
                       ),
                     ),
-                    Image.asset(
-                      "assets/images/burung.jpeg",
-                      scale: 1.3,
-                      fit: BoxFit.contain,
+                    // Image.asset(
+                    //   "assets/images/burung.jpeg",
+                    //   scale: 1.3,
+                    //   fit: BoxFit.contain,
+                    // ),
+                    Text(
+                      "Paradise",
+                      style: GoogleFonts.merriweather(
+                          fontWeight: FontWeight.bold,
+                        fontSize: 40,
+                        color: Colors.black,
+                        
+                      ),
                     ),
+
+// Merriweather. Merriweather. ...
+// Noto Sans / Serif. Noto Sans / Serif. ...
+// Nunito Sans. Nunito Sans. ...
+// Concert One. Concert One. ...
+// Prompt. Prompt. ...
+// Work Sans. Work Sans. Work Sans is a sans-serif font optimized for use on screens.
 
                     //Username
                     Container(
@@ -260,7 +277,24 @@ class _LoginPageState extends State<LoginPage> {
                   Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) => RegisterPage()));
                 },
-                child: Text("Don't have an account? Sign up"),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      child: Text("Don't have an account?"),
+
+                    ),
+                    SizedBox(width: 5,),
+                    Container(
+                      child:  Text("Sign up", 
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),),
+                    ),
+                    
+                  ],
+                ),
               ),
             ),
           )

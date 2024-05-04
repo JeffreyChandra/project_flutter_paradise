@@ -81,11 +81,16 @@ class _RegisterPageState extends State<RegisterPage> {
                         fontSize: 24,
                       ),
                     ),
-                    Image.asset(
-                      "assets/images/burung.jpeg",
-                      scale: 1.3,
-                      fit: BoxFit.contain,
+                    Text(
+                      "Paradise",
+                      style: GoogleFonts.merriweather(
+                          fontWeight: FontWeight.bold,
+                        fontSize: 40,
+                        color: Colors.black,
+                        
+                      ),
                     ),
+
 
                     //Username
                     Container(
@@ -337,7 +342,24 @@ class _RegisterPageState extends State<RegisterPage> {
                   Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) => LoginPage()));
                 },
-                child: Text("Already have an account? Sign in"),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      child: Text("Don't have an account?"),
+
+                    ),
+                    SizedBox(width: 5,),
+                    Container(
+                      child:  Text("Sign in", 
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),),
+                    ),
+                  ]
+                )
+                    
               ),
             ),
           )

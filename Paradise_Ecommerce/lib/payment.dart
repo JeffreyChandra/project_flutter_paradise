@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-// Buat model untuk menyimpan payment method
 class PaymentMethod extends ChangeNotifier {
   String _paymentMethod = '';
 
@@ -83,7 +82,7 @@ class Payment extends StatelessWidget {
                     imagePath: "../assets/images/payment/mandiri.png",
                     paymentMethod: 'Mandiri',
                   ),
-                  SizedBox(height: 20), // Add some spacing
+                  SizedBox(height: 20),
                 ],
               ),
             ),

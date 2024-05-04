@@ -5,14 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-
 void main() async {
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
 
   @override
   Widget build(BuildContext context) {
@@ -26,12 +24,12 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
-          textTheme: GoogleFonts.interTextTheme(Theme.of(context).textTheme),
+          textTheme: GoogleFonts.robotoTextTheme(
+            Theme.of(context).textTheme,
+          ),
         ),
         home: const LoginPage(),
       ),
     );
   }
 }
-
-

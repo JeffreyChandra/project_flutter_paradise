@@ -48,6 +48,7 @@ flutter:
     - assets/produk/6.jpg
     - assets/produk/7.jpg
     - assets/produk/8.jpg
+    - assets/images/category/vivo.jpg
     - assets/tessdata/
     - assets/tessdata_config.json
   uses-material-design: true
