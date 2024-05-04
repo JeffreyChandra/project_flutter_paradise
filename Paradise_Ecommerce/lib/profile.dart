@@ -2,6 +2,7 @@ import 'package:e_commerce/checkout.dart';
 import 'package:e_commerce/edit_password.dart';
 import 'package:e_commerce/edit_profile.dart';
 import 'package:e_commerce/home.dart';
+import 'package:e_commerce/loginPage.dart';
 import 'package:e_commerce/product_details.dart';
 import 'package:e_commerce/provider_data.dart';
 import 'package:flutter/material.dart';
@@ -194,7 +195,9 @@ class _ProfileState extends State<Profile> {
                 )
             ),
             InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LoginPage()));
+                },
                 child: Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
