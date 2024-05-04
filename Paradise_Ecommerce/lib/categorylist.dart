@@ -147,6 +147,7 @@ class _CategoryListState extends State<CategoryList> {
                       }
                       // Lanjutkan dengan logika untuk kategori lainnya...
                     },
+
                     child: Card(
                       elevation: 4,
                       shape: RoundedRectangleBorder(
