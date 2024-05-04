@@ -86,25 +86,23 @@ class _CameraKTPState extends State<CameraKTP> {
         },
       ),
       bottomNavigationBar: BottomAppBar(
-        child: Expanded(
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              foregroundColor: Color(0xFF6366F1),
-              backgroundColor: Color(0xFF6366F1) // This is the button color
-            ),
-            child: Icon(Icons.camera, color: Colors.white,),
-            onPressed: () async {
-              try {
-                await _initializeControllerFuture;
-                final XFile? imageFile = await _controller.takePicture();
-                if (imageFile != null) {
-                  Navigator.pop(context, imageFile.path);
-                }
-              } catch (e) {
-                print(e);
-              }
-            },
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            foregroundColor: Color(0xFF6366F1),
+            backgroundColor: Color(0xFF6366F1) // This is the button color
           ),
+          child: Icon(Icons.camera, color: Colors.white,),
+          onPressed: () async {
+            try {
+              await _initializeControllerFuture;
+              final XFile? imageFile = await _controller.takePicture();
+              if (imageFile != null) {
+                Navigator.pop(context, imageFile.path);
+              }
+            } catch (e) {
+              print(e);
+            }
+          },
         ),
       ),
     );

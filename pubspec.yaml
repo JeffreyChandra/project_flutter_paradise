@@ -1,0 +1,26 @@
+name: flutter_face_api
+description: 
+  This is a flutter module for compairing faces using phone`s camera. 
+version: 6.1.1
+homepage: "https://github.com/regulaforensics/flutter_face_api"
+
+environment:
+  sdk: ">=2.18.0 <4.0.0"
+  flutter: ">=3.3.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: io.flutter.plugins.regula.faceapi.flutter_face_api
+        pluginClass: FlutterFaceApiPlugin
+      ios:
+        pluginClass: FlutterFaceApiPlugin

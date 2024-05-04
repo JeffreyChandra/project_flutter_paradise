@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:e_commerce/widget/face_api.dart' hide Image;
 
 class Account {
   int id;
@@ -13,6 +16,9 @@ class Account {
   String kota;
   String kecamatan;
   String kode_pos;
+  bool isBiometricEnabled;
+  bool isFaceUnlockEnabled;
+  var faceData;
 
   Account({
     this.id = 0,
@@ -27,7 +33,12 @@ class Account {
     this.kota = '',
     this.kecamatan = '',
     this.kode_pos = '',
-  });
+    this.isBiometricEnabled = false,
+    this.isFaceUnlockEnabled = false,
+    this.faceData,
+  }) {
+    this.faceData ??= MatchFacesImage();
+  }
 }
 
 class ProfileProvider extends ChangeNotifier{
@@ -56,6 +67,37 @@ class ProfileProvider extends ChangeNotifier{
           a.password = newPass;
           break;
         }
+      }
+    }
+    notifyListeners();
+  }
+
+  void enableBiometric(int id, bool isEnabled){
+    for (var a in account) {
+      if (a.id == id) {
+        a.isBiometricEnabled = isEnabled;
+        break;
+      }
+    }
+    notifyListeners();
+  }
+
+  void enableFaceUnlock(int id, bool isEnabled){
+    for (var a in account) {
+      if (a.id == id) {
+        a.isFaceUnlockEnabled = isEnabled;
+        break;
+      }
+    }
+    notifyListeners();
+  }
+
+  void addFaceData(int id, var incFaceData, int type){
+    for (var a in account) {
+      if (a.id == id) {
+        a.faceData.bitmap = base64Encode(incFaceData);
+        a.faceData.imageType = type;
+        break;
       }
     }
     notifyListeners();

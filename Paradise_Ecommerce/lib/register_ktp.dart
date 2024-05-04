@@ -32,6 +32,7 @@ class _RegisterKTPState extends State<RegisterKTP> {
 
   var errorText = '';
   bool showInput = false;
+  bool showInputError = false;
 
   var nikController = TextEditingController();
 
@@ -73,12 +74,12 @@ class _RegisterKTPState extends State<RegisterKTP> {
     return checkLine(3) ?? checkLine(2);
   }
 
-  Future<void> validateNIK(nik) async {
-    print("DISINI : ${nik}");
-    NIKModel result = await NIKValidator.instance.parse(nik : nik);
+  Future<void> validateNIK(varNik) async {
+    NIKModel result = await NIKValidator.instance.parse(nik : varNik);
     if (result != null && result.valid == true) {
       setState(() {
         showInput = false;
+        nik = varNik;
         tglLahir = result.bornDate;
         gender = result.gender;
         provinsi = result.province;
@@ -89,7 +90,8 @@ class _RegisterKTPState extends State<RegisterKTP> {
     } else {
       setState(() {
         showInput = true;
-        nikController.text = nik;
+        showInputError = true;
+        nikController.text = varNik;
       });
     }
   }
@@ -151,16 +153,14 @@ class _RegisterKTPState extends State<RegisterKTP> {
 
         // Perform OCR on the preprocessed image
         final String recognisedText = await FlutterTesseractOcr.extractText(blurredImagePath, language: 'ind');
-        print('Recognised Text: $recognisedText');
 
         // Normalize the recognisedText to extract the NIK
         nik = normalizeNikText(recognisedText)!;
-        print('Normalized NIK: $nik');
 
         // Validate the NIK using the nik_validator plugin
         if (nik == null || nik!.length < 12) {
           setState(() {
-            errorText = 'Foto mu mungkin kurang jernih, pastikan jangan terlalu terang atau gelap, coba ulangi lagi';
+            errorText = 'Foto mu mungkin kurang jernih, pastikan jangan terlalu terang atau gelap, dan pastikan yang anda foto itu KTP. Coba ulangi lagi';
           });
         } else {
           // Validate the NIK using the nik_validator plugin
@@ -169,7 +169,7 @@ class _RegisterKTPState extends State<RegisterKTP> {
       }
     } catch (e) {
       setState(() {
-        errorText = 'Foto mu mungkin kurang jernih, pastikan jangan terlalu terang atau gelap, coba ulangi lagi';
+        errorText = 'Foto mu mungkin kurang jernih, pastikan jangan terlalu terang atau gelap, dan pastikan yang anda foto itu KTP. Coba ulangi lagi';
       });
     }
   }
@@ -221,30 +221,44 @@ class _RegisterKTPState extends State<RegisterKTP> {
                 padding: EdgeInsets.symmetric(vertical: 20, horizontal: 16),
                 child: Column(
                   children: <Widget>[
-                    TextField(
-                      controller: nikController,
-                      style: TextStyle(
-                        color: Colors.black,
-                      ),
-                      decoration: InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xFF6366F1), width: 1)
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xFF6366F1))
-                        ),
-                        labelText: 'NIK',
-                        errorText: 'Person with this NIK does not exist, please edit it manually',
-                        hintStyle: TextStyle(color: Colors.grey),
-                        floatingLabelStyle: TextStyle(color: Colors.black),
-                      ),
+                  TextField(
+                    controller: nikController,
+                    style: TextStyle(
+                      color: Colors.black,
                     ),
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xFF6366F1), width: 1)
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xFF6366F1))
+                      ),
+                      errorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: showInputError ? Colors.red : Color(0xFF6366F1), width: 1)
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: showInputError ? Colors.red : Color(0xFF6366F1))
+                      ),
+                      labelText: 'NIK',
+                      errorText: showInputError ? 'Person with this NIK does not exist, please edit it manually' : '',
+                      hintStyle: TextStyle(color: Colors.grey),
+                      floatingLabelStyle: TextStyle(color: Colors.black),
+                    ),
+                    onChanged: (text) {
+                      setState(() {
+                        showInputError = false; // This will remove the error when the user starts typing
+                      });
+                    },
+                  ),
+                  SizedBox(height: 12),
                     Container(
                       width: double.infinity,
                       child: ButtonTheme(
                         child: TextButton(
                           onPressed: () {
-                            validateNIK(nikController.text);
+                            setState(() {
+                              validateNIK(nikController.text);
+                            });
                           },
                           child: Text('Validate',
                               style: GoogleFonts.inter(

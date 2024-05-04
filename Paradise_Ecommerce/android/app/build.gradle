@@ -1,7 +1,7 @@
 plugins {
     id "com.android.application"
     // START: FlutterFire Configuration
-    id 'com.google.gms.google-services'
+//    id 'com.google.gms.google-services'
     // END: FlutterFire Configuration
     id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
@@ -26,7 +26,7 @@ if (flutterVersionName == null) {
 }
 
 android {
-    namespace "com.example.e_commerce"
+    namespace "io.flutter.plugins.regula.faceapi.e_commerce"
     compileSdk flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 
@@ -60,6 +60,10 @@ android {
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig signingConfigs.debug
         }
+    }
+
+    aaptOptions {
+        noCompress "Regula/faceSdkResource.dat"
     }
 }
 
