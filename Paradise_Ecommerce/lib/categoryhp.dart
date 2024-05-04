@@ -32,7 +32,7 @@ class _handphoneState extends State<handphone>{
   @override
   Widget build(BuildContext context) {
     final productProvider = Provider.of<ProductProvider>(context);
-    final product= productProvider.products;
+    final product = productProvider.products;
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
