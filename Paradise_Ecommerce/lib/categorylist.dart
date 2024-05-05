@@ -1,9 +1,10 @@
+import 'package:e_commerce/categoryhp.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class CategoryList extends StatefulWidget {
-  const CategoryList ({Key? key}) : super(key: key);
+  const CategoryList({Key? key}) : super(key: key);
 
   @override
   State<CategoryList> createState() => _CategoryListState();
@@ -22,15 +23,21 @@ class Category {
 class _CategoryListState extends State<CategoryList> {
   var PrimaryColor = Color.fromARGB(255, 129, 141, 248);
   List<Category> categories = [
-    Category(name: 'Handphone', picFile: '../assets/images/category/handphone.png'),
-    Category(name: 'Pria', picFile: '../assets/images/category/pakaianpria.png'),
-    Category(name: 'Wanita', picFile: '../assets/images/category/pakaianwanita.jpg'),
+    Category(
+        name: 'Handphone', picFile: '../assets/images/category/handphone.png'),
+    Category(
+        name: 'Pria', picFile: '../assets/images/category/pakaianpria.png'),
+    Category(
+        name: 'Wanita', picFile: '../assets/images/category/pakaianwanita.jpg'),
     Category(name: 'Laptop', picFile: '../assets/images/category/laptop.jpg'),
-    Category(name: 'Komputer', picFile: '../assets/images/category/komputer.jpg'),
+    Category(
+        name: 'Komputer', picFile: '../assets/images/category/komputer.jpg'),
     Category(name: 'Anak-anak', picFile: '../assets/images/category/kids.jpg'),
     Category(name: 'Game', picFile: '../assets/images/category/game.jpg'),
-    Category(name: 'Sepatu', picFile: '../assets/images/category/motor.jpg'),
-    Category(name: 'Aksesoris',picFile: '../assets/images/category/pakaianpria.png'),
+    Category(name: 'Motor', picFile: '../assets/images/category/motor.jpg'),
+    Category(
+        name: 'Aksesoris',
+        picFile: '../assets/images/category/pakaianpria.png'),
   ];
 
   @override
@@ -139,11 +146,81 @@ class _CategoryListState extends State<CategoryList> {
                           ),
                         );
                       } else if (categories[index].name == 'Pria') {
-                        // Navigasi ke halaman yang sesuai untuk kategori 'Pria'
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Pria(
+                              category: categories[index],
+                            ),
+                          ),
+                        );
                       } else if (categories[index].name == 'Wanita') {
-                        // Navigasi ke halaman yang sesuai untuk kategori 'Wanita'
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Wanita(
+                              category: categories[index],
+                            ),
+                          ),
+                        );
+                      } else if (categories[index].name == 'Laptop') {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Laptop(
+                              category: categories[index],
+                            ),
+                          ),
+                        );
+                      } else if (categories[index].name == 'Komputer') {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => komputer(
+                              category: categories[index],
+                            ),
+                          ),
+                        );
+                      } else if (categories[index].name == 'Anak-anak') {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AnakAnak(
+                              category: categories[index],
+                            ),
+                          ),
+                        );
                       }
-                      // Lanjutkan dengan logika untuk kategori lainnya...
+                      else if (categories[index].name == 'Game') {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Game(
+                              category: categories[index],
+                            ),
+                          ),
+                        );
+                      }
+                      else if (categories[index].name == 'Motor') {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Motor(
+                              category: categories[index],
+                            ),
+                          ),
+                        );
+                      }
+                       else if (categories[index].name == 'Aksesoris') {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Aksesoris(
+                              category: categories[index],
+                            ),
+                          ),
+                        );
+                      }
                     },
                     child: Card(
                       elevation: 4,
