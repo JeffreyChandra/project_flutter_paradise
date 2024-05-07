@@ -122,6 +122,7 @@ class _ProfileState extends State<Profile> {
 
     return Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           bottom: PreferredSize(
             preferredSize: Size.fromHeight(1),
             child: Container(
