@@ -239,7 +239,7 @@ class _ProfileState extends State<Profile> {
                             )
                         ),
                         padding: EdgeInsets.all(12),
-                        child: Text("Orders",
+                        child: Text("Order History",
                           style: TextStyle(
                             color: Color(0xFF31323d),
                             fontWeight: FontWeight.w600,
