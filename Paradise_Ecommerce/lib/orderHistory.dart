@@ -13,6 +13,7 @@ class OrderHistory extends StatefulWidget {
 class _OrderHistoryState extends State<OrderHistory> {
   @override
   Widget build(BuildContext context) {
+    const PrimaryColor2 = Color.fromARGB(50, 129, 141, 248);
     return Scaffold(
       appBar: AppBar(
         bottom: PreferredSize(
@@ -33,13 +34,14 @@ class _OrderHistoryState extends State<OrderHistory> {
       body: Consumer<OrderHistoryProvider>(
         builder: (context, provider, child) {
           return ListView.builder(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(15.0),
             itemCount: provider.orderHistoryItems.length,
             itemBuilder: (context, index) {
               final item = provider.orderHistoryItems[index];
               return Card(
+                color: PrimaryColor2,
                 margin: const EdgeInsets.symmetric(vertical: 10.0),
-                elevation: 5.0,
+                elevation: 0,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15.0),
                 ),
