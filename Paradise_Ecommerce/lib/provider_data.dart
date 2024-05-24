@@ -201,3 +201,68 @@ class ProductProvider extends ChangeNotifier {
     return totalStock;
   }
 }
+
+// Order History
+class OrderHistoryItem {
+  final String imagePath;
+  final String title;
+  final int totalPrice;
+  final String category;
+  final DateTime purchaseDate;
+  int sold;
+
+  OrderHistoryItem({
+    required this.imagePath,
+    required this.title,
+    required this.totalPrice,
+    required this.category,
+    required this.purchaseDate,
+    this.sold = 0,
+  });
+}
+
+class OrderHistoryProvider extends ChangeNotifier {
+  List<OrderHistoryItem> orderHistoryItems = [
+    OrderHistoryItem(
+      imagePath: 'assets/produk/1.jpg',
+      title: 'Poke Ball',
+      totalPrice: 72000,
+      category: "Mainan",
+      purchaseDate: DateTime.now(),
+    ),
+    OrderHistoryItem(
+      imagePath: 'assets/produk/1.jpg',
+      title: 'Poke Ball',
+      totalPrice: 72000,
+      category: "Mainan",
+      purchaseDate: DateTime.now(),
+    ),
+    OrderHistoryItem(
+      imagePath: 'assets/produk/1.jpg',
+      title: 'Poke Ball',
+      totalPrice: 72000,
+      category: "Mainan",
+      purchaseDate: DateTime.now(),
+    ),
+    OrderHistoryItem(
+      imagePath: 'assets/produk/1.jpg',
+      title: 'Poke Ball',
+      totalPrice: 72000,
+      category: "Mainan",
+      purchaseDate: DateTime.now(),
+    ),
+    OrderHistoryItem(
+      imagePath: 'assets/produk/1.jpg',
+      title: 'Poke Ball',
+      totalPrice: 72000,
+      category: "Mainan",
+      purchaseDate: DateTime.now(),
+    ),
+    
+  ];
+
+  void addOrderHistoryItem(OrderHistoryItem item) {
+    orderHistoryItems.add(item);
+    notifyListeners();
+  }
+}
