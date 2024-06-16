@@ -3,6 +3,7 @@ import 'package:e_commerce/edit_password.dart';
 import 'package:e_commerce/edit_profile.dart';
 import 'package:e_commerce/home.dart';
 import 'package:e_commerce/loginPage.dart';
+import 'package:e_commerce/orderHistory.dart';
 import 'package:e_commerce/product_details.dart';
 import 'package:e_commerce/provider_data.dart';
 import 'package:flutter/material.dart';
@@ -122,6 +123,7 @@ class _ProfileState extends State<Profile> {
 
     return Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           bottom: PreferredSize(
             preferredSize: Size.fromHeight(1),
             child: Container(
@@ -227,7 +229,9 @@ class _ProfileState extends State<Profile> {
                       )
                   ),
                   InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => OrderHistory()));
+                      },
                       child: Container(
                         width: double.infinity,
                         decoration: BoxDecoration(
@@ -239,7 +243,7 @@ class _ProfileState extends State<Profile> {
                             )
                         ),
                         padding: EdgeInsets.all(12),
-                        child: Text("Orders",
+                        child: Text("Order History",
                           style: TextStyle(
                             color: Color(0xFF31323d),
                             fontWeight: FontWeight.w600,

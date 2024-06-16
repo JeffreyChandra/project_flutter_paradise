@@ -1,4 +1,5 @@
 import 'package:e_commerce/loginPage.dart';
+import 'package:e_commerce/orderHistory.dart';
 import 'package:e_commerce/payment.dart';
 import 'package:e_commerce/provider_data.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => ProfileProvider()),
         ChangeNotifierProvider(create: (context) => ProductProvider()),
         ChangeNotifierProvider(create: (context) => PaymentMethod()),
+        ChangeNotifierProvider(create: (context) => OrderHistoryProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -1,7 +1,9 @@
+import 'package:e_commerce/navigationbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:e_commerce/provider_data.dart'; // Adjust the import to your file structure
 
 class PaymentMethod extends ChangeNotifier {
   String _paymentMethod = '';
@@ -14,19 +16,60 @@ class PaymentMethod extends ChangeNotifier {
   }
 }
 
-class Payment extends StatelessWidget {
+class Payment extends StatefulWidget {
   const Payment({Key? key}) : super(key: key);
+
+  @override
+  _PaymentState createState() => _PaymentState();
+}
+
+class _PaymentState extends State<Payment> {
+  bool isLoading = false;
+  bool isSuccess = false;
+
+  void _pay() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    await Future.delayed(Duration(seconds: 2));
+
+    setState(() {
+      isLoading = false;
+      isSuccess = true;
+    });
+
+    await Future.delayed(Duration(seconds: 1));
+
+    final paymentModel = Provider.of<PaymentMethod>(context, listen: false);
+    final selectedMethod = paymentModel.paymentMethod;
+    if (selectedMethod.isNotEmpty) {
+      final orderHistoryProvider = Provider.of<OrderHistoryProvider>(context, listen: false);
+      orderHistoryProvider.addOrderHistoryItem(
+        OrderHistoryItem(
+          imagePath: 'assets/produk/2.jpg',
+          title: 'Poke Balls',
+          totalPrice: 720020,
+          category: "Mainan",
+          purchaseDate: DateTime.now(),
+        ),
+      );
+
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => NavBar()));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          bottom: PreferredSize(
+        bottom: PreferredSize(
           preferredSize: Size.fromHeight(1.0),
           child: Container(
             color: Color(0xFFDBDBDB),
             height: 1.0,
-          ),),
+          ),
+        ),
         title: Text(
           "Payment",
           style: TextStyle(
@@ -106,24 +149,16 @@ class Payment extends StatelessWidget {
                 Expanded(
                   child: ButtonTheme(
                     child: TextButton(
-                      onPressed: () {
-                        final paymentModel =
-                            Provider.of<PaymentMethod>(context, listen: false);
-                        final selectedMethod = paymentModel.paymentMethod;
-                        if (selectedMethod.isNotEmpty) {
-                          print('Melakukan pembayaran dengan $selectedMethod');
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text(
-                                'Silakan pilih metode pembayaran terlebih dahulu'),
-                          ));
-                        }
-                      },
-                      child: Text('Pay',
-                          style: GoogleFonts.inter(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                          )),
+                      onPressed: isLoading ? null : _pay,
+                      child: isLoading
+                          ? CircularProgressIndicator()
+                          : isSuccess
+                              ? Icon(Icons.check, color: Colors.green)
+                              : Text('Pay',
+                                  style: GoogleFonts.inter(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600,
+                                  )),
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white,
                         backgroundColor: Color(0xFF6366F1),
