@@ -417,25 +417,47 @@ class _ProductDetailsState extends State<ProductDetails> {
                     ),
                   ),
                   SizedBox(width: 12,),
-                  InkWell(
-                    onTap: () {},
-                    child: Container(
-                      width: 40,
-                      height: 40,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(
-                              Radius.circular(4)
+                  Tooltip(
+                    message: Provider.of<ProfileProvider>(context, listen: false)
+                        .isProductInWishlist(product, Provider.of<ProfileProvider>(context, listen: false).account[0])
+                        ? 'Remove from Wishlist'
+                        : 'Add to Wishlist',
+                    child: InkWell(
+                      onTap: () {
+                        Provider.of<ProfileProvider>(context, listen: false).toggleWishlist(0, product);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              Provider.of<ProfileProvider>(context, listen: false)
+                                  .isProductInWishlist(product, Provider.of<ProfileProvider>(context, listen: false).account[0])
+                                  ? 'Added to Wishlist'
+                                  : 'Removed from Wishlist',
+                            ),
                           ),
+                        );
+                      },
+                      child: Container(
+                        width: 40,
+                        height: 40,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration( // Remove color if not wishlisted
+                          borderRadius: BorderRadius.circular(4),
                           border: Border.all(
                             color: Color(0xFFDBDBDB),
                             width: 1.0,
-                          )
+                          ),
+                        ),
+                        child: Icon(
+                          Provider.of<ProfileProvider>(context)
+                              .isProductInWishlist(product, Provider.of<ProfileProvider>(context).account[0])
+                              ? Icons.favorite
+                              : Icons.favorite_border_outlined,
+                          color: Color(0xFF6366F1), // Color for non-wishlisted state
+                          size: 24,
+                        ),
                       ),
-                      child: Icon(Icons.favorite_border_outlined,
-                          color: Color(0xFF6366F1), size: 24),
                     ),
-                  )
+                  ),
                 ],
               )
             )

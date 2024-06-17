@@ -6,6 +6,7 @@ import 'package:e_commerce/loginPage.dart';
 import 'package:e_commerce/orderHistory.dart';
 import 'package:e_commerce/product_details.dart';
 import 'package:e_commerce/provider_data.dart';
+import 'package:e_commerce/wishlist.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:local_auth/local_auth.dart';
@@ -79,7 +80,6 @@ class _ProfileState extends State<Profile> {
   Future<void> initialize(onInit(dynamic response)) async {
     var licenseData = await loadAssetIfExists("assets/regula.license");
     if (licenseData != null) {
-      print('saya disini');
       var config = FaceApi.InitializationConfiguration();
       config.license = base64Encode(licenseData.buffer.asUint8List());
       FaceApi.FaceSDK.initializeWithConfig(config.toJson()).then(onInit);
@@ -147,14 +147,6 @@ class _ProfileState extends State<Profile> {
                   InkWell(
                     onTap: () {},
                     child: Container(
-                      decoration: BoxDecoration(
-                          border: Border(
-                              bottom: BorderSide(
-                                width: 1,
-                                color: Color(0xFFDBDBDB),
-                              )
-                          )
-                      ),
                       child: InkWell(
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditProfile()));
@@ -168,7 +160,7 @@ class _ProfileState extends State<Profile> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   CircleAvatar(
-                                    backgroundImage: AssetImage("assets/images/pp-placeholder.webp"),
+                                    backgroundImage: AssetImage(profileProvider.account[0].profilePictureUrl),
                                     radius: 30,
                                   ),
                                   SizedBox(width: 24),
@@ -210,15 +202,7 @@ class _ProfileState extends State<Profile> {
                       },
                       child: Container(
                         width: double.infinity,
-                        decoration: BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(
-                                  width: 1,
-                                  color: Color(0xFFDBDBDB),
-                                )
-                            )
-                        ),
-                        padding: EdgeInsets.all(12),
+                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 18),
                         child: Text("Change Password",
                           style: TextStyle(
                             color: Color(0xFF31323d),
@@ -228,61 +212,12 @@ class _ProfileState extends State<Profile> {
                         ),
                       )
                   ),
-                  InkWell(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => OrderHistory()));
-                      },
-                      child: Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(
-                                  width: 1,
-                                  color: Color(0xFFDBDBDB),
-                                )
-                            )
-                        ),
-                        padding: EdgeInsets.all(12),
-                        child: Text("Order History",
-                          style: TextStyle(
-                            color: Color(0xFF31323d),
-                            fontWeight: FontWeight.w600,
-                            fontSize: 12,
-                          ),
-                        ),
-                      )
-                  ),
-                  InkWell(
-                      onTap: () {},
-                      child: Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(
-                                  width: 1,
-                                  color: Color(0xFFDBDBDB),
-                                )
-                            )
-                        ),
-                        padding: EdgeInsets.all(12),
-                        child: Text("Wishlist",
-                          style: TextStyle(
-                            color: Color(0xFF31323d),
-                            fontWeight: FontWeight.w600,
-                            fontSize: 12,
-                          ),
-                        ),
-                      )
+                  Divider(
+                    color: Colors.grey.shade100,
+                    height: 8,
+                    thickness: 8,
                   ),
                   Container(
-                    decoration: BoxDecoration(
-                        border: Border(
-                            bottom: BorderSide(
-                              width: 1,
-                              color: Color(0xFFDBDBDB),
-                            )
-                        )
-                    ),
                     child: SwitchListTile(
                       contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 0),
                       title: Text('Enable Biometric Login', style: TextStyle(
@@ -303,14 +238,6 @@ class _ProfileState extends State<Profile> {
                     ),
                   ),
                   Container(
-                    decoration: BoxDecoration(
-                        border: Border(
-                            bottom: BorderSide(
-                              width: 1,
-                              color: Color(0xFFDBDBDB),
-                            )
-                        )
-                    ),
                     child: SwitchListTile(
                       contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 0),
                       title: Text('Enable Face Unlock', style: TextStyle(
@@ -327,8 +254,8 @@ class _ProfileState extends State<Profile> {
                             FaceApi.FaceCaptureResponse.fromJson(json.decode(result))!;
                             if (response.image != null && response.image!.bitmap != null)
                               Provider.of<ProfileProvider>(context, listen: false).enableFaceUnlock(0, true);
-                              Provider.of<ProfileProvider>(context, listen: false).addFaceData(0, base64Decode(
-                                  response.image!.bitmap!.replaceAll("\n", "")), FaceApi.ImageType.LIVE);
+                            Provider.of<ProfileProvider>(context, listen: false).addFaceData(0, base64Decode(
+                                response.image!.bitmap!.replaceAll("\n", "")), FaceApi.ImageType.LIVE);
                           });
                         } else {
                           Provider.of<ProfileProvider>(context, listen: false).enableFaceUnlock(0, false);
@@ -336,21 +263,55 @@ class _ProfileState extends State<Profile> {
                       } : null,
                     ),
                   ),
+                  Divider(
+                    color: Colors.grey.shade100,
+                    height: 8,
+                    thickness: 8,
+                  ),
+                  InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => OrderHistory()));
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 18),
+                        child: Text("Order History",
+                          style: TextStyle(
+                            color: Color(0xFF31323d),
+                            fontWeight: FontWeight.w600,
+                            fontSize: 12,
+                          ),
+                        ),
+                      )
+                  ),
+                  InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => Wishlist()));
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 18),
+                        child: Text("Wishlist",
+                          style: TextStyle(
+                            color: Color(0xFF31323d),
+                            fontWeight: FontWeight.w600,
+                            fontSize: 12,
+                          ),
+                        ),
+                      )
+                  ),
+                  Divider(
+                    color: Colors.grey.shade100,
+                    height: 8,
+                    thickness: 8,
+                  ),
                   InkWell(
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(builder: (context) => Checkout()));
                       },
                       child: Container(
                         width: double.infinity,
-                        decoration: BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(
-                                  width: 1,
-                                  color: Color(0xFFDBDBDB),
-                                )
-                            )
-                        ),
-                        padding: EdgeInsets.all(12),
+                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 18),
                         child: Text("Checkout (temp)",
                           style: TextStyle(
                             color: Color(0xFF31323d),
@@ -366,15 +327,7 @@ class _ProfileState extends State<Profile> {
                       },
                       child: Container(
                         width: double.infinity,
-                        decoration: BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(
-                                  width: 1,
-                                  color: Color(0xFFDBDBDB),
-                                )
-                            )
-                        ),
-                        padding: EdgeInsets.all(12),
+                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 18),
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [

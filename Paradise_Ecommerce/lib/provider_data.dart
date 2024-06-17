@@ -19,6 +19,7 @@ class Account {
   bool isBiometricEnabled;
   bool isFaceUnlockEnabled;
   var faceData;
+  List<Product> wishlist = [];
 
   Account({
     this.id = 0,
@@ -38,11 +39,27 @@ class Account {
     this.faceData,
   }) {
     this.faceData ??= MatchFacesImage();
+    this.wishlist = wishlist ?? [];
   }
 }
 
 class ProfileProvider extends ChangeNotifier{
-  List<Account> account = [];
+  List<Account> account = [
+    Account(
+      id: 0,
+      name: 'Admin',
+      profilePictureUrl: "assets/images/pp-placeholder.webp",
+      email: 'admin@admin.com',
+      password: 'pass',
+      nik: '012345678901',
+      tglLahir: '01-01-2006',
+      gender: 'LAKI-LAKI',
+      provinsi: 'SUMATERA UTARA',
+      kota: 'MEDAN',
+      kecamatan: 'MEDAN KOTA',
+      kode_pos: '20222',
+    )
+  ];
 
   void addAccount(Account a){
     a.id = account.length;
@@ -102,6 +119,28 @@ class ProfileProvider extends ChangeNotifier{
     }
     notifyListeners();
   }
+
+  void toggleWishlist(int accountId, Product product) {
+    for (var a in account) {
+      if (a.id == accountId) {
+        int productIndex = a.wishlist.indexWhere((p) => p.title == product.title);
+
+        if (productIndex != -1) {
+          a.wishlist.removeAt(productIndex);
+        } else {
+          a.wishlist.add(
+            product.copyWith(dateAddedToWishlist: DateTime.now()),
+          );
+        }
+        notifyListeners();
+        break;
+      }
+    }
+  }
+
+  bool isProductInWishlist(Product product, Account account) {
+    return account.wishlist.any((p) => p.title == product.title); // Compare based on title (or other unique identifier)
+  }
 }
 
 // Product
@@ -113,6 +152,7 @@ class Product {
   Map<String, int> varianStock;
   String description;
   int sold;
+  DateTime? dateAddedToWishlist;
 
   Product({
     required this.imagePath,
@@ -121,8 +161,31 @@ class Product {
     required this.category,
     this.description = '',
     this.sold = 0,
+    this.dateAddedToWishlist,
     Map<String, int>? varianStock,
   }) : this.varianStock = varianStock ?? {};
+
+  Product copyWith({
+    String? imagePath,
+    String? title,
+    int? price,
+    String? category,
+    String? description,
+    int? sold,
+    Map<String, int>? varianStock,
+    DateTime? dateAddedToWishlist,
+  }) {
+    return Product(
+      imagePath: imagePath ?? this.imagePath,
+      title: title ?? this.title,
+      price: price ?? this.price,
+      category: category ?? this.category,
+      description: description ?? this.description,
+      sold: sold ?? this.sold,
+      varianStock: varianStock ?? this.varianStock,
+      dateAddedToWishlist: dateAddedToWishlist ?? this.dateAddedToWishlist,
+    );
+  }
 }
 
 class ProductProvider extends ChangeNotifier {

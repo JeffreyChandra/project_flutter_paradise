@@ -64,9 +64,23 @@ class ItemWidget extends StatelessWidget {
                               ),
                             ),
                           ),
-                          Icon(
-                            Icons.favorite_border,
-                            color: Colors.red,
+                          Tooltip(
+                            message: Provider.of<ProfileProvider>(context, listen: false).isProductInWishlist(Provider.of<ProductProvider>(context).products[i], Provider.of<ProfileProvider>(context).account[0]) ? 'Remove from Wishlist' : 'Add to Wishlist',
+                            child: InkWell(
+                              onTap: () {
+                                Provider.of<ProfileProvider>(context, listen: false).toggleWishlist(0, Provider.of<ProductProvider>(context, listen: false).products[i]);
+                                final snackBar = SnackBar(
+                                  content: Text(
+                                    Provider.of<ProfileProvider>(context, listen: false).isProductInWishlist(Provider.of<ProductProvider>(context, listen: false).products[i], Provider.of<ProfileProvider>(context, listen: false).account[0]) ? 'Added to Wishlist' : 'Removed from Wishlist',
+                                  ),
+                                );
+                                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                              },
+                              child: Icon(
+                                Provider.of<ProfileProvider>(context, listen: false).isProductInWishlist(Provider.of<ProductProvider>(context).products[i], Provider.of<ProfileProvider>(context).account[0]) ? Icons.favorite : Icons.favorite_border,
+                                color: Colors.red,
+                              ),
+                            ),
                           )
                         ],
                       ),

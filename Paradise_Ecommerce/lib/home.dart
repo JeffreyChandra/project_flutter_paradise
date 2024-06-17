@@ -24,34 +24,45 @@ class _HomePageState extends State<HomePage> {
             children: [
               Expanded(
                 child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 10),
-                  width: 200,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(Icons.search),
-                      Text(
-                        'cari di sini',
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 15,
+                  height: 40,
+                  child: TextField(
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Color(0xFF31323D),
+                    ), // adjust text field height
+                    decoration: InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(4)),
+                          borderSide: BorderSide(
+                            color: Color(0xFFDBDBDB),
+                            width: 1.0,
+                          ),
                         ),
-                      ),
-                    ],
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(4)),
+                          borderSide: BorderSide(
+                            color: Color(0xFFDBDBDB), // this is for the enabled state
+                            width: 1.0,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(4)),
+                          borderSide: BorderSide(
+                            color: Color(0xFF6366F1),
+                            width: 1.0,
+                          ),
+                        ),
+                        prefixIcon: Icon(Icons.search, size: 24, color: Color(0xFF6366F1),),
+                        prefixIconConstraints: BoxConstraints(minWidth: 40, minHeight: 40),
+                        hintText: 'Cari di sini',
+                        hintStyle: TextStyle(
+                          color: Color(0xFFB1B1B1),
+                        )
+                    ),
                   ),
-                ),
+                )
               ),
-              // Icon(Icons.shopping_cart),
-              InkWell(
-                onTap: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (context) => Profile()));
-                },
-                child: Icon(Icons.person),
-              )
             ],
           ),
         ),
