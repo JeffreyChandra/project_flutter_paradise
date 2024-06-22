@@ -263,6 +263,16 @@ class ProductProvider extends ChangeNotifier {
     });
     return totalStock;
   }
+
+  List<Product> _searchResults = [];
+
+  List<Product> get searchResults => _searchResults;
+
+  Future<List<Product>> searchProducts(String query) async {
+    return products.where((product) {
+      return product.title.toLowerCase().contains(query.toLowerCase());
+    }).toList();
+  }
 }
 
 // Order History

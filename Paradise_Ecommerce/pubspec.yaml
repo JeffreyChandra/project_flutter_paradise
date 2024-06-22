@@ -27,6 +27,7 @@ dependencies:
   camera: ^0.10.5+9
   local_auth: ^2.2.0
   flutter_face_core_basic: 6.1.0
+  flutter_typeahead: ^5.2.0
 
 dev_dependencies:
   flutter_test:
