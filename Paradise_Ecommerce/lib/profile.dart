@@ -2,6 +2,7 @@ import 'package:e_commerce/checkout.dart';
 import 'package:e_commerce/edit_password.dart';
 import 'package:e_commerce/edit_profile.dart';
 import 'package:e_commerce/home.dart';
+import 'package:e_commerce/location.dart';
 import 'package:e_commerce/loginPage.dart';
 import 'package:e_commerce/orderHistory.dart';
 import 'package:e_commerce/product_details.dart';
@@ -120,6 +121,7 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     final profileProvider = Provider.of<ProfileProvider>(context);
     String username = profileProvider.account.isNotEmpty ? profileProvider.account[0].name : '';
+    var selectedLocation = Provider.of<LocationProvider>(context).selectedLocation;
 
     return Scaffold(
         appBar: AppBar(
@@ -196,6 +198,29 @@ class _ProfileState extends State<Profile> {
                       ),
                     ),
                   ),
+
+                  Center(
+                    child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        selectedLocation != null
+                            ? 'Lokasi Pengiriman: ${selectedLocation.name}'
+                            : 'Tidak ada lokasi pengiriman terpilih',
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => LocationScreen()),
+                          );
+                        },
+                        child: Text('Pilih Lokasi Pengiriman'),
+                      ),
+                    ],
+                  ),
+                  ),
+
                   InkWell(
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditPassword()));
@@ -212,6 +237,9 @@ class _ProfileState extends State<Profile> {
                         ),
                       )
                   ),
+
+
+
                   Divider(
                     color: Colors.grey.shade100,
                     height: 8,
