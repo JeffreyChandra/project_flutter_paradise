@@ -29,6 +29,7 @@ dependencies:
   flutter_face_core_basic: 6.1.0
   geolocator: ^12.0.0
   google_maps_flutter: ^2.0.6
+  flutter_typeahead: ^5.2.0
 
 dev_dependencies:
   flutter_test:

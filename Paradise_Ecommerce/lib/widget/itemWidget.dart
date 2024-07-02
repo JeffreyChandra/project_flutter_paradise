@@ -6,8 +6,7 @@ import 'package:provider/provider.dart';
 import '../product_details.dart';
 import 'package:intl/intl.dart';
 
-class ItemWidget extends StatelessWidget {
-  ItemWidget({Key? key}) : super(key: key);
+class ItemWidget extends StatelessWidget {ItemWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
