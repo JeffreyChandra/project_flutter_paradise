@@ -35,6 +35,26 @@ class _ProductDetailsState extends State<ProductDetails> {
       }
     }
 
+    void addToCart() {
+      if (_varian.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Silakan pilih varian terlebih dahulu!'),
+            backgroundColor: Colors.red,
+            duration: Duration(seconds: 2),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Item berhasil ditambahkan ke keranjang!'),
+            backgroundColor: Colors.green,
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -405,7 +425,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                   Expanded(
                     child: ButtonTheme(
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: addToCart,
                         child: Text('Add to Cart',
                             style: GoogleFonts.inter(
                               fontSize: 12,
