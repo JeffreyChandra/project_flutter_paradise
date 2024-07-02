@@ -29,100 +29,109 @@ class _HomePageState extends State<HomePage> {
           child: Row(
             children: [
               Expanded(
-                child: Container(
-                  height: 40,
-                  child: Consumer<ProductProvider>(
-                    builder: (context, productProvider, _) => TypeAheadField<Product>(
-                      suggestionsCallback: (pattern) async {
-                        if (pattern.isEmpty) return [];
-                        return productProvider.searchProducts(pattern);
-                      },
-                      itemBuilder: (context, Product suggestion) {
-                        final formatter = NumberFormat.currency(
-                          locale: 'id_ID',
-                          symbol: 'Rp ',
-                          decimalDigits: 0,
-                        );
+                  child: Container(
+                height: 40,
+                child: Consumer<ProductProvider>(
+                  builder: (context, productProvider, _) =>
+                      TypeAheadField<Product>(
+                    suggestionsCallback: (pattern) async {
+                      if (pattern.isEmpty) return [];
+                      return productProvider.searchProducts(pattern);
+                    },
+                    itemBuilder: (context, Product suggestion) {
+                      final formatter = NumberFormat.currency(
+                        locale: 'id_ID',
+                        symbol: 'Rp ',
+                        decimalDigits: 0,
+                      );
 
-                        return ListTile(
-                          contentPadding: EdgeInsets.all(8), // Add padding
-                          leading: ClipRRect( // Rounded image corners
-                            borderRadius: BorderRadius.circular(8),
-                            child: Image.asset(
-                              suggestion.imagePath,
-                              width: 48,
-                              height: 48,
-                              fit: BoxFit.cover,
+                      return ListTile(
+                        contentPadding: EdgeInsets.all(8), // Add padding
+                        leading: ClipRRect(
+                          // Rounded image corners
+                          borderRadius: BorderRadius.circular(8),
+                          child: Image.asset(
+                            suggestion.imagePath,
+                            width: 48,
+                            height: 48,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        title: Text(
+                          suggestion.title,
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        subtitle: Text(
+                          formatter.format(suggestion.price),
+                          style: GoogleFonts.inter(
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xFF6366F1)),
+                        ),
+                        trailing: Text(
+                          'Stok sisa : ${productProvider.getTotalStock(suggestion)}',
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      );
+                    },
+                    suggestionsController: SuggestionsController(),
+                    onSelected: (Product suggestion) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Builder(
+                              builder: (innerContext) =>
+                                  ProductDetails(obj: suggestion)),
+                        ),
+                      );
+                    },
+                    debounceDuration: const Duration(milliseconds: 400),
+                    builder: (context, controller, focusNode) {
+                      return TextField(
+                        controller: controller,
+                        focusNode: focusNode,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Color(0xFF31323D),
+                        ),
+                        decoration: InputDecoration(
+                          contentPadding:
+                              EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(4)),
+                            borderSide: BorderSide(
+                              color: Color(0xFFDBDBDB),
+                              width: 1.0,
                             ),
                           ),
-                          title: Text(
-                            suggestion.title,
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          subtitle: Text(formatter.format(suggestion.price), style: GoogleFonts.inter(fontWeight: FontWeight.w500 ,color: Color(0xFF6366F1)),),
-                          trailing: Text(
-                            'Stok sisa : ${productProvider.getTotalStock(suggestion)}',
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                        );
-                      },
-                      suggestionsController: SuggestionsController(),
-                      onSelected: (Product suggestion) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Builder(
-                                builder: (innerContext) => ProductDetails(obj: suggestion)
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(4)),
+                            borderSide: BorderSide(
+                              color: Color(0xFFDBDBDB),
+                              width: 1.0,
                             ),
                           ),
-                        );
-                      },
-                      debounceDuration: const Duration(milliseconds: 400),
-                      builder: (context, controller, focusNode) {
-                        return TextField(
-                          controller: controller,
-                          focusNode: focusNode,
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Color(0xFF31323D),
-                          ),
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(4)),
-                              borderSide: BorderSide(
-                                color: Color(0xFFDBDBDB),
-                                width: 1.0,
-                              ),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(4)),
-                              borderSide: BorderSide(
-                                color: Color(0xFFDBDBDB),
-                                width: 1.0,
-                              ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(4)),
-                              borderSide: BorderSide(
-                                color: Color(0xFF6366F1),
-                                width: 1.0,
-                              ),
-                            ),
-                            prefixIcon: Icon(Icons.search, size: 24, color: Color(0xFF6366F1)),
-                            prefixIconConstraints: BoxConstraints(minWidth: 40, minHeight: 40),
-                            hintText: 'Cari di sini',
-                            hintStyle: TextStyle(
-                              color: Color(0xFFB1B1B1),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(4)),
+                            borderSide: BorderSide(
+                              color: Color(0xFF6366F1),
+                              width: 1.0,
                             ),
                           ),
-                        );
-                      },
-                      emptyBuilder: (context) => SizedBox.shrink(),
-                    ),
+                          prefixIcon: Icon(Icons.search,
+                              size: 24, color: Color(0xFF6366F1)),
+                          prefixIconConstraints:
+                              BoxConstraints(minWidth: 40, minHeight: 40),
+                          hintText: 'Cari di sini',
+                          hintStyle: TextStyle(
+                            color: Color(0xFFB1B1B1),
+                          ),
+                        ),
+                      );
+                    },
+                    emptyBuilder: (context) => SizedBox.shrink(),
                   ),
-                )
-              ),
+                ),
+              )),
             ],
           ),
         ),
@@ -130,7 +139,7 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => Keranjang()));
+              context, MaterialPageRoute(builder: (context) => CartPage()));
         },
         backgroundColor: PrimaryColor,
         child: Icon(
