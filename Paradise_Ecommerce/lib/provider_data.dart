@@ -341,33 +341,33 @@ class OrderHistoryProvider extends ChangeNotifier {
 }
 
 
-class Location {
+class Locations {
   final String name;
   final String address;
   final double latitude;
   final double longitude;
 
-  Location({required this.name, required this.address, required this.latitude, required this.longitude});
+  Locations({required this.name, required this.address, required this.latitude, required this.longitude});
 }
 
 class LocationProvider extends ChangeNotifier {
-  List<Location> _locations = [
-    Location(name: 'Rumah', address: 'My Home', latitude: -6.200000, longitude: 106.816666),
-    Location(name: 'Lokasi 2', address: 'Alamat 2', latitude: -6.300000, longitude: 106.816666),
+  List<Locations> _locations = [
+    Locations(name: 'Rumah', address: 'My Home', latitude: -6.200000, longitude: 106.816666),
+    Locations(name: 'Kos Beruang Merah', address: 'Jalan beruang merah', latitude: -6.300000, longitude: 106.816666),
   ];
 
-  List<Location> get locations => _locations;
+  List<Locations> get locations => _locations;
 
-  Location? _selectedLocation;
+  Locations? _selectedLocation;
 
-  Location? get selectedLocation => _selectedLocation;
+  Locations? get selectedLocation => _selectedLocation;
 
-  void setSelectedLocation(Location location) {
+  void setSelectedLocation(Locations location) {
     _selectedLocation = location;
     notifyListeners();
   }
 
-  void addLocation(Location location) {
+  void addLocation(Locations location) {
     _locations.add(location);
     notifyListeners();
   }
