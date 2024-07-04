@@ -400,7 +400,19 @@ class CartProvider with ChangeNotifier {
   List<Map<String, dynamic>> get cartItems => _cartItems;
 
   void addToCart(Map<String, dynamic> cartItem) {
-    _cartItems.add(cartItem);
+    // Check if the item already exists in the cart
+    var existingItemIndex =
+        _cartItems.indexWhere((item) => item['id'] == cartItem['id']);
+
+    if (existingItemIndex >= 0) {
+      // Item already exists, update its quantity
+      _cartItems[existingItemIndex]['quantity'] += 1;
+    } else {
+      // Add new item with default quantity 1
+      cartItem['quantity'] = 1;
+      _cartItems.add(cartItem);
+    }
+
     notifyListeners();
   }
 
@@ -412,7 +424,11 @@ class CartProvider with ChangeNotifier {
   void updateItemQuantity(String id, int newQuantity) {
     var index = _cartItems.indexWhere((item) => item['id'] == id);
     if (index != -1) {
-      _cartItems[index]['quantity'] = newQuantity;
+      if (newQuantity > 0) {
+        _cartItems[index]['quantity'] = newQuantity;
+      } else {
+        _cartItems.removeAt(index);
+      }
       notifyListeners();
     }
   }

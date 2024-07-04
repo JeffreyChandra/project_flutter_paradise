@@ -37,6 +37,17 @@ class _ProductDetailsState extends State<ProductDetails> {
     }
 
     void addToCart(Product product) {
+      if (_varian.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Pilih varian terlebih dahulu."),
+            backgroundColor: Colors.red,
+            duration: Duration(seconds: 2),
+          ),
+        );
+        return;
+      }
+
       // Accessing products list from Provider
       List<Product> products =
           Provider.of<ProductProvider>(context, listen: false).products;
@@ -63,6 +74,7 @@ class _ProductDetailsState extends State<ProductDetails> {
           duration: Duration(seconds: 2),
         ),
       );
+      return;
 
       // Navigasi ke halaman keranjang
       Navigator.of(context)

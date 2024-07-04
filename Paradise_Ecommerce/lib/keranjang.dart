@@ -88,8 +88,8 @@ class CartItemWidget extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold),
                       ),
-<<<<<<< HEAD
-                      Text('Price: \$${item['price'].toStringAsFixed(2)}'),
+                      Text('Price: Rp ${item['price'].toStringAsFixed(2)}'),
+                      Text('Quantity: ${item['quantity']}'),
                       SizedBox(height: 8),
                       Row(
                         children: [
@@ -112,10 +112,6 @@ class CartItemWidget extends StatelessWidget {
                           ),
                         ],
                       ),
-=======
-                      Text('Price: Rp ${item['price'].toStringAsFixed(2)}'),
-                      Text('Quantity: ${item['quantity']}'),
->>>>>>> 87c560d93d71f2b4849c6d53022712c0142f05c6
                     ],
                   ),
                 ),
