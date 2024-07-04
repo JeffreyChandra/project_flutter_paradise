@@ -88,7 +88,7 @@ class CartItemWidget extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold),
                       ),
-                      Text('Price: \$${item['price'].toStringAsFixed(2)}'),
+                      Text('Price: Rp ${item['price'].toStringAsFixed(2)}'),
                       Text('Quantity: ${item['quantity']}'),
                     ],
                   ),
