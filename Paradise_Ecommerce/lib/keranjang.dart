@@ -9,14 +9,6 @@ class CartPage extends StatelessWidget {
     List<Map<String, dynamic>> cartItems =
         Provider.of<CartProvider>(context).cartItems;
 
-    // Calculating total price using a function, not a getter
-    double calculateTotalPrice() {
-      return cartItems.fold(
-        0.0,
-        (sum, item) => sum + (item['price'] ?? 0.0) * (item['quantity'] ?? 0),
-      );
-    }
-
     // Building the UI
     return Scaffold(
       appBar: AppBar(
@@ -40,7 +32,7 @@ class CartPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Total: \$${calculateTotalPrice().toStringAsFixed(2)}', // Calling the function to get total price
+                  'Total: \$${calculateTotalPrice(cartItems).toStringAsFixed(2)}', // Calling the function to get total price
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 ElevatedButton(
@@ -54,6 +46,14 @@ class CartPage extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  // Function to calculate total price
+  double calculateTotalPrice(List<Map<String, dynamic>> cartItems) {
+    return cartItems.fold(
+      0.0,
+      (sum, item) => sum + (item['price'] ?? 0.0) * (item['quantity'] ?? 0),
     );
   }
 }
@@ -89,7 +89,28 @@ class CartItemWidget extends StatelessWidget {
                             fontSize: 16, fontWeight: FontWeight.bold),
                       ),
                       Text('Price: \$${item['price'].toStringAsFixed(2)}'),
-                      Text('Quantity: ${item['quantity']}'),
+                      SizedBox(height: 8),
+                      Row(
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              Provider.of<CartProvider>(context, listen: false)
+                                  .updateItemQuantity(
+                                      item['id'], item['quantity'] - 1);
+                            },
+                            icon: Icon(Icons.remove),
+                          ),
+                          Text('${item['quantity']}'),
+                          IconButton(
+                            onPressed: () {
+                              Provider.of<CartProvider>(context, listen: false)
+                                  .updateItemQuantity(
+                                      item['id'], item['quantity'] + 1);
+                            },
+                            icon: Icon(Icons.add),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),

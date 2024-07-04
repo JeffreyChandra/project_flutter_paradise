@@ -409,6 +409,14 @@ class CartProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void updateItemQuantity(String id, int newQuantity) {
+    var index = _cartItems.indexWhere((item) => item['id'] == id);
+    if (index != -1) {
+      _cartItems[index]['quantity'] = newQuantity;
+      notifyListeners();
+    }
+  }
+
   double get totalPrice {
     return _cartItems.fold(
       0.0,
