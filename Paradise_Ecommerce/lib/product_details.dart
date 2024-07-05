@@ -75,10 +75,6 @@ class _ProductDetailsState extends State<ProductDetails> {
         ),
       );
       return;
-
-      // Navigasi ke halaman keranjang
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => CartPage()));
     }
 
     return Scaffold(

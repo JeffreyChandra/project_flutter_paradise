@@ -32,7 +32,7 @@ class CartPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Total: \$${calculateTotalPrice(cartItems).toStringAsFixed(2)}', // Calling the function to get total price
+                  'Total: Rp ${calculateTotalPrice(cartItems).toStringAsFixed(2)}', // Calling the function to get total price
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 ElevatedButton(

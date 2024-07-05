@@ -422,13 +422,25 @@ class CartProvider with ChangeNotifier {
   }
 
   void updateItemQuantity(String id, int newQuantity) {
+    // Temukan indeks item dalam keranjang berdasarkan ID
     var index = _cartItems.indexWhere((item) => item['id'] == id);
     if (index != -1) {
-      if (newQuantity > 0) {
+      // Dapatkan item dari keranjang berdasarkan indeks
+      var item = _cartItems[index];
+
+      // Periksa apakah kuantitas baru tidak melebihi stok yang tersedia
+      if (newQuantity <= item['stock'] && newQuantity > 0) {
+        // Perbarui kuantitas item jika tidak melebihi stok dan lebih dari nol
         _cartItems[index]['quantity'] = newQuantity;
-      } else {
+      } else if (newQuantity <= 0) {
+        // Hapus item dari keranjang jika kuantitasnya nol atau lebih rendah
         _cartItems.removeAt(index);
+      } else {
+        // Anda dapat menambahkan logika untuk menampilkan pesan atau melakukan tindakan lain jika stok tidak mencukupi
+        print("Stok tidak mencukupi atau kuantitas tidak valid.");
       }
+
+      // Beritahukan perubahan kepada listener
       notifyListeners();
     }
   }
