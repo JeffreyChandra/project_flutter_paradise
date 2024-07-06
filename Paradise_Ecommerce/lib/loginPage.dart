@@ -1,9 +1,9 @@
 import 'package:e_commerce/categoryhp.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:e_commerce/navigationbar.dart'; // Sesuaikan dengan import yang sesuai
-import 'package:e_commerce/provider_data.dart'; // Sesuaikan dengan import yang sesuai
-import 'package:e_commerce/register.dart'; // Sesuaikan dengan import yang sesuai
+import 'package:e_commerce/navigationbar.dart'; // Ganti dengan import yang sesuai
+import 'package:e_commerce/provider_data.dart'; // Ganti dengan import yang sesuai
+import 'package:e_commerce/register.dart'; // Ganti dengan import yang sesuai
 
 class LoadingScreen extends StatelessWidget {
   @override
@@ -303,15 +303,20 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void navigateToHome() {
-    Navigator.pushReplacement(
+    // Menampilkan layar loading
+    Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => LoadingScreen()),
     );
 
+    // Simulasi delay untuk menunjukkan loading screen sebelum masuk ke home
     Future.delayed(Duration(seconds: 2), () {
+      // Hapus layar loading dan navigasi ke halaman home
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomePage()),
+        MaterialPageRoute(
+            builder: (context) =>
+                HomePage()), // Sesuaikan dengan halaman home Anda
       );
     });
   }
