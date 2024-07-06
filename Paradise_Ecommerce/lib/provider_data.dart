@@ -142,6 +142,16 @@ class ProfileProvider extends ChangeNotifier {
     }
   }
 
+  void changeProfilePicture(int id, String newProfilePictureUrl) {
+    for (var a in account) {
+      if (a.id == id) {
+        a.profilePictureUrl = newProfilePictureUrl;
+        break;
+      }
+    }
+    notifyListeners();
+  }
+
   bool isProductInWishlist(Product product, Account account) {
     return account.wishlist.any((p) =>
         p.title ==
