@@ -214,7 +214,7 @@ class ProductProvider extends ChangeNotifier {
     ),
     Product(
       imagePath: 'assets/produk/3.jpg',
-      title: 'Piakchu Figure',
+      title: 'Pikachu Figure',
       price: 410500,
       category: "Mainan",
       description:
