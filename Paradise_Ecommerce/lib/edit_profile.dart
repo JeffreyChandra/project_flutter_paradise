@@ -1,14 +1,15 @@
 import 'dart:convert';
-
+import 'dart:io';
 import 'package:e_commerce/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'provider_data.dart';
 import 'package:local_auth/local_auth.dart';
-import 'package:e_commerce/widget/face_api.dart' as FaceApi hide Image;
+import 'package:e_commerce/widget/face_api.dart' as FaceApi;
+import 'package:image_picker/image_picker.dart';
 
 class EditProfile extends StatefulWidget {
-  const EditProfile({super.key});
+  const EditProfile({Key? key}) : super(key: key);
 
   @override
   State<EditProfile> createState() => _EditProfileState();
@@ -18,12 +19,66 @@ class _EditProfileState extends State<EditProfile> {
   bool loading = false;
   late TextEditingController name;
   var imageValid = FaceApi.MatchFacesImage();
+  File? _profileImage;
 
   @override
   void initState() {
     super.initState();
-    final profileProvider = Provider.of<ProfileProvider>(context, listen: false);
-    name = TextEditingController(text: profileProvider.account.isNotEmpty ? profileProvider.account[0].name : '');
+    final profileProvider =
+        Provider.of<ProfileProvider>(context, listen: false);
+    name = TextEditingController(
+        text: profileProvider.account.isNotEmpty
+            ? profileProvider.account[0].name
+            : '');
+  }
+
+  // Metode untuk mengambil gambar profil
+  Future<void> _pickImage() async {
+    final ImagePicker _picker = ImagePicker();
+    XFile? pickedImage;
+
+    // Menampilkan dialog untuk memilih sumber gambar
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Select Image Source'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ListTile(
+                leading: Icon(Icons.camera),
+                title: Text('Camera'),
+                onTap: () async {
+                  // Mengambil gambar dari kamera
+                  pickedImage =
+                      await _picker.pickImage(source: ImageSource.camera);
+                  Navigator.of(context).pop();
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.photo_library),
+                title: Text('Gallery'),
+                onTap: () async {
+                  // Mengambil gambar dari galeri
+                  pickedImage =
+                      await _picker.pickImage(source: ImageSource.gallery);
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+
+    // Memastikan bahwa gambar telah dipilih
+    if (pickedImage != null) {
+      setState(() {
+        // Mengonversi XFile ke File dan memperbarui _profileImage
+        _profileImage = File(pickedImage!.path);
+      });
+    }
   }
 
   matchFaces() {
@@ -31,32 +86,39 @@ class _EditProfileState extends State<EditProfile> {
       loading = true;
     });
 
-    final profileProvider = Provider.of<ProfileProvider>(context, listen: false);
+    final profileProvider =
+        Provider.of<ProfileProvider>(context, listen: false);
     if (profileProvider.account[0].faceData.bitmap == null ||
         profileProvider.account[0].faceData.bitmap == "" ||
         imageValid == null ||
         imageValid.bitmap == null ||
         imageValid.bitmap == "") return;
-    var request = new FaceApi.MatchFacesRequest();
+    var request = FaceApi.MatchFacesRequest();
     request.images = [profileProvider.account[0].faceData, imageValid];
     FaceApi.FaceSDK.matchFaces(jsonEncode(request)).then((value) {
       print('Face Unlock Info : matchFaces request completed');
       var response = FaceApi.MatchFacesResponse.fromJson(json.decode(value));
-      print('Face Unlock Info : ${response}');
+      print('Face Unlock Info : $response');
       FaceApi.FaceSDK.matchFacesSimilarityThresholdSplit(
-          jsonEncode(response!.results), 0.75)
+              jsonEncode(response!.results), 0.75)
           .then((str) {
-        print('Face Unlock Info : matchFacesSimilarityThresholdSplit request completed');
+        print(
+            'Face Unlock Info : matchFacesSimilarityThresholdSplit request completed');
         var split = FaceApi.MatchFacesSimilarityThresholdSplit.fromJson(
             json.decode(str));
         setState(() {
           if (split!.matchedFaces.length > 0) {
-            var percent = double.parse((split.matchedFaces[0]!.similarity! * 100).toStringAsFixed(2));
+            var percent = double.parse(
+                (split.matchedFaces[0]!.similarity! * 100).toStringAsFixed(2));
             print('Face Unlock Info : percent = $percent');
 
             if (percent > 80) {
               profileProvider.changeName(0, name.text);
-              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Profile()));
+              if (_profileImage != null) {
+                profileProvider.changeProfilePicture(0, _profileImage!.path);
+              }
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => Profile()));
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
@@ -81,7 +143,8 @@ class _EditProfileState extends State<EditProfile> {
           }
         });
       }).catchError((error) {
-        print('Face Unlock Info : Error in matchFacesSimilarityThresholdSplit: $error');
+        print(
+            'Face Unlock Info : Error in matchFacesSimilarityThresholdSplit: $error');
         setState(() {
           loading = false;
         });
@@ -121,90 +184,147 @@ class _EditProfileState extends State<EditProfile> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            TextField(
-              controller: name,
-              style: TextStyle(
-                  color: Colors.black,
-              ),
-              decoration: InputDecoration(
-                enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFF6366F1), width: 1)
+            Column(
+              children: [
+                GestureDetector(
+                  onTap: _pickImage,
+                  child: CircleAvatar(
+                    radius: 50,
+                    backgroundImage: _profileImage != null
+                        ? FileImage(_profileImage!)
+                        : NetworkImage(
+                            Provider.of<ProfileProvider>(context)
+                                .account[0]
+                                .profilePictureUrl,
+                          ) as ImageProvider,
+                    child: Icon(
+                      Icons.camera_alt,
+                      size: 50,
+                      color: Colors.white.withOpacity(0.7),
+                    ),
+                  ),
                 ),
-                focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFF6366F1))
+                SizedBox(height: 16),
+                TextField(
+                  controller: name,
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Color(0xFF6366F1), width: 1),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFF6366F1)),
+                    ),
+                    labelText: "Name",
+                    hintStyle: TextStyle(color: Colors.grey),
+                    floatingLabelStyle: TextStyle(color: Colors.black),
+                  ),
                 ),
-                labelText: "Name",
-                hintStyle: TextStyle(color: Colors.grey),
-                floatingLabelStyle: TextStyle(color: Colors.black),
-              ),
+              ],
             ),
             ButtonTheme(
               minWidth: MediaQuery.of(context).size.width,
               child: TextButton(
-                onPressed: loading ? null : () async {
-                  setState(() {
-                    loading = true;
-                  });
-                  try {
-                    final profileProvider = Provider.of<ProfileProvider>(context, listen: false);
-                    bool isBiometricEnabled = profileProvider.account.isNotEmpty ? profileProvider.account[0].isBiometricEnabled : false;
-                    bool isFaceUnlockEnabled = profileProvider.account.isNotEmpty ? profileProvider.account[0].isFaceUnlockEnabled : false;
-                    bool inputDifference = profileProvider.account[0].name == name.text;
+                onPressed: loading
+                    ? null
+                    : () async {
+                        setState(() {
+                          loading = true;
+                        });
+                        try {
+                          final profileProvider = Provider.of<ProfileProvider>(
+                              context,
+                              listen: false);
+                          bool isBiometricEnabled = profileProvider
+                                  .account.isNotEmpty
+                              ? profileProvider.account[0].isBiometricEnabled
+                              : false;
+                          bool isFaceUnlockEnabled = profileProvider
+                                  .account.isNotEmpty
+                              ? profileProvider.account[0].isFaceUnlockEnabled
+                              : false;
+                          bool inputDifference =
+                              profileProvider.account[0].name != name.text;
 
-                    if (isBiometricEnabled && !inputDifference) {
-                      try {
-                        bool isAuthenticated = await LocalAuthentication().authenticate(
-                          localizedReason: 'Please authenticate to edit profile',
-                        );
+                          if (isBiometricEnabled && inputDifference) {
+                            try {
+                              bool isAuthenticated =
+                                  await LocalAuthentication().authenticate(
+                                localizedReason:
+                                    'Please authenticate to edit profile',
+                              );
 
-                        if (isAuthenticated) {
-                          profileProvider.changeName(0, name.text);
-                          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Profile()));
-                        }
-                      } catch (e) {
-                        print(e);
-                      }
-                    } else if (isFaceUnlockEnabled && !inputDifference) {
-                      FaceApi.FaceSDK.presentFaceCaptureActivity().then((result) {
-                        var response =
-                        FaceApi.FaceCaptureResponse.fromJson(json.decode(result))!;
+                              if (isAuthenticated) {
+                                profileProvider.changeName(0, name.text);
+                                if (_profileImage != null) {
+                                  profileProvider.changeProfilePicture(
+                                      0, _profileImage!.path);
+                                }
+                                Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                        builder: (context) => Profile()));
+                              }
+                            } catch (e) {
+                              print(e);
+                            }
+                          } else if (isFaceUnlockEnabled && inputDifference) {
+                            FaceApi.FaceSDK.presentFaceCaptureActivity()
+                                .then((result) {
+                              var response =
+                                  FaceApi.FaceCaptureResponse.fromJson(
+                                      json.decode(result))!;
 
-                        if (response.image != null && response.image!.bitmap != null)
+                              if (response.image != null &&
+                                  response.image!.bitmap != null) {
+                                setState(() {
+                                  imageValid.bitmap = base64Encode(base64Decode(
+                                      response.image!.bitmap!
+                                          .replaceAll("\n", "")));
+                                  imageValid.imageType = FaceApi.ImageType.LIVE;
+                                });
+
+                                matchFaces();
+                              }
+                            });
+                          } else {
+                            profileProvider.changeName(0, name.text);
+                            if (_profileImage != null) {
+                              profileProvider.changeProfilePicture(
+                                  0, _profileImage!.path);
+                            }
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) => Profile()));
+                          }
+                        } catch (e) {
+                          print(e);
+                        } finally {
                           setState(() {
-                            imageValid.bitmap = base64Encode(base64Decode(response.image!.bitmap!.replaceAll("\n", "")));
-                            imageValid.imageType = FaceApi.ImageType.LIVE;
+                            loading = false;
                           });
-
-                        matchFaces();
-                      });
-                    } else {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Profile()));
-                    }
-                  } catch (e) {
-                    print(e);
-                  } finally {
-                    setState(() {
-                      loading = false;
-                    });
-                  }
-                },
+                        }
+                      },
                 child: loading
                     ? CircularProgressIndicator()
-                    : Text('Save',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
+                    : Text(
+                        'Save',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.white,
                   backgroundColor: Color(0xFF6366F1),
                 ),
               ),
-            )
+            ),
           ],
-        )
-      )
+        ),
+      ),
     );
   }
 }
