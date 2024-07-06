@@ -244,9 +244,10 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(builder: (context) => NavBar()),
-                        );
+                        // Navigator.of(context).pushReplacement(
+                        //   MaterialPageRoute(builder: (context) => NavBar()),
+                        // );
+                        navigateToHome();
                       },
                       child: Text("Shortcut login, capek jir regis mulu"),
                     ),
