@@ -1,13 +1,20 @@
-// import 'dart:js';
-
-import 'package:e_commerce/navigationbar.dart';
-import 'package:e_commerce/provider_data.dart';
-import 'package:e_commerce/register.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:e_commerce/categoryhp.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:e_commerce/navigationbar.dart'; // Sesuaikan dengan import yang sesuai
+import 'package:e_commerce/provider_data.dart'; // Sesuaikan dengan import yang sesuai
+import 'package:e_commerce/register.dart'; // Sesuaikan dengan import yang sesuai
+
+class LoadingScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: CircularProgressIndicator(), // Indikator loading
+      ),
+    );
+  }
+}
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -20,6 +27,7 @@ class _LoginPageState extends State<LoginPage> {
   bool isObscure = true;
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final profileProvider = Provider.of<ProfileProvider>(context);
@@ -75,29 +83,14 @@ class _LoginPageState extends State<LoginPage> {
                         color: Colors.black,
                       ),
                     ),
-                    // Image.asset(
-                    //   "assets/images/burung.jpeg",
-                    //   scale: 1.3,
-                    //   fit: BoxFit.contain,
-                    // ),
                     Text(
                       "Paradise",
-                      style: GoogleFonts.merriweather(
-                          fontWeight: FontWeight.bold,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
                         fontSize: 40,
                         color: Colors.black,
-                        
                       ),
                     ),
-
-// Merriweather. Merriweather. ...
-// Noto Sans / Serif. Noto Sans / Serif. ...
-// Nunito Sans. Nunito Sans. ...
-// Concert One. Concert One. ...
-// Prompt. Prompt. ...
-// Work Sans. Work Sans. Work Sans is a sans-serif font optimized for use on screens.
-
-                    //Username
                     Container(
                       alignment: Alignment.center,
                       margin: EdgeInsets.symmetric(vertical: 10),
@@ -123,8 +116,6 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                     ),
-
-                    //Password
                     Container(
                       alignment: Alignment.center,
                       margin: EdgeInsets.symmetric(vertical: 10),
@@ -162,8 +153,6 @@ class _LoginPageState extends State<LoginPage> {
                         obscureText: isObscure,
                       ),
                     ),
-
-                    //LOGIN BUTTON
                     Container(
                       margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
                       child: ElevatedButton(
@@ -207,12 +196,12 @@ class _LoginPageState extends State<LoginPage> {
                             );
                           } else {
                             bool isValidUser = profileProvider.account.any(
-                                (account) =>
-                                    account.name == enteredUsername &&
-                                    account.password == enteredPassword);
+                              (account) =>
+                                  account.name == enteredUsername &&
+                                  account.password == enteredPassword,
+                            );
                             if (isValidUser) {
-                              Navigator.of(context).pushReplacement(MaterialPageRoute(
-                                  builder: (context) => NavBar()));
+                              navigateToHome();
                             } else {
                               showDialog(
                                 context: context,
@@ -250,10 +239,17 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 20,),
-                    ElevatedButton(onPressed: (){
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>NavBar()));
-                    }, child: Text("Shortcut login, capek jir regis mulu"),)
+                    SizedBox(
+                      height: 20,
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(builder: (context) => NavBar()),
+                        );
+                      },
+                      child: Text("Shortcut login, capek jir regis mulu"),
+                    ),
                   ],
                 ),
               ),
@@ -275,31 +271,48 @@ class _LoginPageState extends State<LoginPage> {
               child: InkWell(
                 onTap: () {
                   Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => RegisterPage()));
+                    MaterialPageRoute(builder: (context) => RegisterPage()),
+                  );
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
                       child: Text("Don't have an account?"),
-
                     ),
-                    SizedBox(width: 5,),
+                    SizedBox(
+                      width: 5,
+                    ),
                     Container(
-                      child:  Text("Sign up", 
+                      child: Text(
+                        "Sign up",
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
-                        ),),
+                        ),
+                      ),
                     ),
-                    
                   ],
                 ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );
+  }
+
+  void navigateToHome() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => LoadingScreen()),
+    );
+
+    Future.delayed(Duration(seconds: 2), () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+      );
+    });
   }
 }

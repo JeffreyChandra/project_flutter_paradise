@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:e_commerce/widget/face_api.dart' hide Image;
+import 'package:flutter/foundation.dart';
 
 class Account {
   int id;
@@ -400,15 +401,14 @@ class CartProvider with ChangeNotifier {
   List<Map<String, dynamic>> get cartItems => _cartItems;
 
   void addToCart(Map<String, dynamic> cartItem) {
-    // Check if the item already exists in the cart
     var existingItemIndex =
         _cartItems.indexWhere((item) => item['id'] == cartItem['id']);
 
     if (existingItemIndex >= 0) {
-      // Item already exists, update its quantity
+      // Item sudah ada, tambah kuantitasnya
       _cartItems[existingItemIndex]['quantity'] += 1;
     } else {
-      // Add new item with default quantity 1
+      // Tambahkan item baru dengan kuantitas awal 1
       cartItem['quantity'] = 1;
       _cartItems.add(cartItem);
     }
@@ -422,25 +422,18 @@ class CartProvider with ChangeNotifier {
   }
 
   void updateItemQuantity(String id, int newQuantity) {
-    // Temukan indeks item dalam keranjang berdasarkan ID
     var index = _cartItems.indexWhere((item) => item['id'] == id);
     if (index != -1) {
-      // Dapatkan item dari keranjang berdasarkan indeks
-      var item = _cartItems[index];
-
-      // Periksa apakah kuantitas baru tidak melebihi stok yang tersedia
-      if (newQuantity <= item['stock'] && newQuantity > 0) {
-        // Perbarui kuantitas item jika tidak melebihi stok dan lebih dari nol
-        _cartItems[index]['quantity'] = newQuantity;
-      } else if (newQuantity <= 0) {
+      if (newQuantity <= 0) {
         // Hapus item dari keranjang jika kuantitasnya nol atau lebih rendah
         _cartItems.removeAt(index);
+      } else if (newQuantity <= _cartItems[index]['stock']) {
+        // Perbarui kuantitas item jika tidak melebihi stok
+        _cartItems[index]['quantity'] = newQuantity;
       } else {
-        // Anda dapat menambahkan logika untuk menampilkan pesan atau melakukan tindakan lain jika stok tidak mencukupi
         print("Stok tidak mencukupi atau kuantitas tidak valid.");
       }
 
-      // Beritahukan perubahan kepada listener
       notifyListeners();
     }
   }
