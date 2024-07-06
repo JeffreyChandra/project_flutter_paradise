@@ -1,11 +1,11 @@
+import 'dart:io';
+
 import 'package:e_commerce/checkout.dart';
 import 'package:e_commerce/edit_password.dart';
 import 'package:e_commerce/edit_profile.dart';
-import 'package:e_commerce/home.dart';
 import 'package:e_commerce/location.dart';
 import 'package:e_commerce/loginPage.dart';
 import 'package:e_commerce/orderHistory.dart';
-import 'package:e_commerce/product_details.dart';
 import 'package:e_commerce/provider_data.dart';
 import 'package:e_commerce/wishlist.dart';
 import 'package:flutter/material.dart';
@@ -128,6 +128,9 @@ class _ProfileState extends State<Profile> {
         : '';
     var selectedLocation =
         Provider.of<LocationProvider>(context).selectedLocation;
+    String profilePictureUrl = profileProvider.account.isNotEmpty
+        ? profileProvider.account[0].profilePictureUrl
+        : '';
 
     return Scaffold(
         appBar: AppBar(
@@ -169,8 +172,10 @@ class _ProfileState extends State<Profile> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               CircleAvatar(
-                                backgroundImage: AssetImage(profileProvider
-                                    .account[0].profilePictureUrl),
+                                backgroundImage: profilePictureUrl.isNotEmpty
+                                    ? FileImage(File(profilePictureUrl))
+                                    : AssetImage('assets/default_profile.png')
+                                        as ImageProvider,
                                 radius: 30,
                               ),
                               SizedBox(width: 24),

@@ -75,8 +75,12 @@ class _EditProfileState extends State<EditProfile> {
     // Memastikan bahwa gambar telah dipilih
     if (pickedImage != null) {
       setState(() {
-        // Mengonversi XFile ke File dan memperbarui _profileImage
         _profileImage = File(pickedImage!.path);
+
+        // Perbarui gambar profil di ProfileProvider
+        final profileProvider =
+            Provider.of<ProfileProvider>(context, listen: false);
+        profileProvider.changeProfilePicture(0, _profileImage!.path);
       });
     }
   }
