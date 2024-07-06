@@ -243,12 +243,16 @@ class _LoginPageState extends State<LoginPage> {
                       height: 20,
                     ),
                     ElevatedButton(
+<<<<<<< HEAD
                       onPressed: () {
                         // Navigator.of(context).pushReplacement(
                         //   MaterialPageRoute(builder: (context) => NavBar()),
                         // );
                         navigateToHome();
                       },
+=======
+                      onPressed: navigateToHome,
+>>>>>>> 98972a1f9779443dab379927a155b15b9c557d1f
                       child: Text("Shortcut login, capek jir regis mulu"),
                     ),
                   ],
@@ -317,7 +321,7 @@ class _LoginPageState extends State<LoginPage> {
         context,
         MaterialPageRoute(
             builder: (context) =>
-                HomePage()), // Sesuaikan dengan halaman home Anda
+                NavBar()), // Sesuaikan dengan halaman home Anda
       );
     });
   }
