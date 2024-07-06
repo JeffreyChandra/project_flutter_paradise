@@ -70,7 +70,7 @@ class _OrderHistoryState extends State<OrderHistory> {
                       Text(item.category),
                       SizedBox(height: 5.0),
                       Text(
-                        'Total Price: ${item.totalPrice} IDR',
+                        'Total Price: ${formatCurrency(item.totalPrice)}',
                         style: TextStyle(
                           color: Colors.green,
                           fontWeight: FontWeight.bold,
@@ -94,3 +94,8 @@ class _OrderHistoryState extends State<OrderHistory> {
     );
   }
 }
+
+  String formatCurrency(int amount) {
+    final formatter = NumberFormat.currency(locale: 'id_ID', symbol: '', decimalDigits: 0);
+    return formatter.format(amount);
+  }

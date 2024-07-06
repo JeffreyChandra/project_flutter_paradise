@@ -24,20 +24,18 @@ class _EditProfileState extends State<EditProfile> {
   @override
   void initState() {
     super.initState();
-    final profileProvider =
-        Provider.of<ProfileProvider>(context, listen: false);
+    final profileProvider = Provider.of<ProfileProvider>(context, listen: false);
     name = TextEditingController(
-        text: profileProvider.account.isNotEmpty
-            ? profileProvider.account[0].name
-            : '');
+      text: profileProvider.account.isNotEmpty ? profileProvider.account[0].name : '',
+    );
   }
 
-  // Metode untuk mengambil gambar profil
+  // Method to pick an image for the profile
   Future<void> _pickImage() async {
     final ImagePicker _picker = ImagePicker();
     XFile? pickedImage;
 
-    // Menampilkan dialog untuk memilih sumber gambar
+    // Show dialog to select image source
     await showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -50,9 +48,7 @@ class _EditProfileState extends State<EditProfile> {
                 leading: Icon(Icons.camera),
                 title: Text('Camera'),
                 onTap: () async {
-                  // Mengambil gambar dari kamera
-                  pickedImage =
-                      await _picker.pickImage(source: ImageSource.camera);
+                  pickedImage = await _picker.pickImage(source: ImageSource.camera);
                   Navigator.of(context).pop();
                 },
               ),
@@ -60,9 +56,7 @@ class _EditProfileState extends State<EditProfile> {
                 leading: Icon(Icons.photo_library),
                 title: Text('Gallery'),
                 onTap: () async {
-                  // Mengambil gambar dari galeri
-                  pickedImage =
-                      await _picker.pickImage(source: ImageSource.gallery);
+                  pickedImage = await _picker.pickImage(source: ImageSource.gallery);
                   Navigator.of(context).pop();
                 },
               ),
@@ -72,14 +66,13 @@ class _EditProfileState extends State<EditProfile> {
       },
     );
 
-    // Memastikan bahwa gambar telah dipilih
+    // Ensure an image was picked
     if (pickedImage != null) {
       setState(() {
         _profileImage = File(pickedImage!.path);
 
-        // Perbarui gambar profil di ProfileProvider
-        final profileProvider =
-            Provider.of<ProfileProvider>(context, listen: false);
+        // Update profile image in ProfileProvider
+        final profileProvider = Provider.of<ProfileProvider>(context, listen: false);
         profileProvider.changeProfilePicture(0, _profileImage!.path);
       });
     }
@@ -90,8 +83,7 @@ class _EditProfileState extends State<EditProfile> {
       loading = true;
     });
 
-    final profileProvider =
-        Provider.of<ProfileProvider>(context, listen: false);
+    final profileProvider = Provider.of<ProfileProvider>(context, listen: false);
     if (profileProvider.account[0].faceData.bitmap == null ||
         profileProvider.account[0].faceData.bitmap == "" ||
         imageValid == null ||
@@ -216,8 +208,7 @@ class _EditProfileState extends State<EditProfile> {
                   ),
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: Color(0xFF6366F1), width: 1),
+                      borderSide: BorderSide(color: Color(0xFF6366F1), width: 1),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Color(0xFF6366F1)),
@@ -277,7 +268,7 @@ class _EditProfileState extends State<EditProfile> {
                           } else if (isFaceUnlockEnabled && inputDifference) {
                             FaceApi.FaceSDK.presentFaceCaptureActivity()
                                 .then((result) {
-                              var response =
+                                                            var response =
                                   FaceApi.FaceCaptureResponse.fromJson(
                                       json.decode(result))!;
 

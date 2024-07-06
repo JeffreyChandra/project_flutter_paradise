@@ -2,10 +2,12 @@ import 'package:e_commerce/payment.dart';
 import 'package:e_commerce/provider_data.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class Checkout extends StatefulWidget {
-  const Checkout({super.key});
+  final List<Map<String, dynamic>> cartItems;
+  const Checkout({Key? key, required this.cartItems}) : super(key: key);
 
   @override
   State<Checkout> createState() => _CheckoutState();
@@ -14,6 +16,10 @@ class Checkout extends StatefulWidget {
 class _CheckoutState extends State<Checkout> {
   @override
   Widget build(BuildContext context) {
+    List<Map<String, dynamic>> cartItems = widget.cartItems;
+    final selectedLocation = Provider.of<LocationProvider>(context).selectedLocation;
+
+
     return Scaffold(
       appBar: AppBar(
         bottom: PreferredSize(
@@ -43,9 +49,14 @@ class _CheckoutState extends State<Checkout> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        
                         Text("Alamat", style: GoogleFonts.inter(fontWeight: FontWeight.bold, fontSize: 14)),
                         SizedBox(height: 12),
-                        Text("Jl. M.H Thamrin No.140, Pusat Ps., Kec. Medan Kota, Kota Medan, Sumatera Utara 20212", style: TextStyle(fontSize: 12),)
+                        Text(
+                          selectedLocation != null
+                          ? '${selectedLocation.address}'
+                          : 'Tidak ada lokasi pengiriman terpilih',
+                    ),
                       ],
                     ),
                     Divider(
@@ -60,7 +71,11 @@ class _CheckoutState extends State<Checkout> {
                         SizedBox(height: 12),
                         Column(
                           children: [
-                            Container(
+                            ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: cartItems.length,
+                        itemBuilder: (context, index) {
+                          return Container(
                               padding: EdgeInsets.all(6),
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.all(
@@ -76,7 +91,7 @@ class _CheckoutState extends State<Checkout> {
                                 children: [
                                   ClipRRect(
                                     borderRadius: BorderRadius.all(Radius.circular(4)),
-                                    child: Image(image: NetworkImage('https://images.unsplash.com/photo-1560343090-f0409e92791a?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
+                                    child: Image(image: NetworkImage('${cartItems[index]['imageUrl']}'),
                                       height: 60,
                                       width: 60,
                                       fit: BoxFit.cover,
@@ -91,12 +106,12 @@ class _CheckoutState extends State<Checkout> {
                                         Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
-                                              Text("Sepatu hijo", style: GoogleFonts.inter(fontWeight: FontWeight.bold, fontSize: 14)),
+                                              Text("${cartItems[index]['name']}", style: GoogleFonts.inter(fontWeight: FontWeight.bold, fontSize: 14)),
                                               SizedBox(height: 8),
                                               Row(
                                                 crossAxisAlignment: CrossAxisAlignment.center,
                                                 children: [
-                                                  Text("1", style: GoogleFonts.inter(fontWeight: FontWeight.bold, fontSize: 10)),
+                                                  Text("${cartItems[index]['quantity']}", style: GoogleFonts.inter(fontWeight: FontWeight.bold, fontSize: 10)),
                                                   SizedBox(width: 2),
                                                   Text("pcs", style: GoogleFonts.inter(fontSize: 10)),
                                                 ],
@@ -105,9 +120,9 @@ class _CheckoutState extends State<Checkout> {
                                               Row(
                                                 crossAxisAlignment: CrossAxisAlignment.center,
                                                 children: [
-                                                  Text("Size : ", style: GoogleFonts.inter(fontSize: 10)),
+                                                  Text("Variant : ", style: GoogleFonts.inter(fontSize: 10)),
                                                   SizedBox(width: 2),
-                                                  Text("M", style: GoogleFonts.inter(fontWeight: FontWeight.bold, fontSize: 10)),
+                                                  Text("${cartItems[index]['variant']}", style: GoogleFonts.inter(fontWeight: FontWeight.bold, fontSize: 10)),
                                                 ],
                                               ),
                                             ]
@@ -118,7 +133,7 @@ class _CheckoutState extends State<Checkout> {
                                           children: [
                                             Text("Rp : ", style: GoogleFonts.inter(fontSize: 10, color: Color(0xFF6366F1))),
                                             SizedBox(width: 2),
-                                            Text("241.150", style: GoogleFonts.inter(fontWeight: FontWeight.bold, fontSize: 14, color: Color(0xFF6366F1))),
+                                            Text("${formatCurrency(cartItems[index]['price'])}", style: GoogleFonts.inter(fontWeight: FontWeight.bold, fontSize: 14, color: Color(0xFF6366F1))),
                                           ],
                                         ),
                                       ],
@@ -126,75 +141,9 @@ class _CheckoutState extends State<Checkout> {
                                   )
                                 ],
                               ),
-                            ),
-                            SizedBox(height: 8),
-                            Container(
-                              padding: EdgeInsets.all(6),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(
-                                      Radius.circular(4)
-                                  ),
-                                  border: Border.all(
-                                    color: Color(0xFFDBDBDB),
-                                    width: 1.0,
-                                  )
-                              ),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.all(Radius.circular(4)),
-                                    child: Image(image: NetworkImage('https://images.unsplash.com/photo-1560343090-f0409e92791a?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
-                                      height: 60,
-                                      width: 60,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                  SizedBox(width: 8),
-                                  Expanded(
-                                    child: Row(
-                                      crossAxisAlignment: CrossAxisAlignment.end,
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Text("Sepatu hijo", style: GoogleFonts.inter(fontWeight: FontWeight.bold, fontSize: 14)),
-                                              SizedBox(height: 8),
-                                              Row(
-                                                crossAxisAlignment: CrossAxisAlignment.center,
-                                                children: [
-                                                  Text("2", style: GoogleFonts.inter(fontWeight: FontWeight.bold, fontSize: 10)),
-                                                  SizedBox(width: 2),
-                                                  Text("pcs", style: GoogleFonts.inter(fontSize: 10)),
-                                                ],
-                                              ),
-                                              SizedBox(height: 8),
-                                              Row(
-                                                crossAxisAlignment: CrossAxisAlignment.center,
-                                                children: [
-                                                  Text("Size : ", style: GoogleFonts.inter(fontSize: 10)),
-                                                  SizedBox(width: 2),
-                                                  Text("L", style: GoogleFonts.inter(fontWeight: FontWeight.bold, fontSize: 10)),
-                                                ],
-                                              ),
-                                            ]
-                                        ),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.end,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          children: [
-                                            Text("Rp : ", style: GoogleFonts.inter(fontSize: 10, color: Color(0xFF6366F1))),
-                                            SizedBox(width: 2),
-                                            Text("241.150", style: GoogleFonts.inter(fontWeight: FontWeight.bold, fontSize: 14, color: Color(0xFF6366F1))),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
+                            );
+                          },
+                        ),
                           ],
                         )
                       ],
@@ -211,24 +160,20 @@ class _CheckoutState extends State<Checkout> {
                         SizedBox(height: 12),
                         Column(
                           children: [
-                            Container(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text('Sepatu hijo (Size : M) x 1', style: TextStyle(fontSize: 10)),
-                                    Text('Rp 241.150', style: TextStyle(fontSize: 10))
-                                  ],
-                                )
-                            ),
-                            SizedBox(height: 8),
-                            Container(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text('Sepatu hijo (Size : L) x 2', style: TextStyle(fontSize: 10)),
-                                  Text('Rp 482.300', style: TextStyle(fontSize: 10))
-                                ],
-                              ),
+                            ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: cartItems.length,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children:[
+                                      Text('${cartItems[index]["name"]}', style: TextStyle(fontSize: 13)),
+                                      Text('${formatCurrency(cartItems[index]['price'])}', style: TextStyle(fontSize: 13))
+                                    ]
+                                  )
+                                );
+                              },
                             ),
                             Container(
                               padding: EdgeInsets.symmetric(vertical: 8),
@@ -245,8 +190,8 @@ class _CheckoutState extends State<Checkout> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text('Total', style: GoogleFonts.inter(fontWeight: FontWeight.bold, fontSize: 10, color: Color(0xFF6366F1))),
-                                  Text('Rp 723.450', style: GoogleFonts.inter(fontWeight: FontWeight.bold, fontSize: 10, color: Color(0xFF6366F1)))
+                                  Text('Total', style: GoogleFonts.inter(fontWeight: FontWeight.bold, fontSize: 13, color: Color(0xFF6366F1))),
+                                  Text('Rp ${formatCurrency(Provider.of<CartProvider>(context).calculateTotalPrice(cartItems))}', style: GoogleFonts.inter(fontWeight: FontWeight.bold, fontSize: 13, color: Color(0xFF6366F1)))
                                 ],
                               ),
                             ),
@@ -279,7 +224,7 @@ class _CheckoutState extends State<Checkout> {
                     child: ButtonTheme(
                       child: TextButton(
                         onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => Payment()));
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => Payment(cartItems: cartItems,)));
                         },
                         child: Text('Continue to Payment',
                             style: GoogleFonts.inter(
@@ -305,3 +250,9 @@ class _CheckoutState extends State<Checkout> {
     );
   }
 }
+
+
+  String formatCurrency(double amount) {
+    final formatter = NumberFormat.currency(locale: 'id_ID', symbol: '', decimalDigits: 0);
+    return formatter.format(amount);
+  }

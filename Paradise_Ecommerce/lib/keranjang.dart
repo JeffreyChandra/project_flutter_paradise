@@ -1,4 +1,6 @@
+import 'package:e_commerce/checkout.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'provider_data.dart'; // Assuming CartProvider is imported from provider_data.dart
 
@@ -32,12 +34,15 @@ class CartPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Total: Rp ${calculateTotalPrice(cartItems).toStringAsFixed(2)}', // Calling the function to get total price
+                  'Total: Rp ${formatCurrency(Provider.of<CartProvider>(context).calculateTotalPrice(cartItems))}', // Calling the function to get total price
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    // Handle checkout
+                    // Navigasi ke halaman Checkout dan kirim data cartItems
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => Checkout(cartItems: cartItems),
+                    ));
                   },
                   child: Text('Checkout'),
                 ),
@@ -49,12 +54,6 @@ class CartPage extends StatelessWidget {
     );
   }
 
-  double calculateTotalPrice(List<Map<String, dynamic>> cartItems) {
-    return cartItems.fold(
-      0.0,
-      (sum, item) => sum + ((item['price'] ?? 0.0) * (item['quantity'] ?? 0)),
-    );
-  }
 
 }
 
@@ -88,7 +87,7 @@ class CartItemWidget extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 16, fontWeight: FontWeight.bold),
                     ),
-                    Text('Price: Rp ${(item['price'] ?? 0.0).toStringAsFixed(2)}'),
+                    Text('Price: Rp ${formatCurrency(item['price'] ?? 0.0)}'),
                     Text('Stok :${item['quantity'] ?? 0}'),
                     Text('Variant :${item['variant'] ?? ""}'),
 
@@ -124,3 +123,9 @@ class CartItemWidget extends StatelessWidget {
     );
   }
 }
+
+
+  String formatCurrency(double amount) {
+    final formatter = NumberFormat.currency(locale: 'id_ID', symbol: '', decimalDigits: 0);
+    return formatter.format(amount);
+  }

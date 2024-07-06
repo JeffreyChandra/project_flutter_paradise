@@ -327,34 +327,6 @@ class OrderHistoryProvider extends ChangeNotifier {
       category: "Mainan",
       purchaseDate: DateTime.now(),
     ),
-    OrderHistoryItem(
-      imagePath: 'assets/produk/1.jpg',
-      title: 'Poke Ball',
-      totalPrice: 72000,
-      category: "Mainan",
-      purchaseDate: DateTime.now(),
-    ),
-    OrderHistoryItem(
-      imagePath: 'assets/produk/1.jpg',
-      title: 'Poke Ball',
-      totalPrice: 72000,
-      category: "Mainan",
-      purchaseDate: DateTime.now(),
-    ),
-    OrderHistoryItem(
-      imagePath: 'assets/produk/1.jpg',
-      title: 'Poke Ball',
-      totalPrice: 72000,
-      category: "Mainan",
-      purchaseDate: DateTime.now(),
-    ),
-    OrderHistoryItem(
-      imagePath: 'assets/produk/1.jpg',
-      title: 'Poke Ball',
-      totalPrice: 72000,
-      category: "Mainan",
-      purchaseDate: DateTime.now(),
-    ),
   ];
 
   void addOrderHistoryItem(OrderHistoryItem item) {
@@ -479,11 +451,17 @@ class CartProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  double get totalPrice {
-    return _cartItems.fold(
+    double calculateTotalPrice(List<Map<String, dynamic>> cartItems) {
+    return cartItems.fold(
       0.0,
       (sum, item) => sum + ((item['price'] ?? 0.0) * (item['quantity'] ?? 0)),
     );
   }
+
+  void hapusSemuaItemCart() {
+    _cartItems.clear();
+    notifyListeners();
+  }
+
 
 }

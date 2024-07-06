@@ -57,7 +57,7 @@ class _ProductDetailsState extends State<ProductDetails> {
 
       // Tambahkan item ke keranjang
       Map<String, dynamic> cartItem = {
-        'id': index.toString(), // Menggunakan indeks sebagai identifier sementara
+        'id': index.toString(),
         'name': product.title,
         'price': product.price.toDouble(),
         'quantity': 1,

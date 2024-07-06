@@ -388,7 +388,7 @@ class _ProfileState extends State<Profile> {
               InkWell(
                   onTap: () {
                     Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => Checkout()));
+                        MaterialPageRoute(builder: (context) => Checkout(cartItems: [],)));
                   },
                   child: Container(
                     width: double.infinity,
