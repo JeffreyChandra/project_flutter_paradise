@@ -57,12 +57,12 @@ class _ProductDetailsState extends State<ProductDetails> {
 
       // Tambahkan item ke keranjang
       Map<String, dynamic> cartItem = {
-        'id':
-            index.toString(), // Menggunakan indeks sebagai identifier sementara
+        'id': index.toString(), // Menggunakan indeks sebagai identifier sementara
         'name': product.title,
         'price': product.price.toDouble(),
         'quantity': 1,
         'imageUrl': product.imagePath,
+        'variant': _varian,
       };
 
       Provider.of<CartProvider>(context, listen: false).addToCart(cartItem);
@@ -276,6 +276,46 @@ class _ProductDetailsState extends State<ProductDetails> {
                             ],
                           ),
                         ),
+                        Divider(
+                          color: Color(0xFFDBDBDB),
+                          thickness: 1,
+                        ),
+                        Container(
+                          padding:
+                              EdgeInsets.symmetric(vertical: 12, horizontal: 6),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Image(
+                                    image: AssetImage("assets/icon/sold.png"),
+                                    fit: BoxFit.contain,
+                                    width: 20,
+                                    height: 20,
+                                  ),
+                                  SizedBox(
+                                    width: 8,
+                                  ),
+                                  Text("Produk terjual",
+                                      style: TextStyle(
+                                        color: Color(0xFF31323D),
+                                        fontSize: 12,
+                                      ))
+                                ],
+                              ),
+                              Text('${product.sold} pcs',
+                                  style: GoogleFonts.inter(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 12,
+                                    color: Color(0xFF31323D),
+                                  ))
+                            ],
+                          ),
+                        ),
+
                         Divider(
                           color: Color(0xFFDBDBDB),
                           thickness: 1,

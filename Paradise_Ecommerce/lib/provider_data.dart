@@ -1,8 +1,10 @@
 import 'dart:convert';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:e_commerce/widget/face_api.dart' hide Image;
 import 'package:flutter/foundation.dart';
+import 'package:provider/provider.dart';
 
 class Account {
   int id;
@@ -405,43 +407,73 @@ class CartProvider with ChangeNotifier {
         _cartItems.indexWhere((item) => item['id'] == cartItem['id']);
 
     if (existingItemIndex >= 0) {
-      // Item sudah ada, tambah kuantitasnya
-      _cartItems[existingItemIndex]['quantity'] += 1;
+      // Item already exists, increase its quantity
+      _cartItems[existingItemIndex]['quantity'] =
+          (_cartItems[existingItemIndex]['quantity'] ?? 0) + 1;
     } else {
-      // Tambahkan item baru dengan kuantitas awal 1
-      cartItem['quantity'] = 1;
+      // Add new item with initial quantity of 1 and default price if missing
+      cartItem['name'] = cartItem['name'] ?? '';
+      cartItem['quantity'] = cartItem['quantity'] ?? 1;
+      cartItem['price'] = cartItem['price'] ?? 0.0;
+      cartItem['variant'] = cartItem['variant'];
       _cartItems.add(cartItem);
     }
 
     notifyListeners();
   }
 
+
   void removeProduct(String id) {
     _cartItems.removeWhere((item) => item['id'] == id);
     notifyListeners();
   }
 
-  void updateItemQuantity(String id, int newQuantity) {
+  void tambahItemCart(String id) {
     var index = _cartItems.indexWhere((item) => item['id'] == id);
-    if (index != -1) {
-      if (newQuantity <= 0) {
-        // Hapus item dari keranjang jika kuantitasnya nol atau lebih rendah
-        _cartItems.removeAt(index);
-      } else if (newQuantity <= _cartItems[index]['stock']) {
-        // Perbarui kuantitas item jika tidak melebihi stok
-        _cartItems[index]['quantity'] = newQuantity;
-      } else {
-        print("Stok tidak mencukupi atau kuantitas tidak valid.");
-      }
-
-      notifyListeners();
+    var product = _cartItems.firstWhereOrNull((item) => item['id'] == id);
+    if (product == null) {
+      print("Produk tidak ditemukan di keranjang");
+      return;
     }
+
+    var productInCatalog = ProductProvider().products.firstWhereOrNull((p) => p.title == product['name']);
+    if (productInCatalog == null) {
+      print("Produk tidak ditemukan dalam katalog");
+      return;
+    }
+
+    var selectedVariant = product['variant'];
+    var availableStock = productInCatalog.varianStock[selectedVariant];
+
+    if (availableStock != null && product['quantity'] < availableStock) {
+      var newQuantity = product['quantity'] + 1;
+      _cartItems[index]['quantity'] = newQuantity;
+    } else {
+      print("Stok tidak cukup");
+    }
+
+    notifyListeners();
+  }
+
+    void kurangItemCart(String id) {
+    var index = _cartItems.indexWhere((item) => item['id'] == id);
+
+    if (index != -1) {
+      if (_cartItems[index]['quantity'] > 1) {
+        _cartItems[index]['quantity'] -= 1;
+      } else {
+        _cartItems.removeAt(index);
+      }
+    }
+
+    notifyListeners();
   }
 
   double get totalPrice {
     return _cartItems.fold(
       0.0,
-      (sum, item) => sum + (item['price'] * item['quantity']),
+      (sum, item) => sum + ((item['price'] ?? 0.0) * (item['quantity'] ?? 0)),
     );
   }
+
 }

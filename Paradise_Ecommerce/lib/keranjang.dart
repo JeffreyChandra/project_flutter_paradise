@@ -49,14 +49,15 @@ class CartPage extends StatelessWidget {
     );
   }
 
-  // Function to calculate total price
   double calculateTotalPrice(List<Map<String, dynamic>> cartItems) {
     return cartItems.fold(
       0.0,
-      (sum, item) => sum + (item['price'] ?? 0.0) * (item['quantity'] ?? 0),
+      (sum, item) => sum + ((item['price'] ?? 0.0) * (item['quantity'] ?? 0)),
     );
   }
+
 }
+
 
 class CartItemWidget extends StatelessWidget {
   final Map<String, dynamic> item;
@@ -65,59 +66,60 @@ class CartItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Image.network(
-                  item['imageUrl'],
-                  width: 50,
-                  height: 50,
+    return Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Image.network(
+                item['imageUrl'],
+                width: 50,
+                height: 50,
+              ),
+              SizedBox(width: 15),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      item['name'],
+                      style: TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    Text('Price: Rp ${(item['price'] ?? 0.0).toStringAsFixed(2)}'),
+                    Text('Stok :${item['quantity'] ?? 0}'),
+                    Text('Variant :${item['variant'] ?? ""}'),
+
+                    SizedBox(height: 8),
+                    Row(
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            Provider.of<CartProvider>(context, listen: false)
+                                .kurangItemCart(
+                                    item['id']);
+                          },
+                          icon: Icon(Icons.remove),
+                        ),
+                        Text('${item['quantity']}'),
+                        IconButton(
+                          onPressed: () {
+                            Provider.of<CartProvider>(context, listen: false)
+                                .tambahItemCart(
+                                    item['id']);
+                          },
+                          icon: Icon(Icons.add),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-                SizedBox(width: 15),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        item['name'],
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                      Text('Price: Rp ${item['price'].toStringAsFixed(2)}'),
-                      SizedBox(height: 8),
-                      Row(
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              Provider.of<CartProvider>(context, listen: false)
-                                  .updateItemQuantity(
-                                      item['id'], item['quantity'] - 1);
-                            },
-                            icon: Icon(Icons.remove),
-                          ),
-                          Text('${item['quantity']}'),
-                          IconButton(
-                            onPressed: () {
-                              Provider.of<CartProvider>(context, listen: false)
-                                  .updateItemQuantity(
-                                      item['id'], item['quantity'] + 1);
-                            },
-                            icon: Icon(Icons.add),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
