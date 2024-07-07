@@ -172,10 +172,11 @@ class _ProfileState extends State<Profile> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               CircleAvatar(
-                                backgroundImage: profilePictureUrl.isNotEmpty
-                                    ? FileImage(File(profilePictureUrl))
-                                    : AssetImage('assets/default_profile.png')
-                                        as ImageProvider,
+                                backgroundImage: profileProvider.account[0].profilePictureUrl != ''
+                                    ? profileProvider.account[0].profilePictureUrl.startsWith('http')
+                                    ? NetworkImage(profileProvider.account[0].profilePictureUrl) as ImageProvider
+                                    : MemoryImage(base64Decode(profileProvider.account[0].profilePictureUrl))
+                                  : AssetImage('assets/images/pp-placeholder.webp') as ImageProvider,
                                 radius: 30,
                               ),
                               SizedBox(width: 24),

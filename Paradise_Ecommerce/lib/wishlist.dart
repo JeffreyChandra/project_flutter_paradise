@@ -125,54 +125,106 @@ class _WishlistState extends State<Wishlist> {
       ),
       body: Column(
         children: [
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: MenuBar(
                 children: [
-                  ElevatedButton(
-                    onPressed: () async {
-                      final pickedDate = await showDatePicker(
-                        context: context,
-                        initialDate: _selectedDate ?? DateTime.now(),
-                        firstDate: DateTime(2000),
-                        lastDate: DateTime.now(),
-                      );
-                      if (pickedDate != null && pickedDate != _selectedDate) {
-                        setState(() {
-                          _selectedDate = pickedDate;
-                        });
-                      }
-                    },
-                    child: Row(
-                      children: [
-                        Text(_selectedDate == null
-                            ? 'Filter by Wishlisted Date'
-                            : DateFormat('yyyy-MM-dd').format(_selectedDate!)),
-                        if (_selectedDate != null) ...[
-                          SizedBox(width: 12),
-                          InkWell(
-                            onTap: () {
-                              setState(() {
-                                _selectedDate = null;
-                              });
-                            },
-                            child: Icon(Icons.clear, size: 20,),
-                          ),
-                        ]
-                      ]
+                  SubmenuButton(
+                  menuChildren: <Widget>[
+                    MenuItemButton(
+                      onPressed: () async {
+                        final pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: _selectedDate ?? DateTime.now(),
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime.now(),
+                        );
+                        if (pickedDate != null && pickedDate != _selectedDate) {
+                          setState(() {
+                            _selectedDate = pickedDate;
+                          });
+                        }
+                      },
+                      child: Row(
+                          children: [
+                            Text(_selectedDate == null
+                                ? 'Filter by Wishlisted Date'
+                                : DateFormat('yyyy-MM-dd').format(_selectedDate!)),
+                            if (_selectedDate != null) ...[
+                              SizedBox(width: 12),
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    _selectedDate = null;
+                                  });
+                                },
+                                child: Icon(Icons.clear, size: 20,),
+                              ),
+                            ]
+                          ]
+                      ),
                     ),
-                  ),
-                  SizedBox(width: 12,),
-                  ElevatedButton(
-                    onPressed: () => _showPriceFilterDialog(context),
-                    child: Text('Filter by Price'),
-                  ),
-                ],
+                    MenuItemButton(
+                      onPressed: () => _showPriceFilterDialog(context),
+                      child: Text('Filter by Price'),
+                    ),
+                  ],
+                  child: const MenuAcceleratorLabel('Filter'),
+                ),
+                ]
               ),
             ),
           ),
+          // SingleChildScrollView(
+          //   scrollDirection: Axis.horizontal,
+          //   child: Padding(
+          //     padding: const EdgeInsets.all(16.0),
+          //     child: Row(
+          //       children: [
+          //         ElevatedButton(
+          //           onPressed: () async {
+          //             final pickedDate = await showDatePicker(
+          //               context: context,
+          //               initialDate: _selectedDate ?? DateTime.now(),
+          //               firstDate: DateTime(2000),
+          //               lastDate: DateTime.now(),
+          //             );
+          //             if (pickedDate != null && pickedDate != _selectedDate) {
+          //               setState(() {
+          //                 _selectedDate = pickedDate;
+          //               });
+          //             }
+          //           },
+          //           child: Row(
+          //             children: [
+          //               Text(_selectedDate == null
+          //                   ? 'Filter by Wishlisted Date'
+          //                   : DateFormat('yyyy-MM-dd').format(_selectedDate!)),
+          //               if (_selectedDate != null) ...[
+          //                 SizedBox(width: 12),
+          //                 InkWell(
+          //                   onTap: () {
+          //                     setState(() {
+          //                       _selectedDate = null;
+          //                     });
+          //                   },
+          //                   child: Icon(Icons.clear, size: 20,),
+          //                 ),
+          //               ]
+          //             ]
+          //           ),
+          //         ),
+          //         SizedBox(width: 12,),
+          //         ElevatedButton(
+          //           onPressed: () => _showPriceFilterDialog(context),
+          //           child: Text('Filter by Price'),
+          //         ),
+          //       ],
+          //     ),
+          //   ),
+          // ),
           Expanded(
             child: SingleChildScrollView(
               child: GridView.count(
