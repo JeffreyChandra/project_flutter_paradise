@@ -31,8 +31,13 @@ class _handphoneState extends State<handphone> {
     Handphone(title: "hp", filehp: '../assets/images/vivo.webp', price: 79000)
   ];
 
+  double _currentSliderValue = 0;
+
   @override
   Widget build(BuildContext context) {
+    List<Handphone> filteredHandphones =
+        handphones.where((hp) => hp.price <= _currentSliderValue).toList();
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.category.name),
@@ -41,6 +46,35 @@ class _handphoneState extends State<handphone> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'Filter by Price',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Text('Max Price: Rp ${_currentSliderValue.round()}'),
+                Expanded(
+                  child: Slider(
+                    value: _currentSliderValue,
+                    min: 0,
+                    max: 100000,
+                    divisions: 10,
+                    label: _currentSliderValue.round().toString(),
+                    onChanged: (double value) {
+                      setState(() {
+                        _currentSliderValue = value;
+                      });
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
@@ -53,7 +87,7 @@ class _handphoneState extends State<handphone> {
             height: 200,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: handphones.length,
+              itemCount: filteredHandphones.length,
               itemBuilder: (context, index) {
                 return Container(
                   width: 150,
@@ -66,10 +100,11 @@ class _handphoneState extends State<handphone> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Image.asset(handphones[index].filehp, height: 100),
+                      Image.asset(filteredHandphones[index].filehp,
+                          height: 100),
                       SizedBox(height: 8),
-                      Text(handphones[index].title),
-                      Text("Rp ${handphones[index].price}"),
+                      Text(filteredHandphones[index].title),
+                      Text("Rp ${filteredHandphones[index].price}"),
                     ],
                   ),
                 );
@@ -80,13 +115,13 @@ class _handphoneState extends State<handphone> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              'rekomendasi',
+              'Rekomendasi',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: handphones.length,
+              itemCount: filteredHandphones.length,
               itemBuilder: (context, index) {
                 return Container(
                   margin: EdgeInsets.all(8.0),
@@ -96,10 +131,10 @@ class _handphoneState extends State<handphone> {
                     borderRadius: BorderRadius.circular(12.0),
                   ),
                   child: ListTile(
-                    leading: Image.asset(handphones[index].filehp),
-                    title: Text(handphones[index].title),
+                    leading: Image.asset(filteredHandphones[index].filehp),
+                    title: Text(filteredHandphones[index].title),
                     subtitle: Text('Deskripsi produk'),
-                    trailing: Text("Rp ${handphones[index].price}"),
+                    trailing: Text("Rp ${filteredHandphones[index].price}"),
                     onTap: () {
                       // Tambahkan logika untuk menavigasi ke detail produk
                     },
@@ -109,30 +144,6 @@ class _handphoneState extends State<handphone> {
             ),
           ),
         ],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.phone_android),
-            label: 'Handphone',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Pria',
-          ),
-        ],
-        selectedItemColor: Colors.blue,
-        currentIndex: 0,
-        onTap: (index) {
-          if (index == 1) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => Pria(category: Category(name: 'Pria')),
-              ),
-            );
-          }
-        },
       ),
     );
   }
@@ -169,14 +180,50 @@ class _PriaState extends State<Pria> {
         title: "Pria", filepria: '../assets/images/pria.jpg', price: 1000000)
   ];
 
+  double _currentSliderValue = 1000000;
+
   @override
   Widget build(BuildContext context) {
+    List<PriaProduct> filteredPriaProducts =
+        priaProducts.where((pp) => pp.price <= _currentSliderValue).toList();
+
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.category.name),
-        ),
-        backgroundColor: Colors.grey[300],
-        body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      appBar: AppBar(
+        title: Text(widget.category.name),
+      ),
+      backgroundColor: Colors.grey[300],
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'Filter by Price',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Text('Max Price: Rp ${_currentSliderValue.round()}'),
+                Expanded(
+                  child: Slider(
+                    value: _currentSliderValue,
+                    min: 0,
+                    max: 1000000,
+                    divisions: 10,
+                    label: _currentSliderValue.round().toString(),
+                    onChanged: (double value) {
+                      setState(() {
+                        _currentSliderValue = value;
+                      });
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
@@ -189,7 +236,7 @@ class _PriaState extends State<Pria> {
             height: 200,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: priaProducts.length,
+              itemCount: filteredPriaProducts.length,
               itemBuilder: (context, index) {
                 return Container(
                   width: 150,
@@ -202,10 +249,11 @@ class _PriaState extends State<Pria> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Image.asset(priaProducts[index].filepria, height: 100),
+                      Image.asset(filteredPriaProducts[index].filepria,
+                          height: 100),
                       SizedBox(height: 8),
-                      Text(priaProducts[index].title),
-                      Text("Rp ${priaProducts[index].price}"),
+                      Text(filteredPriaProducts[index].title),
+                      Text("Rp ${filteredPriaProducts[index].price}"),
                     ],
                   ),
                 );
@@ -216,34 +264,37 @@ class _PriaState extends State<Pria> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              'rekomendasi',
+              'Rekomendasi',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
           Expanded(
-              child: ListView.builder(
-            itemCount: priaProducts.length,
-            itemBuilder: (context, index) {
-              return Container(
-                margin: EdgeInsets.all(8.0),
-                padding: EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12.0),
-                ),
-                child: ListTile(
-                  leading: Image.asset(priaProducts[index].filepria),
-                  title: Text(priaProducts[index].title),
-                  subtitle: Text('Deskripsi produk'),
-                  trailing: Text("Rp ${priaProducts[index].price}"),
-                  onTap: () {
-                    // Tambahkan logika untuk menavigasi ke detail produk
-                  },
-                ),
-              );
-            },
-          ))
-        ]));
+            child: ListView.builder(
+              itemCount: filteredPriaProducts.length,
+              itemBuilder: (context, index) {
+                return Container(
+                  margin: EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(8.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                  child: ListTile(
+                    leading: Image.asset(filteredPriaProducts[index].filepria),
+                    title: Text(filteredPriaProducts[index].title),
+                    subtitle: Text('Deskripsi produk'),
+                    trailing: Text("Rp ${filteredPriaProducts[index].price}"),
+                    onTap: () {
+                      // Tambahkan logika untuk menavigasi ke detail produk
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -253,7 +304,7 @@ class Wanita extends StatefulWidget {
   const Wanita({Key? key, required this.category}) : super(key: key);
 
   @override
-  State<Wanita> createState() => _wanitaState();
+  State<Wanita> createState() => _WanitaState();
 }
 
 class wanitaProduct {
@@ -264,38 +315,74 @@ class wanitaProduct {
   wanitaProduct({this.title = ' ', this.filewanita = ' ', required this.price});
 }
 
-class _wanitaState extends State<Wanita> {
+class _WanitaState extends State<Wanita> {
   List<wanitaProduct> wanitaProducts = [
     wanitaProduct(
         title: "Wanita",
         filewanita: '../assets/images/wanita.jpg',
-        price: 3000000000),
+        price: 800000),
     wanitaProduct(
         title: "Wanita",
         filewanita: '../assets/images/wanita.jpg',
-        price: 3000000000),
+        price: 900000),
     wanitaProduct(
         title: "Wanita",
         filewanita: '../assets/images/wanita.jpg',
-        price: 3000000000),
+        price: 1000000),
     wanitaProduct(
         title: "Wanita",
         filewanita: '../assets/images/wanita.jpg',
-        price: 3000000000),
+        price: 1100000),
     wanitaProduct(
         title: "Wanita",
         filewanita: '../assets/images/wanita.jpg',
-        price: 3000000000)
+        price: 1200000),
   ];
+
+  double _currentSliderValue = 1200000;
 
   @override
   Widget build(BuildContext context) {
+    List<wanitaProduct> filteredWanitaProducts =
+        wanitaProducts.where((wp) => wp.price <= _currentSliderValue).toList();
+
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.category.name),
-        ),
-        backgroundColor: Colors.grey[300],
-        body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      appBar: AppBar(
+        title: Text(widget.category.name),
+      ),
+      backgroundColor: Colors.grey[300],
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'Filter by Price',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Text('Max Price: Rp ${_currentSliderValue.round()}'),
+                Expanded(
+                  child: Slider(
+                    value: _currentSliderValue,
+                    min: 0,
+                    max: 1200000,
+                    divisions: 12,
+                    label: _currentSliderValue.round().toString(),
+                    onChanged: (double value) {
+                      setState(() {
+                        _currentSliderValue = value;
+                      });
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
@@ -308,7 +395,7 @@ class _wanitaState extends State<Wanita> {
             height: 200,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: wanitaProducts.length,
+              itemCount: filteredWanitaProducts.length,
               itemBuilder: (context, index) {
                 return Container(
                   width: 150,
@@ -321,11 +408,11 @@ class _wanitaState extends State<Wanita> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Image.asset(wanitaProducts[index].filewanita,
+                      Image.asset(filteredWanitaProducts[index].filewanita,
                           height: 100),
                       SizedBox(height: 8),
-                      Text(wanitaProducts[index].title),
-                      Text("Rp ${wanitaProducts[index].price}"),
+                      Text(filteredWanitaProducts[index].title),
+                      Text("Rp ${filteredWanitaProducts[index].price}"),
                     ],
                   ),
                 );
@@ -336,34 +423,38 @@ class _wanitaState extends State<Wanita> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              'rekomendasi',
+              'Rekomendasi',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
           Expanded(
-              child: ListView.builder(
-            itemCount: wanitaProducts.length,
-            itemBuilder: (context, index) {
-              return Container(
-                margin: EdgeInsets.all(8.0),
-                padding: EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12.0),
-                ),
-                child: ListTile(
-                  leading: Image.asset(wanitaProducts[index].filewanita),
-                  title: Text(wanitaProducts[index].title),
-                  subtitle: Text('Deskripsi produk'),
-                  trailing: Text("Rp ${wanitaProducts[index].price}"),
-                  onTap: () {
-                    // Tambahkan logika untuk menavigasi ke detail produk
-                  },
-                ),
-              );
-            },
-          ))
-        ]));
+            child: ListView.builder(
+              itemCount: filteredWanitaProducts.length,
+              itemBuilder: (context, index) {
+                return Container(
+                  margin: EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(8.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                  child: ListTile(
+                    leading:
+                        Image.asset(filteredWanitaProducts[index].filewanita),
+                    title: Text(filteredWanitaProducts[index].title),
+                    subtitle: Text('Deskripsi produk'),
+                    trailing: Text("Rp ${filteredWanitaProducts[index].price}"),
+                    onTap: () {
+                      // Tambahkan logika untuk menavigasi ke detail produk
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -387,31 +478,71 @@ class laptopProduct {
 class _LaptopState extends State<Laptop> {
   List<laptopProduct> laptopProducts = [
     laptopProduct(
-        title: "Laptop",
+        title: "Laptop A",
         filelaptop: '../assets/images/laptop.jpg',
-        price: 3000000000),
+        price: 3000000),
     laptopProduct(
-        title: "Laptop",
+        title: "Laptop B",
         filelaptop: '../assets/images/laptop.jpg',
-        price: 3000000000),
+        price: 4000000),
     laptopProduct(
-        title: "Laptop",
+        title: "Laptop C",
         filelaptop: '../assets/images/laptop.jpg',
-        price: 3000000000),
+        price: 5000000),
     laptopProduct(
-        title: "Laptop",
+        title: "Laptop D",
         filelaptop: '../assets/images/laptop.jpg',
-        price: 3000000000)
+        price: 6000000),
+    laptopProduct(
+        title: "Laptop E",
+        filelaptop: '../assets/images/laptop.jpg',
+        price: 7000000),
   ];
+
+  double _currentSliderValue = 7000000;
 
   @override
   Widget build(BuildContext context) {
+    List<laptopProduct> filteredLaptopProducts =
+        laptopProducts.where((lp) => lp.price <= _currentSliderValue).toList();
+
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.category.name),
-        ),
-        backgroundColor: Colors.grey[300],
-        body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      appBar: AppBar(
+        title: Text(widget.category.name),
+      ),
+      backgroundColor: Colors.grey[300],
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'Filter by Price',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Text('Max Price: Rp ${_currentSliderValue.round()}'),
+                Expanded(
+                  child: Slider(
+                    value: _currentSliderValue,
+                    min: 0,
+                    max: 10000000,
+                    divisions: 10,
+                    label: _currentSliderValue.round().toString(),
+                    onChanged: (double value) {
+                      setState(() {
+                        _currentSliderValue = value;
+                      });
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
@@ -424,7 +555,7 @@ class _LaptopState extends State<Laptop> {
             height: 200,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: laptopProducts.length,
+              itemCount: filteredLaptopProducts.length,
               itemBuilder: (context, index) {
                 return Container(
                   width: 150,
@@ -437,11 +568,11 @@ class _LaptopState extends State<Laptop> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Image.asset(laptopProducts[index].filelaptop,
+                      Image.asset(filteredLaptopProducts[index].filelaptop,
                           height: 100),
                       SizedBox(height: 8),
-                      Text(laptopProducts[index].title),
-                      Text("Rp ${laptopProducts[index].price}"),
+                      Text(filteredLaptopProducts[index].title),
+                      Text("Rp ${filteredLaptopProducts[index].price}"),
                     ],
                   ),
                 );
@@ -452,34 +583,38 @@ class _LaptopState extends State<Laptop> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              'rekomendasi',
+              'Rekomendasi',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
           Expanded(
-              child: ListView.builder(
-            itemCount: laptopProducts.length,
-            itemBuilder: (context, index) {
-              return Container(
-                margin: EdgeInsets.all(8.0),
-                padding: EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12.0),
-                ),
-                child: ListTile(
-                  leading: Image.asset(laptopProducts[index].filelaptop),
-                  title: Text(laptopProducts[index].title),
-                  subtitle: Text('Deskripsi produk'),
-                  trailing: Text("Rp ${laptopProducts[index].price}"),
-                  onTap: () {
-                    // Tambahkan logika untuk menavigasi ke detail produk
-                  },
-                ),
-              );
-            },
-          ))
-        ]));
+            child: ListView.builder(
+              itemCount: filteredLaptopProducts.length,
+              itemBuilder: (context, index) {
+                return Container(
+                  margin: EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(8.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                  child: ListTile(
+                    leading:
+                        Image.asset(filteredLaptopProducts[index].filelaptop),
+                    title: Text(filteredLaptopProducts[index].title),
+                    subtitle: Text('Deskripsi produk'),
+                    trailing: Text("Rp ${filteredLaptopProducts[index].price}"),
+                    onTap: () {
+                      // Tambahkan logika untuk menavigasi ke detail produk
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -504,35 +639,72 @@ class komputerProduct {
 class _KomputerState extends State<komputer> {
   List<komputerProduct> komputerProducts = [
     komputerProduct(
-        title: "Komputer",
+        title: "Komputer A",
         filekomputer: '../assets/images/komputer.jpg',
-        price: 100000000000),
+        price: 10000000),
     komputerProduct(
-        title: "Komputer",
+        title: "Komputer B",
         filekomputer: '../assets/images/komputer.jpg',
-        price: 100000000000),
+        price: 20000000),
     komputerProduct(
-        title: "Komputer",
+        title: "Komputer C",
         filekomputer: '../assets/images/komputer.jpg',
-        price: 100000000000),
+        price: 30000000),
     komputerProduct(
-        title: "Komputer",
+        title: "Komputer D",
         filekomputer: '../assets/images/komputer.jpg',
-        price: 100000000000),
+        price: 40000000),
     komputerProduct(
-        title: "Komputer",
+        title: "Komputer E",
         filekomputer: '../assets/images/komputer.jpg',
-        price: 100000000000)
+        price: 50000000),
   ];
+
+  double _currentSliderValue = 50000000;
 
   @override
   Widget build(BuildContext context) {
+    List<komputerProduct> filteredKomputerProducts = komputerProducts
+        .where((kp) => kp.price <= _currentSliderValue)
+        .toList();
+
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.category.name),
-        ),
-        backgroundColor: Colors.grey[300],
-        body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      appBar: AppBar(
+        title: Text(widget.category.name),
+      ),
+      backgroundColor: Colors.grey[300],
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'Filter by Price',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Text('Max Price: Rp ${_currentSliderValue.round()}'),
+                Expanded(
+                  child: Slider(
+                    value: _currentSliderValue,
+                    min: 0,
+                    max: 100000000,
+                    divisions: 10,
+                    label: _currentSliderValue.round().toString(),
+                    onChanged: (double value) {
+                      setState(() {
+                        _currentSliderValue = value;
+                      });
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
@@ -545,7 +717,7 @@ class _KomputerState extends State<komputer> {
             height: 200,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: komputerProducts.length,
+              itemCount: filteredKomputerProducts.length,
               itemBuilder: (context, index) {
                 return Container(
                   width: 150,
@@ -558,11 +730,11 @@ class _KomputerState extends State<komputer> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Image.asset(komputerProducts[index].filekomputer,
+                      Image.asset(filteredKomputerProducts[index].filekomputer,
                           height: 100),
                       SizedBox(height: 8),
-                      Text(komputerProducts[index].title),
-                      Text("Rp ${komputerProducts[index].price}"),
+                      Text(filteredKomputerProducts[index].title),
+                      Text("Rp ${filteredKomputerProducts[index].price}"),
                     ],
                   ),
                 );
@@ -573,34 +745,39 @@ class _KomputerState extends State<komputer> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              'rekomendasi',
+              'Rekomendasi',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
           Expanded(
-              child: ListView.builder(
-            itemCount: komputerProducts.length,
-            itemBuilder: (context, index) {
-              return Container(
-                margin: EdgeInsets.all(8.0),
-                padding: EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12.0),
-                ),
-                child: ListTile(
-                  leading: Image.asset(komputerProducts[index].filekomputer),
-                  title: Text(komputerProducts[index].title),
-                  subtitle: Text('Deskripsi produk'),
-                  trailing: Text("Rp ${komputerProducts[index].price}"),
-                  onTap: () {
-                    // Tambahkan logika untuk menavigasi ke detail produk
-                  },
-                ),
-              );
-            },
-          ))
-        ]));
+            child: ListView.builder(
+              itemCount: filteredKomputerProducts.length,
+              itemBuilder: (context, index) {
+                return Container(
+                  margin: EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(8.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                  child: ListTile(
+                    leading: Image.asset(
+                        filteredKomputerProducts[index].filekomputer),
+                    title: Text(filteredKomputerProducts[index].title),
+                    subtitle: Text('Deskripsi produk'),
+                    trailing:
+                        Text("Rp ${filteredKomputerProducts[index].price}"),
+                    onTap: () {
+                      // Tambahkan logika untuk menavigasi ke detail produk
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -610,7 +787,7 @@ class AnakAnak extends StatefulWidget {
   const AnakAnak({Key? key, required this.category}) : super(key: key);
 
   @override
-  State<AnakAnak> createState() => _AnakAnakState();
+  State<AnakAnak> createState() => _AnakState();
 }
 
 class AnakAnakProduct {
@@ -622,42 +799,74 @@ class AnakAnakProduct {
       {this.title = ' ', this.fileAnakAnak = ' ', required this.price});
 }
 
-class _AnakAnakState extends State<AnakAnak> {
-  List<AnakAnakProduct> anakAnakProducts = [
+class _AnakState extends State<AnakAnak> {
+  List<AnakAnakProduct> anakProducts = [
     AnakAnakProduct(
-        title: "Mainan Anak",
+        title: "Mainan A",
         fileAnakAnak: '../assets/images/mainan.webp',
         price: 50000),
     AnakAnakProduct(
-        title: "Mainan Anak",
+        title: "Mainan B",
         fileAnakAnak: '../assets/images/mainan.webp',
-        price: 50000),
+        price: 75000),
     AnakAnakProduct(
-        title: "Mainan Anak",
+        title: "Mainan C",
         fileAnakAnak: '../assets/images/mainan.webp',
-        price: 50000),
+        price: 100000),
     AnakAnakProduct(
-        title: "Mainan Anak",
+        title: "Mainan D",
         fileAnakAnak: '../assets/images/mainan.webp',
-        price: 50000),
+        price: 150000),
     AnakAnakProduct(
-        title: "Mainan Anak",
+        title: "Mainan E",
         fileAnakAnak: '../assets/images/mainan.webp',
-        price: 50000),
-    AnakAnakProduct(
-        title: "Mainan Anak",
-        fileAnakAnak: '../assets/images/mainan.webp',
-        price: 50000)
+        price: 200000),
   ];
+
+  double _currentSliderValue = 200000;
 
   @override
   Widget build(BuildContext context) {
+    List<AnakAnakProduct> filteredAnakProducts =
+        anakProducts.where((ap) => ap.price <= _currentSliderValue).toList();
+
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.category.name),
-        ),
-        backgroundColor: Colors.grey[300],
-        body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      appBar: AppBar(
+        title: Text(widget.category.name),
+      ),
+      backgroundColor: Colors.grey[300],
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'Filter by Price',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Text('Max Price: Rp ${_currentSliderValue.round()}'),
+                Expanded(
+                  child: Slider(
+                    value: _currentSliderValue,
+                    min: 0,
+                    max: 200000,
+                    divisions: 10,
+                    label: _currentSliderValue.round().toString(),
+                    onChanged: (double value) {
+                      setState(() {
+                        _currentSliderValue = value;
+                      });
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
@@ -670,7 +879,7 @@ class _AnakAnakState extends State<AnakAnak> {
             height: 200,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: anakAnakProducts.length,
+              itemCount: filteredAnakProducts.length,
               itemBuilder: (context, index) {
                 return Container(
                   width: 150,
@@ -683,11 +892,11 @@ class _AnakAnakState extends State<AnakAnak> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Image.asset(anakAnakProducts[index].fileAnakAnak,
+                      Image.asset(filteredAnakProducts[index].fileAnakAnak,
                           height: 100),
                       SizedBox(height: 8),
-                      Text(anakAnakProducts[index].title),
-                      Text("Rp ${anakAnakProducts[index].price}"),
+                      Text(filteredAnakProducts[index].title),
+                      Text("Rp ${filteredAnakProducts[index].price}"),
                     ],
                   ),
                 );
@@ -698,34 +907,38 @@ class _AnakAnakState extends State<AnakAnak> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              'rekomendasi',
+              'Rekomendasi',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
           Expanded(
-              child: ListView.builder(
-            itemCount: anakAnakProducts.length,
-            itemBuilder: (context, index) {
-              return Container(
-                margin: EdgeInsets.all(8.0),
-                padding: EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12.0),
-                ),
-                child: ListTile(
-                  leading: Image.asset(anakAnakProducts[index].fileAnakAnak),
-                  title: Text(anakAnakProducts[index].title),
-                  subtitle: Text('Deskripsi produk'),
-                  trailing: Text("Rp ${anakAnakProducts[index].price}"),
-                  onTap: () {
-                    // Tambahkan logika untuk menavigasi ke detail produk
-                  },
-                ),
-              );
-            },
-          ))
-        ]));
+            child: ListView.builder(
+              itemCount: filteredAnakProducts.length,
+              itemBuilder: (context, index) {
+                return Container(
+                  margin: EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(8.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                  child: ListTile(
+                    leading:
+                        Image.asset(filteredAnakProducts[index].fileAnakAnak),
+                    title: Text(filteredAnakProducts[index].title),
+                    subtitle: Text('Deskripsi produk'),
+                    trailing: Text("Rp ${filteredAnakProducts[index].price}"),
+                    onTap: () {
+                      // Tambahkan logika untuk menavigasi ke detail produk
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -749,27 +962,65 @@ class GameProduct {
 class _GameState extends State<Game> {
   List<GameProduct> gameProducts = [
     GameProduct(
-        title: "Game", fileGame: '../assets/images/game.webp', price: 500000),
+        title: "Game A", fileGame: '../assets/images/game.webp', price: 500000),
     GameProduct(
-        title: "Game", fileGame: '../assets/images/game.webp', price: 500000),
+        title: "Game B", fileGame: '../assets/images/game.webp', price: 600000),
     GameProduct(
-        title: "Game", fileGame: '../assets/images/game.webp', price: 500000),
+        title: "Game C", fileGame: '../assets/images/game.webp', price: 700000),
     GameProduct(
-        title: "Game", fileGame: '../assets/images/game.webp', price: 500000),
+        title: "Game D", fileGame: '../assets/images/game.webp', price: 800000),
     GameProduct(
-        title: "Game", fileGame: '../assets/images/game.webp', price: 500000),
+        title: "Game E", fileGame: '../assets/images/game.webp', price: 900000),
     GameProduct(
-        title: "Game", fileGame: '../assets/images/game.webp', price: 500000)
+        title: "Game F",
+        fileGame: '../assets/images/game.webp',
+        price: 1000000),
   ];
+
+  double _currentSliderValue = 1000000;
 
   @override
   Widget build(BuildContext context) {
+    List<GameProduct> filteredGameProducts =
+        gameProducts.where((gp) => gp.price <= _currentSliderValue).toList();
+
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.category.name),
-        ),
-        backgroundColor: Colors.grey[300],
-        body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      appBar: AppBar(
+        title: Text(widget.category.name),
+      ),
+      backgroundColor: Colors.grey[300],
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'Filter by Price',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Text('Max Price: Rp ${_currentSliderValue.round()}'),
+                Expanded(
+                  child: Slider(
+                    value: _currentSliderValue,
+                    min: 0,
+                    max: 2000000,
+                    divisions: 20,
+                    label: _currentSliderValue.round().toString(),
+                    onChanged: (double value) {
+                      setState(() {
+                        _currentSliderValue = value;
+                      });
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
@@ -782,7 +1033,7 @@ class _GameState extends State<Game> {
             height: 200,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: gameProducts.length,
+              itemCount: filteredGameProducts.length,
               itemBuilder: (context, index) {
                 return Container(
                   width: 150,
@@ -795,10 +1046,11 @@ class _GameState extends State<Game> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Image.asset(gameProducts[index].fileGame, height: 100),
+                      Image.asset(filteredGameProducts[index].fileGame,
+                          height: 100),
                       SizedBox(height: 8),
-                      Text(gameProducts[index].title),
-                      Text("Rp ${gameProducts[index].price}"),
+                      Text(filteredGameProducts[index].title),
+                      Text("Rp ${filteredGameProducts[index].price}"),
                     ],
                   ),
                 );
@@ -809,34 +1061,37 @@ class _GameState extends State<Game> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              'rekomendasi',
+              'Rekomendasi',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
           Expanded(
-              child: ListView.builder(
-            itemCount: gameProducts.length,
-            itemBuilder: (context, index) {
-              return Container(
-                margin: EdgeInsets.all(8.0),
-                padding: EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12.0),
-                ),
-                child: ListTile(
-                  leading: Image.asset(gameProducts[index].fileGame),
-                  title: Text(gameProducts[index].title),
-                  subtitle: Text('Deskripsi produk'),
-                  trailing: Text("Rp ${gameProducts[index].price}"),
-                  onTap: () {
-                    // Tambahkan logika untuk menavigasi ke detail produk
-                  },
-                ),
-              );
-            },
-          ))
-        ]));
+            child: ListView.builder(
+              itemCount: filteredGameProducts.length,
+              itemBuilder: (context, index) {
+                return Container(
+                  margin: EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(8.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                  child: ListTile(
+                    leading: Image.asset(filteredGameProducts[index].fileGame),
+                    title: Text(filteredGameProducts[index].title),
+                    subtitle: Text('Deskripsi produk'),
+                    trailing: Text("Rp ${filteredGameProducts[index].price}"),
+                    onTap: () {
+                      // Tambahkan logika untuk menavigasi ke detail produk
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -860,39 +1115,75 @@ class MotorProduct {
 class _MotorState extends State<Motor> {
   List<MotorProduct> motorProducts = [
     MotorProduct(
-        title: "Motor",
+        title: "Motor A",
         fileMotor: '../assets/images/motor.png',
-        price: 50000000),
+        price: 20000000),
     MotorProduct(
-        title: "Motor",
+        title: "Motor B",
         fileMotor: '../assets/images/motor.png',
-        price: 50000000),
+        price: 25000000),
     MotorProduct(
-        title: "Motor",
+        title: "Motor C",
         fileMotor: '../assets/images/motor.png',
-        price: 50000000),
+        price: 30000000),
     MotorProduct(
-        title: "Motor",
+        title: "Motor D",
         fileMotor: '../assets/images/motor.png',
-        price: 50000000),
+        price: 35000000),
     MotorProduct(
-        title: "Motor",
+        title: "Motor E",
         fileMotor: '../assets/images/motor.png',
-        price: 50000000),
+        price: 40000000),
     MotorProduct(
-        title: "Motor",
+        title: "Motor F",
         fileMotor: '../assets/images/motor.png',
-        price: 50000000)
+        price: 45000000),
   ];
+
+  double _currentSliderValue = 50000000;
 
   @override
   Widget build(BuildContext context) {
+    List<MotorProduct> filteredMotorProducts =
+        motorProducts.where((mp) => mp.price <= _currentSliderValue).toList();
+
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.category.name),
-        ),
-        backgroundColor: Colors.grey[300],
-        body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      appBar: AppBar(
+        title: Text(widget.category.name),
+      ),
+      backgroundColor: Colors.grey[300],
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'Filter by Price',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Text('Max Price: Rp ${_currentSliderValue.round()}'),
+                Expanded(
+                  child: Slider(
+                    value: _currentSliderValue,
+                    min: 0,
+                    max: 60000000,
+                    divisions: 12,
+                    label: _currentSliderValue.round().toString(),
+                    onChanged: (double value) {
+                      setState(() {
+                        _currentSliderValue = value;
+                      });
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
@@ -905,7 +1196,7 @@ class _MotorState extends State<Motor> {
             height: 200,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: motorProducts.length,
+              itemCount: filteredMotorProducts.length,
               itemBuilder: (context, index) {
                 return Container(
                   width: 150,
@@ -918,10 +1209,11 @@ class _MotorState extends State<Motor> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Image.asset(motorProducts[index].fileMotor, height: 100),
+                      Image.asset(filteredMotorProducts[index].fileMotor,
+                          height: 100),
                       SizedBox(height: 8),
-                      Text(motorProducts[index].title),
-                      Text("Rp ${motorProducts[index].price}"),
+                      Text(filteredMotorProducts[index].title),
+                      Text("Rp ${filteredMotorProducts[index].price}"),
                     ],
                   ),
                 );
@@ -932,34 +1224,38 @@ class _MotorState extends State<Motor> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              'rekomendasi',
+              'Rekomendasi',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
           Expanded(
-              child: ListView.builder(
-            itemCount: motorProducts.length,
-            itemBuilder: (context, index) {
-              return Container(
-                margin: EdgeInsets.all(8.0),
-                padding: EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12.0),
-                ),
-                child: ListTile(
-                  leading: Image.asset(motorProducts[index].fileMotor),
-                  title: Text(motorProducts[index].title),
-                  subtitle: Text('Deskripsi produk'),
-                  trailing: Text("Rp ${motorProducts[index].price}"),
-                  onTap: () {
-                    // Tambahkan logika untuk menavigasi ke detail produk
-                  },
-                ),
-              );
-            },
-          ))
-        ]));
+            child: ListView.builder(
+              itemCount: filteredMotorProducts.length,
+              itemBuilder: (context, index) {
+                return Container(
+                  margin: EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(8.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                  child: ListTile(
+                    leading:
+                        Image.asset(filteredMotorProducts[index].fileMotor),
+                    title: Text(filteredMotorProducts[index].title),
+                    subtitle: Text('Deskripsi produk'),
+                    trailing: Text("Rp ${filteredMotorProducts[index].price}"),
+                    onTap: () {
+                      // Tambahkan logika untuk menavigasi ke detail produk
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -1009,14 +1305,49 @@ class _AksesorisState extends State<Aksesoris> {
         price: 100000)
   ];
 
+  double _currentSliderValue = 100000;
+
   @override
   Widget build(BuildContext context) {
+    List<AksesorisProduct> filteredAksesorisProducts = aksesorisProducts
+        .where((ap) => ap.price <= _currentSliderValue)
+        .toList();
+
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.category.name),
         ),
         backgroundColor: Colors.grey[300],
         body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'Filter by Price',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Text('Max Price: Rp ${_currentSliderValue.round()}'),
+                Expanded(
+                  child: Slider(
+                    value: _currentSliderValue,
+                    min: 0,
+                    max: 200000,
+                    divisions: 10,
+                    label: _currentSliderValue.round().toString(),
+                    onChanged: (double value) {
+                      setState(() {
+                        _currentSliderValue = value;
+                      });
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
@@ -1029,7 +1360,7 @@ class _AksesorisState extends State<Aksesoris> {
             height: 200,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: aksesorisProducts.length,
+              itemCount: filteredAksesorisProducts.length,
               itemBuilder: (context, index) {
                 return Container(
                   width: 150,
@@ -1042,11 +1373,12 @@ class _AksesorisState extends State<Aksesoris> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Image.asset(aksesorisProducts[index].fileAksesoris,
+                      Image.asset(
+                          filteredAksesorisProducts[index].fileAksesoris,
                           height: 100),
                       SizedBox(height: 8),
-                      Text(aksesorisProducts[index].title),
-                      Text("Rp ${aksesorisProducts[index].price}"),
+                      Text(filteredAksesorisProducts[index].title),
+                      Text("Rp ${filteredAksesorisProducts[index].price}"),
                     ],
                   ),
                 );
@@ -1057,13 +1389,13 @@ class _AksesorisState extends State<Aksesoris> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              'rekomendasi',
+              'Rekomendasi',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
           Expanded(
               child: ListView.builder(
-            itemCount: aksesorisProducts.length,
+            itemCount: filteredAksesorisProducts.length,
             itemBuilder: (context, index) {
               return Container(
                 margin: EdgeInsets.all(8.0),
@@ -1073,10 +1405,12 @@ class _AksesorisState extends State<Aksesoris> {
                   borderRadius: BorderRadius.circular(12.0),
                 ),
                 child: ListTile(
-                  leading: Image.asset(aksesorisProducts[index].fileAksesoris),
-                  title: Text(aksesorisProducts[index].title),
+                  leading: Image.asset(
+                      filteredAksesorisProducts[index].fileAksesoris),
+                  title: Text(filteredAksesorisProducts[index].title),
                   subtitle: Text('Deskripsi produk'),
-                  trailing: Text("Rp ${aksesorisProducts[index].price}"),
+                  trailing:
+                      Text("Rp ${filteredAksesorisProducts[index].price}"),
                   onTap: () {
                   },
                 ),
