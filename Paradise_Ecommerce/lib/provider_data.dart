@@ -1,9 +1,11 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:e_commerce/widget/face_api.dart' hide Image;
 import 'package:flutter/foundation.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class Account {
@@ -156,6 +158,24 @@ class ProfileProvider extends ChangeNotifier {
     return account.wishlist.any((p) =>
         p.title ==
         product.title); // Compare based on title (or other unique identifier)
+  }
+  String? imgPath;
+  String? imgWeb;
+
+  void changeImgPath(String newPath) {
+    imgPath = newPath;
+    notifyListeners();
+  }
+
+  void changeImgWeb(String newImgUrl) {
+    imgWeb = newImgUrl;
+    notifyListeners();
+  }
+
+  void clearImg() {
+    imgPath = null;
+    imgWeb = null;
+    notifyListeners();
   }
 }
 

@@ -1,12 +1,20 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:e_commerce/profile.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'provider_data.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:e_commerce/widget/face_api.dart' as FaceApi;
 import 'package:image_picker/image_picker.dart';
+import 'package:universal_html/html.dart' as html;
+
+String createBlobUrlFromUint8List(Uint8List uint8List) {
+  final blob = html.Blob([uint8List]);
+  return html.Url.createObjectUrlFromBlob(blob);
+}
 
 class EditProfile extends StatefulWidget {
   const EditProfile({Key? key}) : super(key: key);
@@ -24,9 +32,12 @@ class _EditProfileState extends State<EditProfile> {
   @override
   void initState() {
     super.initState();
-    final profileProvider = Provider.of<ProfileProvider>(context, listen: false);
+    final profileProvider =
+        Provider.of<ProfileProvider>(context, listen: false);
     name = TextEditingController(
-      text: profileProvider.account.isNotEmpty ? profileProvider.account[0].name : '',
+      text: profileProvider.account.isNotEmpty
+          ? profileProvider.account[0].name
+          : '',
     );
   }
 
@@ -48,7 +59,8 @@ class _EditProfileState extends State<EditProfile> {
                 leading: Icon(Icons.camera),
                 title: Text('Camera'),
                 onTap: () async {
-                  pickedImage = await _picker.pickImage(source: ImageSource.camera);
+                  pickedImage =
+                      await _picker.pickImage(source: ImageSource.camera);
                   Navigator.of(context).pop();
                 },
               ),
@@ -56,8 +68,10 @@ class _EditProfileState extends State<EditProfile> {
                 leading: Icon(Icons.photo_library),
                 title: Text('Gallery'),
                 onTap: () async {
-                  pickedImage = await _picker.pickImage(source: ImageSource.gallery);
-                  Navigator.of(context).pop();
+                  // pickedImage =
+                  //     await _picker.pickImage(source: ImageSource.gallery);
+                  // Navigator.of(context).pop();
+                  _pickImageFromGallery(context);
                 },
               ),
             ],
@@ -72,7 +86,8 @@ class _EditProfileState extends State<EditProfile> {
         _profileImage = File(pickedImage!.path);
 
         // Update profile image in ProfileProvider
-        final profileProvider = Provider.of<ProfileProvider>(context, listen: false);
+        final profileProvider =
+            Provider.of<ProfileProvider>(context, listen: false);
         profileProvider.changeProfilePicture(0, _profileImage!.path);
       });
     }
@@ -83,7 +98,8 @@ class _EditProfileState extends State<EditProfile> {
       loading = true;
     });
 
-    final profileProvider = Provider.of<ProfileProvider>(context, listen: false);
+    final profileProvider =
+        Provider.of<ProfileProvider>(context, listen: false);
     if (profileProvider.account[0].faceData.bitmap == null ||
         profileProvider.account[0].faceData.bitmap == "" ||
         imageValid == null ||
@@ -182,24 +198,51 @@ class _EditProfileState extends State<EditProfile> {
           children: [
             Column(
               children: [
-                GestureDetector(
-                  onTap: _pickImage,
-                  child: CircleAvatar(
-                    radius: 50,
-                    backgroundImage: _profileImage != null
-                        ? FileImage(_profileImage!)
-                        : NetworkImage(
-                            Provider.of<ProfileProvider>(context)
-                                .account[0]
-                                .profilePictureUrl,
-                          ) as ImageProvider,
-                    child: Icon(
-                      Icons.camera_alt,
-                      size: 50,
-                      color: Colors.white.withOpacity(0.7),
-                    ),
-                  ),
-                ),
+                // InkWell(
+                //   onTap: _pickImage,
+                //   child: CircleAvatar(
+                //     radius: 50,
+                //     backgroundImage: _profileImage != null
+                //         ? FileImage(_profileImage!)
+                //         : NetworkImage(
+                //             Provider.of<ProfileProvider>(context)
+                //                 .account[0]
+                //                 .profilePictureUrl,
+                //           ) as ImageProvider,
+                //     child: Icon(
+                //       Icons.camera_alt,
+                //       size: 50,
+                //       color: Colors.white.withOpacity(0.7),
+                //     ),
+                //   ),
+                // ),
+
+                InkWell(
+                    onTap: () {
+                      _pickImage();
+                    },
+                    child: Container(
+                      width: 100,
+                      height: 100,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: _profileImage != null
+                              ? FileImage(_profileImage!)
+                              : Provider.of<ProfileProvider>(context).imgWeb != null
+                                  ? NetworkImage(Provider.of<ProfileProvider>(context).imgWeb!)
+                                  : Provider.of<ProfileProvider>(context).imgPath != null
+                                      ? FileImage(File(Provider.of<ProfileProvider>(context).imgPath!))
+                                      : AssetImage('assets/images/pp-placeholder.webp') as ImageProvider,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      child: Provider.of<ProfileProvider>(context).imgWeb == null &&
+                              Provider.of<ProfileProvider>(context).imgPath == null
+                          ? Icon(Icons.camera_alt, size: 50, color: Colors.white.withOpacity(0.7))
+                          : null,
+                    )),
+
                 SizedBox(height: 16),
                 TextField(
                   controller: name,
@@ -208,7 +251,8 @@ class _EditProfileState extends State<EditProfile> {
                   ),
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Color(0xFF6366F1), width: 1),
+                      borderSide:
+                          BorderSide(color: Color(0xFF6366F1), width: 1),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Color(0xFF6366F1)),
@@ -268,7 +312,7 @@ class _EditProfileState extends State<EditProfile> {
                           } else if (isFaceUnlockEnabled && inputDifference) {
                             FaceApi.FaceSDK.presentFaceCaptureActivity()
                                 .then((result) {
-                                                            var response =
+                              var response =
                                   FaceApi.FaceCaptureResponse.fromJson(
                                       json.decode(result))!;
 
@@ -322,4 +366,28 @@ class _EditProfileState extends State<EditProfile> {
       ),
     );
   }
+}
+
+Future<void> _pickImageFromGallery(BuildContext context) async {
+  final picker = ImagePicker();
+  final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+  if (pickedFile == null) return;
+
+  if (kIsWeb) {
+    // For web, read the image as bytes and convert to Blob URL
+    final bytes = await pickedFile.readAsBytes();
+    final blobUrl = _createBlobUrlFromUint8List(bytes);
+    Provider.of<ProfileProvider>(context, listen: false)
+        .changeImgWeb(blobUrl);
+  } else {
+    // For mobile/desktop, use the file path
+    Provider.of<ProfileProvider>(context, listen: false)
+        .changeImgPath(pickedFile.path);
+  }
+}
+
+String _createBlobUrlFromUint8List(Uint8List uint8List) {
+  final blob = html.Blob([uint8List]);
+  return html.Url.createObjectUrlFromBlob(blob);
 }
