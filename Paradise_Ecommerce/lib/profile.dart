@@ -386,23 +386,7 @@ class _ProfileState extends State<Profile> {
                 height: 8,
                 thickness: 8,
               ),
-              InkWell(
-                  onTap: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => Checkout(cartItems: [],)));
-                  },
-                  child: Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 18),
-                    child: Text(
-                      "Checkout (temp)",
-                      style: TextStyle(
-                        color: Color(0xFF31323d),
-                        fontWeight: FontWeight.w600,
-                        fontSize: 12,
-                      ),
-                    ),
-                  )),
+
               InkWell(
                   onTap: () {
                     Navigator.of(context).pushReplacement(

@@ -169,7 +169,7 @@ class _CheckoutState extends State<Checkout> {
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children:[
                                       Text('${cartItems[index]["name"]}', style: TextStyle(fontSize: 13)),
-                                      Text('${formatCurrency(cartItems[index]['price'])}', style: TextStyle(fontSize: 13))
+                                      Text('${formatCurrency(cartItems[index]['price'] * cartItems[index]['quantity'])}', style: TextStyle(fontSize: 13))
                                     ]
                                   )
                                 );
