@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:e_commerce/widget/face_api.dart' hide Image;
+import 'package:flutter/foundation.dart';
 
 class Account {
   int id;
@@ -43,7 +44,7 @@ class Account {
   }
 }
 
-class ProfileProvider extends ChangeNotifier{
+class ProfileProvider extends ChangeNotifier {
   List<Account> account = [
     Account(
       id: 0,
@@ -61,13 +62,13 @@ class ProfileProvider extends ChangeNotifier{
     )
   ];
 
-  void addAccount(Account a){
+  void addAccount(Account a) {
     a.id = account.length;
     account.add(a);
     notifyListeners();
   }
 
-  void changeName(int id, String name){
+  void changeName(int id, String name) {
     for (var a in account) {
       if (a.id == id) {
         a.name = name;
@@ -77,7 +78,7 @@ class ProfileProvider extends ChangeNotifier{
     notifyListeners();
   }
 
-  void changePassword(int id, String oldPass, String newPass){
+  void changePassword(int id, String oldPass, String newPass) {
     for (var a in account) {
       if (a.id == id) {
         if (a.password == oldPass) {
@@ -89,7 +90,7 @@ class ProfileProvider extends ChangeNotifier{
     notifyListeners();
   }
 
-  void enableBiometric(int id, bool isEnabled){
+  void enableBiometric(int id, bool isEnabled) {
     for (var a in account) {
       if (a.id == id) {
         a.isBiometricEnabled = isEnabled;
@@ -99,7 +100,7 @@ class ProfileProvider extends ChangeNotifier{
     notifyListeners();
   }
 
-  void enableFaceUnlock(int id, bool isEnabled){
+  void enableFaceUnlock(int id, bool isEnabled) {
     for (var a in account) {
       if (a.id == id) {
         a.isFaceUnlockEnabled = isEnabled;
@@ -109,7 +110,7 @@ class ProfileProvider extends ChangeNotifier{
     notifyListeners();
   }
 
-  void addFaceData(int id, var incFaceData, int type){
+  void addFaceData(int id, var incFaceData, int type) {
     for (var a in account) {
       if (a.id == id) {
         a.faceData.bitmap = base64Encode(incFaceData);
@@ -123,7 +124,8 @@ class ProfileProvider extends ChangeNotifier{
   void toggleWishlist(int accountId, Product product) {
     for (var a in account) {
       if (a.id == accountId) {
-        int productIndex = a.wishlist.indexWhere((p) => p.title == product.title);
+        int productIndex =
+            a.wishlist.indexWhere((p) => p.title == product.title);
 
         if (productIndex != -1) {
           a.wishlist.removeAt(productIndex);
@@ -138,8 +140,20 @@ class ProfileProvider extends ChangeNotifier{
     }
   }
 
+  void changeProfilePicture(int id, String newProfilePictureUrl) {
+    for (var a in account) {
+      if (a.id == id) {
+        a.profilePictureUrl = newProfilePictureUrl;
+        break;
+      }
+    }
+    notifyListeners();
+  }
+
   bool isProductInWishlist(Product product, Account account) {
-    return account.wishlist.any((p) => p.title == product.title); // Compare based on title (or other unique identifier)
+    return account.wishlist.any((p) =>
+        p.title ==
+        product.title); // Compare based on title (or other unique identifier)
   }
 }
 
@@ -195,7 +209,8 @@ class ProductProvider extends ChangeNotifier {
       title: 'Poke Ball',
       price: 72000,
       category: "Mainan",
-      description: 'Lorem ipsum dolor sit amet consectetur. Sit a aliquam sagittis vel. Proin netus faucibus ullamcorper sit tristique. Odio non lorem sed massa auctor senectus. Proin condimentum fermentum mauris sagittis etiam molestie id. Semper sit facilisis orci scelerisque. Massa lacinia ut cursus ultrices etiam faucibus eu. Nibh ut aliquam volutpat amet praesent justo scelerisque ac. Nisl et donec amet non. Ultrices dignissim rutrum egestas curabitur ullamcorper elit. Dolor ut ullamcorper odio in id eu.',
+      description:
+          'Lorem ipsum dolor sit amet consectetur. Sit a aliquam sagittis vel. Proin netus faucibus ullamcorper sit tristique. Odio non lorem sed massa auctor senectus. Proin condimentum fermentum mauris sagittis etiam molestie id. Semper sit facilisis orci scelerisque. Massa lacinia ut cursus ultrices etiam faucibus eu. Nibh ut aliquam volutpat amet praesent justo scelerisque ac. Nisl et donec amet non. Ultrices dignissim rutrum egestas curabitur ullamcorper elit. Dolor ut ullamcorper odio in id eu.',
       varianStock: {'S': 2, 'M': 3, 'L': 4, 'XL': 5, 'XXL': 0},
     ),
     Product(
@@ -203,15 +218,17 @@ class ProductProvider extends ChangeNotifier {
       title: 'Lenovo Thinkpad',
       price: 3700000,
       category: "Elektronik",
-      description: 'Lorem ipsum dolor sit amet consectetur. Sit a aliquam sagittis vel. Proin netus faucibus ullamcorper sit tristique. Odio non lorem sed massa auctor senectus. Proin condimentum fermentum mauris sagittis etiam molestie id. Semper sit facilisis orci scelerisque. Massa lacinia ut cursus ultrices etiam faucibus eu. Nibh ut aliquam volutpat amet praesent justo scelerisque ac. Nisl et donec amet non. Ultrices dignissim rutrum egestas curabitur ullamcorper elit. Dolor ut ullamcorper odio in id eu.',
+      description:
+          'Lorem ipsum dolor sit amet consectetur. Sit a aliquam sagittis vel. Proin netus faucibus ullamcorper sit tristique. Odio non lorem sed massa auctor senectus. Proin condimentum fermentum mauris sagittis etiam molestie id. Semper sit facilisis orci scelerisque. Massa lacinia ut cursus ultrices etiam faucibus eu. Nibh ut aliquam volutpat amet praesent justo scelerisque ac. Nisl et donec amet non. Ultrices dignissim rutrum egestas curabitur ullamcorper elit. Dolor ut ullamcorper odio in id eu.',
       varianStock: {'RAM 16GB': 5, 'RAM 32GB': 3},
     ),
     Product(
       imagePath: 'assets/produk/3.jpg',
-      title: 'Piakchu Figure',
+      title: 'Pikachu Figure',
       price: 410500,
       category: "Mainan",
-      description: 'Lorem ipsum dolor sit amet consectetur. Sit a aliquam sagittis vel. Proin netus faucibus ullamcorper sit tristique. Odio non lorem sed massa auctor senectus. Proin condimentum fermentum mauris sagittis etiam molestie id. Semper sit facilisis orci scelerisque. Massa lacinia ut cursus ultrices etiam faucibus eu. Nibh ut aliquam volutpat amet praesent justo scelerisque ac. Nisl et donec amet non. Ultrices dignissim rutrum egestas curabitur ullamcorper elit. Dolor ut ullamcorper odio in id eu.',
+      description:
+          'Lorem ipsum dolor sit amet consectetur. Sit a aliquam sagittis vel. Proin netus faucibus ullamcorper sit tristique. Odio non lorem sed massa auctor senectus. Proin condimentum fermentum mauris sagittis etiam molestie id. Semper sit facilisis orci scelerisque. Massa lacinia ut cursus ultrices etiam faucibus eu. Nibh ut aliquam volutpat amet praesent justo scelerisque ac. Nisl et donec amet non. Ultrices dignissim rutrum egestas curabitur ullamcorper elit. Dolor ut ullamcorper odio in id eu.',
       varianStock: {'Basic': 20, 'Premium': 2},
     ),
     Product(
@@ -219,7 +236,8 @@ class ProductProvider extends ChangeNotifier {
       title: 'Vacuum Cleaner Zetzt',
       price: 4307500,
       category: "Elektronik",
-      description: 'Lorem ipsum dolor sit amet consectetur. Sit a aliquam sagittis vel. Proin netus faucibus ullamcorper sit tristique. Odio non lorem sed massa auctor senectus. Proin condimentum fermentum mauris sagittis etiam molestie id. Semper sit facilisis orci scelerisque. Massa lacinia ut cursus ultrices etiam faucibus eu. Nibh ut aliquam volutpat amet praesent justo scelerisque ac. Nisl et donec amet non. Ultrices dignissim rutrum egestas curabitur ullamcorper elit. Dolor ut ullamcorper odio in id eu.',
+      description:
+          'Lorem ipsum dolor sit amet consectetur. Sit a aliquam sagittis vel. Proin netus faucibus ullamcorper sit tristique. Odio non lorem sed massa auctor senectus. Proin condimentum fermentum mauris sagittis etiam molestie id. Semper sit facilisis orci scelerisque. Massa lacinia ut cursus ultrices etiam faucibus eu. Nibh ut aliquam volutpat amet praesent justo scelerisque ac. Nisl et donec amet non. Ultrices dignissim rutrum egestas curabitur ullamcorper elit. Dolor ut ullamcorper odio in id eu.',
       varianStock: {'Blue': 5, 'Red': 7},
     ),
     Product(
@@ -227,7 +245,8 @@ class ProductProvider extends ChangeNotifier {
       title: 'Sling Alpaka',
       price: 1349000,
       category: "Tas",
-      description: 'Lorem ipsum dolor sit amet consectetur. Sit a aliquam sagittis vel. Proin netus faucibus ullamcorper sit tristique. Odio non lorem sed massa auctor senectus. Proin condimentum fermentum mauris sagittis etiam molestie id. Semper sit facilisis orci scelerisque. Massa lacinia ut cursus ultrices etiam faucibus eu. Nibh ut aliquam volutpat amet praesent justo scelerisque ac. Nisl et donec amet non. Ultrices dignissim rutrum egestas curabitur ullamcorper elit. Dolor ut ullamcorper odio in id eu.',
+      description:
+          'Lorem ipsum dolor sit amet consectetur. Sit a aliquam sagittis vel. Proin netus faucibus ullamcorper sit tristique. Odio non lorem sed massa auctor senectus. Proin condimentum fermentum mauris sagittis etiam molestie id. Semper sit facilisis orci scelerisque. Massa lacinia ut cursus ultrices etiam faucibus eu. Nibh ut aliquam volutpat amet praesent justo scelerisque ac. Nisl et donec amet non. Ultrices dignissim rutrum egestas curabitur ullamcorper elit. Dolor ut ullamcorper odio in id eu.',
       varianStock: {'Basic': 50, 'Premium': 4},
     ),
     Product(
@@ -235,7 +254,8 @@ class ProductProvider extends ChangeNotifier {
       title: 'Remote AC Daikon',
       price: 60000,
       category: "Elektronik",
-      description: 'Lorem ipsum dolor sit amet consectetur. Sit a aliquam sagittis vel. Proin netus faucibus ullamcorper sit tristique. Odio non lorem sed massa auctor senectus. Proin condimentum fermentum mauris sagittis etiam molestie id. Semper sit facilisis orci scelerisque. Massa lacinia ut cursus ultrices etiam faucibus eu. Nibh ut aliquam volutpat amet praesent justo scelerisque ac. Nisl et donec amet non. Ultrices dignissim rutrum egestas curabitur ullamcorper elit. Dolor ut ullamcorper odio in id eu.',
+      description:
+          'Lorem ipsum dolor sit amet consectetur. Sit a aliquam sagittis vel. Proin netus faucibus ullamcorper sit tristique. Odio non lorem sed massa auctor senectus. Proin condimentum fermentum mauris sagittis etiam molestie id. Semper sit facilisis orci scelerisque. Massa lacinia ut cursus ultrices etiam faucibus eu. Nibh ut aliquam volutpat amet praesent justo scelerisque ac. Nisl et donec amet non. Ultrices dignissim rutrum egestas curabitur ullamcorper elit. Dolor ut ullamcorper odio in id eu.',
       varianStock: {'Basic': 12},
     ),
     Product(
@@ -243,7 +263,8 @@ class ProductProvider extends ChangeNotifier {
       title: 'Robot Vacuum Cleaner',
       price: 3990000,
       category: "Elektronik",
-      description: 'Lorem ipsum dolor sit amet consectetur. Sit a aliquam sagittis vel. Proin netus faucibus ullamcorper sit tristique. Odio non lorem sed massa auctor senectus. Proin condimentum fermentum mauris sagittis etiam molestie id. Semper sit facilisis orci scelerisque. Massa lacinia ut cursus ultrices etiam faucibus eu. Nibh ut aliquam volutpat amet praesent justo scelerisque ac. Nisl et donec amet non. Ultrices dignissim rutrum egestas curabitur ullamcorper elit. Dolor ut ullamcorper odio in id eu.',
+      description:
+          'Lorem ipsum dolor sit amet consectetur. Sit a aliquam sagittis vel. Proin netus faucibus ullamcorper sit tristique. Odio non lorem sed massa auctor senectus. Proin condimentum fermentum mauris sagittis etiam molestie id. Semper sit facilisis orci scelerisque. Massa lacinia ut cursus ultrices etiam faucibus eu. Nibh ut aliquam volutpat amet praesent justo scelerisque ac. Nisl et donec amet non. Ultrices dignissim rutrum egestas curabitur ullamcorper elit. Dolor ut ullamcorper odio in id eu.',
       varianStock: {'Silver': 6, 'Gold': 15},
     ),
     Product(
@@ -251,7 +272,8 @@ class ProductProvider extends ChangeNotifier {
       title: 'Tissue See You',
       price: 6990,
       category: "Kebutuhan Umum",
-      description: 'Lorem ipsum dolor sit amet consectetur. Sit a aliquam sagittis vel. Proin netus faucibus ullamcorper sit tristique. Odio non lorem sed massa auctor senectus. Proin condimentum fermentum mauris sagittis etiam molestie id. Semper sit facilisis orci scelerisque. Massa lacinia ut cursus ultrices etiam faucibus eu. Nibh ut aliquam volutpat amet praesent justo scelerisque ac. Nisl et donec amet non. Ultrices dignissim rutrum egestas curabitur ullamcorper elit. Dolor ut ullamcorper odio in id eu.',
+      description:
+          'Lorem ipsum dolor sit amet consectetur. Sit a aliquam sagittis vel. Proin netus faucibus ullamcorper sit tristique. Odio non lorem sed massa auctor senectus. Proin condimentum fermentum mauris sagittis etiam molestie id. Semper sit facilisis orci scelerisque. Massa lacinia ut cursus ultrices etiam faucibus eu. Nibh ut aliquam volutpat amet praesent justo scelerisque ac. Nisl et donec amet non. Ultrices dignissim rutrum egestas curabitur ullamcorper elit. Dolor ut ullamcorper odio in id eu.',
       varianStock: {'Basic': 100},
     ),
   ];
@@ -331,7 +353,6 @@ class OrderHistoryProvider extends ChangeNotifier {
       category: "Mainan",
       purchaseDate: DateTime.now(),
     ),
-    
   ];
 
   void addOrderHistoryItem(OrderHistoryItem item) {
@@ -340,20 +361,31 @@ class OrderHistoryProvider extends ChangeNotifier {
   }
 }
 
-
 class Locations {
   final String name;
   final String address;
   final double latitude;
   final double longitude;
 
-  Locations({required this.name, required this.address, required this.latitude, required this.longitude});
+  Locations(
+      {required this.name,
+      required this.address,
+      required this.latitude,
+      required this.longitude});
 }
 
 class LocationProvider extends ChangeNotifier {
   List<Locations> _locations = [
-    Locations(name: 'Rumah', address: 'My Home', latitude: -6.200000, longitude: 106.816666),
-    Locations(name: 'Kos Beruang Merah', address: 'Jalan beruang merah', latitude: -6.300000, longitude: 106.816666),
+    Locations(
+        name: 'Rumah',
+        address: 'My Home',
+        latitude: -6.200000,
+        longitude: 106.816666),
+    Locations(
+        name: 'Kos Beruang Merah',
+        address: 'Jalan beruang merah',
+        latitude: -6.300000,
+        longitude: 106.816666),
   ];
 
   List<Locations> get locations => _locations;
@@ -373,3 +405,53 @@ class LocationProvider extends ChangeNotifier {
   }
 }
 
+class CartProvider with ChangeNotifier {
+  final List<Map<String, dynamic>> _cartItems = [];
+
+  List<Map<String, dynamic>> get cartItems => _cartItems;
+
+  void addToCart(Map<String, dynamic> cartItem) {
+    var existingItemIndex =
+        _cartItems.indexWhere((item) => item['id'] == cartItem['id']);
+
+    if (existingItemIndex >= 0) {
+      // Item sudah ada, tambah kuantitasnya
+      _cartItems[existingItemIndex]['quantity'] += 1;
+    } else {
+      // Tambahkan item baru dengan kuantitas awal 1
+      cartItem['quantity'] = 1;
+      _cartItems.add(cartItem);
+    }
+
+    notifyListeners();
+  }
+
+  void removeProduct(String id) {
+    _cartItems.removeWhere((item) => item['id'] == id);
+    notifyListeners();
+  }
+
+  void updateItemQuantity(String id, int newQuantity) {
+    var index = _cartItems.indexWhere((item) => item['id'] == id);
+    if (index != -1) {
+      if (newQuantity <= 0) {
+        // Hapus item dari keranjang jika kuantitasnya nol atau lebih rendah
+        _cartItems.removeAt(index);
+      } else if (newQuantity <= _cartItems[index]['stock']) {
+        // Perbarui kuantitas item jika tidak melebihi stok
+        _cartItems[index]['quantity'] = newQuantity;
+      } else {
+        print("Stok tidak mencukupi atau kuantitas tidak valid.");
+      }
+
+      notifyListeners();
+    }
+  }
+
+  double get totalPrice {
+    return _cartItems.fold(
+      0.0,
+      (sum, item) => sum + (item['price'] * item['quantity']),
+    );
+  }
+}

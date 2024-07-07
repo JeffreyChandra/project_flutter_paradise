@@ -1,105 +1,15 @@
-// import 'package:e_commerce/widget/keranjangItem.dart';
-// import 'package:flutter/cupertino.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter/rendering.dart';
-
-// class Keranjang extends StatefulWidget {
-//   const Keranjang({super.key});
-
-//   @override
-//   State<Keranjang> createState() => _KeranjangState();
-// }
-
-// class _KeranjangState extends State<Keranjang> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Keranjang'),
-//       ),
-//       body: ListView(
-//         children: [
-//           KeranjangItem(),
-//           // Container(
-//           //   margin: EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-//           //   padding: EdgeInsets.all(10),
-//           //   child: Row(
-//           //     children: [
-//           //       Container(
-//           //         decoration: BoxDecoration(
-//           //           color: Color.fromARGB(255, 129, 141, 248),
-//           //           borderRadius: BorderRadius.circular(20),
-//           //         ),
-//           //         child: Icon(
-//           //           Icons.add,
-//           //           color: Colors.white,
-//           //         ),
-//           //       ),
-//           //       Padding(
-//           //         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-//           //         child: Text(
-//           //           "Add Coupon Code",
-//           //           style: TextStyle(
-//           //             color: Color(0xFF312E81),
-//           //           ),
-//           //         ),
-//           //       )
-//           //     ],
-//           //   ),
-//           // ),
-//         ],
-//       ),
-//     );
-//   }
-// }
-
-// main.dart
 import 'package:flutter/material.dart';
-
-// void main() {
-//   runApp(MyApp());
-// }
-
-// class MyApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Shopee-like Static Cart',
-//       theme: ThemeData(
-//         primarySwatch: Colors.blue,
-//       ),
-//       home: CartPage(),
-//     );
-//   }
-// }
+import 'package:provider/provider.dart';
+import 'provider_data.dart'; // Assuming CartProvider is imported from provider_data.dart
 
 class CartPage extends StatelessWidget {
-  final List<Map<String, dynamic>> cartItems = [
-    {
-      'id': '1',
-      'name': 'Product 1',
-      'price': 29.99,
-      'quantity': 2,
-      'imageUrl': 'https://via.placeholder.com/150',
-    },
-    {
-      'id': '2',
-      'name': 'Product 2',
-      'price': 49.99,
-      'quantity': 1,
-      'imageUrl': 'https://via.placeholder.com/150',
-    },
-  ];
-
-  double get totalPrice {
-    return cartItems.fold(
-      0.0,
-      (sum, item) => sum + (item['price'] * item['quantity']),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
+    // Accessing cartItems from CartProvider using Provider.of
+    List<Map<String, dynamic>> cartItems =
+        Provider.of<CartProvider>(context).cartItems;
+
+    // Building the UI
     return Scaffold(
       appBar: AppBar(
         title: Text('Shopping Cart'),
@@ -122,7 +32,7 @@ class CartPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Total: \$${totalPrice.toStringAsFixed(2)}',
+                  'Total: Rp ${calculateTotalPrice(cartItems).toStringAsFixed(2)}', // Calling the function to get total price
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 ElevatedButton(
@@ -136,6 +46,14 @@ class CartPage extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  // Function to calculate total price
+  double calculateTotalPrice(List<Map<String, dynamic>> cartItems) {
+    return cartItems.fold(
+      0.0,
+      (sum, item) => sum + (item['price'] ?? 0.0) * (item['quantity'] ?? 0),
     );
   }
 }
@@ -170,8 +88,29 @@ class CartItemWidget extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold),
                       ),
-                      Text('Price: \$${item['price'].toStringAsFixed(2)}'),
-                      Text('Quantity: ${item['quantity']}'),
+                      Text('Price: Rp ${item['price'].toStringAsFixed(2)}'),
+                      SizedBox(height: 8),
+                      Row(
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              Provider.of<CartProvider>(context, listen: false)
+                                  .updateItemQuantity(
+                                      item['id'], item['quantity'] - 1);
+                            },
+                            icon: Icon(Icons.remove),
+                          ),
+                          Text('${item['quantity']}'),
+                          IconButton(
+                            onPressed: () {
+                              Provider.of<CartProvider>(context, listen: false)
+                                  .updateItemQuantity(
+                                      item['id'], item['quantity'] + 1);
+                            },
+                            icon: Icon(Icons.add),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),

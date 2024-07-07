@@ -1412,7 +1412,6 @@ class _AksesorisState extends State<Aksesoris> {
                   trailing:
                       Text("Rp ${filteredAksesorisProducts[index].price}"),
                   onTap: () {
-                    // Tambahkan logika untuk menavigasi ke detail produk
                   },
                 ),
               );
@@ -1422,46 +1421,46 @@ class _AksesorisState extends State<Aksesoris> {
   }
 }
 
-class HomePage extends StatefulWidget {
-  @override
-  _HomePageState createState() => _HomePageState();
-}
+// class HomePage extends StatefulWidget {
+//   @override
+//   _HomePageState createState() => _HomePageState();
+// }
 
-class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 0;
+// class _HomePageState extends State<HomePage> {
+//   int _selectedIndex = 0;
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
+//   void _onItemTapped(int index) {
+//     setState(() {
+//       _selectedIndex = index;
+//     });
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    final List<Widget> _pages = [
-      handphone(category: Category(name: 'Handphone')),
-      Pria(category: Category(name: 'Pria')),
-    ];
+//   @override
+//   Widget build(BuildContext context) {
+//     final List<Widget> _pages = [
+//       handphone(category: Category(name: 'Handphone')),
+//       Pria(category: Category(name: 'Pria')),
+//     ];
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('E-Commerce App'),
-      ),
-      body: _pages[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.phone_android),
-            label: 'Handphone',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Pria',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-      ),
-    );
-  }
-}
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text('E-Commerce App'),
+//       ),
+//       body: _pages[_selectedIndex],
+//       bottomNavigationBar: BottomNavigationBar(
+//         items: const <BottomNavigationBarItem>[
+//           BottomNavigationBarItem(
+//             icon: Icon(Icons.phone_android),
+//             label: 'Handphone',
+//           ),
+//           BottomNavigationBarItem(
+//             icon: Icon(Icons.person),
+//             label: 'Pria',
+//           ),
+//         ],
+//         currentIndex: _selectedIndex,
+//         onTap: _onItemTapped,
+//       ),
+//     );
+//   }
+// }

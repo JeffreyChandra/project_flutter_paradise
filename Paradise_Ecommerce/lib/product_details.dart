@@ -1,3 +1,4 @@
+import 'package:e_commerce/keranjang.dart';
 import 'package:e_commerce/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -35,24 +36,45 @@ class _ProductDetailsState extends State<ProductDetails> {
       }
     }
 
-    void addToCart() {
+    void addToCart(Product product) {
       if (_varian.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Silakan pilih varian terlebih dahulu!'),
+            content: Text("Pilih varian terlebih dahulu."),
             backgroundColor: Colors.red,
             duration: Duration(seconds: 2),
           ),
         );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Item berhasil ditambahkan ke keranjang!'),
-            backgroundColor: Colors.green,
-            duration: Duration(seconds: 2),
-          ),
-        );
+        return;
       }
+
+      // Accessing products list from Provider
+      List<Product> products =
+          Provider.of<ProductProvider>(context, listen: false).products;
+
+      // Mendapatkan indeks produk dalam daftar
+      int index = products.indexOf(product);
+
+      // Tambahkan item ke keranjang
+      Map<String, dynamic> cartItem = {
+        'id':
+            index.toString(), // Menggunakan indeks sebagai identifier sementara
+        'name': product.title,
+        'price': product.price.toDouble(),
+        'quantity': 1,
+        'imageUrl': product.imagePath,
+      };
+
+      Provider.of<CartProvider>(context, listen: false).addToCart(cartItem);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Item berhasil ditambahkan ke keranjang!'),
+          backgroundColor: Colors.green,
+          duration: Duration(seconds: 2),
+        ),
+      );
+      return;
     }
 
     return Scaffold(
@@ -425,7 +447,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                   Expanded(
                     child: ButtonTheme(
                       child: TextButton(
-                        onPressed: addToCart,
+                        onPressed: () => addToCart(product),
                         child: Text('Add to Cart',
                             style: GoogleFonts.inter(
                               fontSize: 12,
