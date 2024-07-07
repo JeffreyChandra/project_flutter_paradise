@@ -53,7 +53,7 @@ class ProfileProvider extends ChangeNotifier {
     Account(
       id: 0,
       name: 'Admin',
-      profilePictureUrl: "assets/images/pp-placeholder.webp",
+      profilePictureUrl: '',
       email: 'admin@admin.com',
       password: 'pass',
       nik: '012345678901',

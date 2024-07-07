@@ -11,11 +11,6 @@ import 'package:e_commerce/widget/face_api.dart' as FaceApi;
 import 'package:image_picker/image_picker.dart';
 import 'package:universal_html/html.dart' as html;
 
-String createBlobUrlFromUint8List(Uint8List uint8List) {
-  final blob = html.Blob([uint8List]);
-  return html.Url.createObjectUrlFromBlob(blob);
-}
-
 class EditProfile extends StatefulWidget {
   const EditProfile({Key? key}) : super(key: key);
 
@@ -27,7 +22,10 @@ class _EditProfileState extends State<EditProfile> {
   bool loading = false;
   late TextEditingController name;
   var imageValid = FaceApi.MatchFacesImage();
-  File? _profileImage;
+
+  File? _selectedImage;
+  String? _selectedImageUrl;
+  Uint8List? _selectedImageBytes;
 
   @override
   void initState() {
@@ -42,7 +40,7 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   // Method to pick an image for the profile
-  Future<void> _pickImage() async {
+  Future<void> imageOption() async {
     final ImagePicker _picker = ImagePicker();
     XFile? pickedImage;
 
@@ -58,40 +56,18 @@ class _EditProfileState extends State<EditProfile> {
               ListTile(
                 leading: Icon(Icons.camera),
                 title: Text('Camera'),
-                onTap: () async {
-                  // pickedImage =
-                  //     await _picker.pickImage(source: ImageSource.camera);
-                  // Navigator.of(context).pop();
-                  _pickImageFromCamera(context);
-                },
+                onTap: () async => _pickImage(ImageSource.camera),
               ),
               ListTile(
                 leading: Icon(Icons.photo_library),
                 title: Text('Gallery'),
-                onTap: () async {
-                  // pickedImage =
-                  //     await _picker.pickImage(source: ImageSource.gallery);
-                  // Navigator.of(context).pop();
-                  _pickImageFromGallery(context);
-                },
+                onTap: () async => _pickImage(ImageSource.gallery),
               ),
             ],
           ),
         );
       },
     );
-
-    // Ensure an image was picked
-    if (pickedImage != null) {
-      setState(() {
-        _profileImage = File(pickedImage!.path);
-
-        // Update profile image in ProfileProvider
-        final profileProvider =
-            Provider.of<ProfileProvider>(context, listen: false);
-        profileProvider.changeProfilePicture(0, _profileImage!.path);
-      });
-    }
   }
 
   matchFaces() {
@@ -127,10 +103,10 @@ class _EditProfileState extends State<EditProfile> {
 
             if (percent > 80) {
               profileProvider.changeName(0, name.text);
-              if (_profileImage != null) {
-                profileProvider.changeProfilePicture(0, _profileImage!.path);
+              if (_selectedImageBytes != null) {
+                profileProvider.changeProfilePicture(0, base64Encode(_selectedImageBytes!));
               }
-              Navigator.of(context).pushReplacement(
+              Navigator.of(context).pop(
                   MaterialPageRoute(builder: (context) => Profile()));
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
@@ -170,20 +146,16 @@ class _EditProfileState extends State<EditProfile> {
     });
   }
 
-  Future<void> _pickImageFromCamera(BuildContext context) async {
-    final picker = ImagePicker();
-    final pickedImage = await picker.pickImage(source: ImageSource.camera);
+  Future<void> _pickImage(ImageSource source) async {
+    final pickedFile = await ImagePicker().pickImage(source: source);
+    if (pickedFile != null) {
+      setState(() {
+        _selectedImageBytes = File(pickedFile.path).readAsBytesSync(); // Read bytes synchronously
+        _selectedImageUrl = null;
+      });
 
-    if (pickedImage == null) return;
-
-    setState(() {
-      _profileImage = File(pickedImage.path);
-
-      // Update profile image in ProfileProvider
-      final profileProvider =
-          Provider.of<ProfileProvider>(context, listen: false);
-      profileProvider.changeProfilePicture(0, _profileImage!.path);
-    });
+      Navigator.of(context).pop(); // Close bottom sheet
+    }
   }
 
   @override
@@ -236,7 +208,7 @@ class _EditProfileState extends State<EditProfile> {
 
                 InkWell(
                     onTap: () {
-                      _pickImage();
+                      imageOption();
                     },
                     child: Container(
                       width: 100,
@@ -244,22 +216,17 @@ class _EditProfileState extends State<EditProfile> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         image: DecorationImage(
-                          image: _profileImage != null
-                              ? FileImage(_profileImage!)
-                              : Provider.of<ProfileProvider>(context).imgWeb != null
-                                  ? NetworkImage(Provider.of<ProfileProvider>(context).imgWeb!)
-                                  : Provider.of<ProfileProvider>(context).imgPath != null
-                                      ? FileImage(File(Provider.of<ProfileProvider>(context).imgPath!))
-                                      : AssetImage('assets/images/pp-placeholder.webp') as ImageProvider,
+                          image: Provider.of<ProfileProvider>(context).account[0].profilePictureUrl != ''
+                              ? MemoryImage(base64Decode(Provider.of<ProfileProvider>(context).account[0].profilePictureUrl)) // Use MemoryImage directly
+                              : AssetImage('assets/images/pp-placeholder.webp') as ImageProvider,
                           fit: BoxFit.cover,
                         ),
                       ),
-                      child: Provider.of<ProfileProvider>(context).imgWeb == null &&
-                              Provider.of<ProfileProvider>(context).imgPath == null
+                      child: Provider.of<ProfileProvider>(context).account[0].profilePictureUrl == ''
                           ? Icon(Icons.camera_alt, size: 50, color: Colors.white.withOpacity(0.7))
                           : null,
-                    )),
-
+                    ),
+                ),
                 SizedBox(height: 16),
                 TextField(
                   controller: name,
@@ -315,11 +282,10 @@ class _EditProfileState extends State<EditProfile> {
 
                               if (isAuthenticated) {
                                 profileProvider.changeName(0, name.text);
-                                if (_profileImage != null) {
-                                  profileProvider.changeProfilePicture(
-                                      0, _profileImage!.path);
+                                if (_selectedImageBytes != null) {
+                                  profileProvider.changeProfilePicture(0, base64Encode(_selectedImageBytes!));
                                 }
-                                Navigator.of(context).pushReplacement(
+                                Navigator.of(context).pop(
                                     MaterialPageRoute(
                                         builder: (context) => Profile()));
                               }
@@ -347,11 +313,10 @@ class _EditProfileState extends State<EditProfile> {
                             });
                           } else {
                             profileProvider.changeName(0, name.text);
-                            if (_profileImage != null) {
-                              profileProvider.changeProfilePicture(
-                                  0, _profileImage!.path);
+                            if (_selectedImageBytes != null) {
+                              profileProvider.changeProfilePicture(0, base64Encode(_selectedImageBytes!));
                             }
-                            Navigator.of(context).pushReplacement(
+                            Navigator.of(context).pop(
                                 MaterialPageRoute(
                                     builder: (context) => Profile()));
                           }
@@ -383,29 +348,5 @@ class _EditProfileState extends State<EditProfile> {
       ),
     );
   }
-}
-
-Future<void> _pickImageFromGallery(BuildContext context) async {
-  final picker = ImagePicker();
-  final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-
-  if (pickedFile == null) return;
-
-  if (kIsWeb) {
-    // For web, read the image as bytes and convert to Blob URL
-    final bytes = await pickedFile.readAsBytes();
-    final blobUrl = _createBlobUrlFromUint8List(bytes);
-    Provider.of<ProfileProvider>(context, listen: false)
-        .changeImgWeb(blobUrl);
-  } else {
-    // For mobile/desktop, use the file path
-    Provider.of<ProfileProvider>(context, listen: false)
-        .changeImgPath(pickedFile.path);
-  }
-}
-
-String _createBlobUrlFromUint8List(Uint8List uint8List) {
-  final blob = html.Blob([uint8List]);
-  return html.Url.createObjectUrlFromBlob(blob);
 }
 
