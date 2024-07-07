@@ -246,7 +246,7 @@ class _LoginPageState extends State<LoginPage> {
                       onPressed: () {
                         navigateToHome();
                       },
-                      child: Text("Shortcut login, capek jir regis mulu"),
+                      child: Text("Shortcut login"),
                     ),
                   ],
                 ),
