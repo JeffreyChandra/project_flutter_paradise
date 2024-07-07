@@ -216,13 +216,14 @@ class _EditProfileState extends State<EditProfile> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         image: DecorationImage(
-                          image: Provider.of<ProfileProvider>(context).account[0].profilePictureUrl != ''
-                              ? MemoryImage(base64Decode(Provider.of<ProfileProvider>(context).account[0].profilePictureUrl)) // Use MemoryImage directly
-                              : AssetImage('assets/images/pp-placeholder.webp') as ImageProvider,
+                          image: _selectedImageBytes != null ? MemoryImage(_selectedImageBytes!)
+                            : Provider.of<ProfileProvider>(context).account[0].profilePictureUrl != ''
+                            ? MemoryImage(base64Decode(Provider.of<ProfileProvider>(context).account[0].profilePictureUrl)) // Use MemoryImage directly
+                            : AssetImage('assets/images/pp-placeholder.webp') as ImageProvider,
                           fit: BoxFit.cover,
                         ),
                       ),
-                      child: Provider.of<ProfileProvider>(context).account[0].profilePictureUrl == ''
+                      child: Provider.of<ProfileProvider>(context).account[0].profilePictureUrl == '' && _selectedImageBytes == null
                           ? Icon(Icons.camera_alt, size: 50, color: Colors.white.withOpacity(0.7))
                           : null,
                     ),
