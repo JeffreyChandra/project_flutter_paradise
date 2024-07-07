@@ -59,9 +59,10 @@ class _EditProfileState extends State<EditProfile> {
                 leading: Icon(Icons.camera),
                 title: Text('Camera'),
                 onTap: () async {
-                  pickedImage =
-                      await _picker.pickImage(source: ImageSource.camera);
-                  Navigator.of(context).pop();
+                  // pickedImage =
+                  //     await _picker.pickImage(source: ImageSource.camera);
+                  // Navigator.of(context).pop();
+                  _pickImageFromCamera(context);
                 },
               ),
               ListTile(
@@ -166,6 +167,22 @@ class _EditProfileState extends State<EditProfile> {
       setState(() {
         loading = false;
       });
+    });
+  }
+
+  Future<void> _pickImageFromCamera(BuildContext context) async {
+    final picker = ImagePicker();
+    final pickedImage = await picker.pickImage(source: ImageSource.camera);
+
+    if (pickedImage == null) return;
+
+    setState(() {
+      _profileImage = File(pickedImage.path);
+
+      // Update profile image in ProfileProvider
+      final profileProvider =
+          Provider.of<ProfileProvider>(context, listen: false);
+      profileProvider.changeProfilePicture(0, _profileImage!.path);
     });
   }
 
@@ -391,3 +408,4 @@ String _createBlobUrlFromUint8List(Uint8List uint8List) {
   final blob = html.Blob([uint8List]);
   return html.Url.createObjectUrlFromBlob(blob);
 }
+
