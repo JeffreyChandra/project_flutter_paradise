@@ -138,8 +138,28 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => CartPage()));
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            builder: (context) {
+              return SingleChildScrollView(
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.80,
+                  padding: const EdgeInsets.all(
+                      16.0), // Menambahkan padding jika diperlukan
+                  child:
+                      CartPage(), // Menampilkan CartPage di dalam BottomSheet
+                ),
+              );
+            },
+            backgroundColor: Colors
+                .white, // Ganti dengan warna latar belakang yang diinginkan
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(
+                      16)), // Menambahkan radius pada bagian atas BottomSheet
+            ),
+          );
         },
         backgroundColor: PrimaryColor,
         child: Icon(
